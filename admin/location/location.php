@@ -1,3 +1,15 @@
+<?php
+
+session_start();
+require '../../connection/connect.php';
+
+
+// if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -44,7 +56,7 @@
                             -->
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <a href="#" class="btn btn-info btn-icon-split mb-4">
+                                    <a href="a_location.php" class="btn btn-info btn-icon-split mb-4">
                                         <span class="icon text-white-600">
                                         <i class="fas fa-plus-circle"></i>
                                         </span>
@@ -71,15 +83,47 @@
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
-                                        
+
+                                            <?php
+                                                $x = 1;
+                                                $query = "SELECT * FROM location";
+                                                $result = mysqli_query($connection, $query);
+                                                if (mysqli_num_rows($result) > 0) {
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+
                                             <tbody>
                                                 <tr>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" text-center align-middle"></td>
+                                                    <td class=" align-middle"><?=$x++?></td>
+                                                    <td class=" align-middle"><?=$row['id']?></td>
+                                                    <td class=" align-middle"><?=$row['name']?></td>
+                                                    <td class="align-middle text-center">
+
+                                                        <?php if ($row['status'] == 0){?>
+                                                            <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteLoc&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Department. Still want to restore?')">
+                                                                <i class="fa fa-undo"> </i>
+                                                            </a>
+                                                        
+                                                        
+                                                        <?php } elseif($row['status'] == 1){?>
+
+                                                            <a href="e_location.php?elocation&id=<?=$row['id']?>" class="btn btn-primary btn-circle">
+                                                                <span class="icon text-white" title="Edit">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </span>
+                                                            </a> |
+                                                            <a href="../../ajaxadmin/ajaxadmin.php?deleteLoc&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+
+                                                        <?php }?>    
+
+                                                    </td>
                                                 </tr>
                                             </tbody>
+
+                                            <?php
+                                                    }
+                                                }
+                                            ?>
                                         </table>
                                     </div>
                                 </div>

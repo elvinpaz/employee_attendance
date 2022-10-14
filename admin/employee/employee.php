@@ -44,7 +44,7 @@
                             -->
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <a href="#" class="btn btn-info btn-icon-split mb-4">
+                                    <a href="a_employee.php" class="btn btn-info btn-icon-split mb-4">
                                         <span class="icon text-white-600">
                                         <i class="fas fa-plus-circle"></i>
                                         </span>

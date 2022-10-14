@@ -1,0 +1,472 @@
+<?php
+
+session_start();
+require '../../connection/connect.php';
+
+
+// if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+
+?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+      
+        <link rel='shortcut icon' type='image/x-icon' href='../../assets/img/logocvsu.png'/>
+        <title>Employee | Admin</title>
+      
+        <!-- Custom fonts for this template-->
+        <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+      
+        <!-- Custom styles for this template-->
+        <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
+      
+        <!-- Page level plugins -->
+    </head>
+
+    <body>
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <?php include '../includes/sidenav.php'; ?>
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <?php include '../includes/topnav.php'; ?>
+
+                    <!-- Main Content -->
+                    <div id="content">
+            
+                       
+                        <!-- Begin Page Content -->
+                        <div class="content-header">
+                            <div class="container-fluid">
+                                <div class="row mb-2">
+                                    <div class="col-sm-6">
+                                    <h1 class="m-0">Employee</h1>
+                                    </div>
+                                    <div class="col-sm-6">
+                                    <ol class="breadcrumb float-sm-right">
+                                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-folder"></i> Employee</a></li>
+                                        <li class="breadcrumb-item active"><i class="fa fa-folder"></i> Add Employee </li>
+                                    </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <section class="content">
+
+                            <div class="box">
+                                <div class="box-body">
+                                    <div class="row" style="background-color: #f0f0f0; margin: 0px !important;">
+                                        <div class="col-md-3">
+                                            <center>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                Personnel Information
+                                                <h4>Fill up the personnel's Basic information and Educational information.</h4>
+                                            </center>
+                                        </div>
+
+                                        <div class="col-md-9" style="padding-top: 10px;">
+
+                                            <div class="card card-outline card-outline-tabs">
+                                                <div class="card-header p-0 border-bottom-0">
+                                                    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Basic Information</a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Educational Information</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            
+
+                                            
+                                                <div class="card-body ">
+                                                    <form action="../../ajaxadmin/ajaxadmin.php" method="POST">
+                                                        <div class="tab-content" id="custom-tabs-one-tabContent">
+
+                                                            <!-- ^Basic Information tab^ -->
+                                                            <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>First Name</label>
+                                                                        <input type="text" required class="form-control" id="e_fname" name="e_fname" autocomplete="off" autofocus >
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Midlle Name</label>
+                                                                        <input type="text" required class="form-control" id="e_ne_mnameame" name="e_mname" autocomplete="off" autofocus >
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Last Name</label>
+                                                                        <input type="text" required class="form-control" id="e_lname" name="e_lname" autocomplete="off" autofocus >
+                                                                        
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Employee Image</label>
+                                                                        <input type="file" name="image" id="image">           
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-2">
+                                                                        <label>Gender</label>
+                                                                        <select class="form-control" id="e_gender" name="e_gender" required>
+                                                                            <option></option>
+                                                                            <option value="M">Male</option>
+                                                                            <option value="F">Female</option>
+                                                                        </select>
+                                                                        
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Email Address</label>
+                                                                        <input type="text" autocomplete="off" class="form-control col-lg" name="email" id="email">
+                                                                        
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-3">
+                                                                        <label>Status</label>
+                                                                        <select class="form-control" id="emp_status" name="emp_status" required>
+                                                                            <option></option>
+                                                                            <option value="Single">Single</option>
+                                                                            <option value="Married">Married</option>
+                                                                            <option value="Widowed">Widowed</option>
+                                                                            <option value="Divorced">Divorced</option>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-3">
+                                                                        <label>Mobile Number</label>
+                                                                        <input required type="tel" placeholder="Phone Number: 09XXXXXXXXX"  pattern="[0-9]{11}" name="mobile" id="mobile" class="form-control">   
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-12">
+                                                                        <label>Address</label>
+                                                                        <input type="text" class="form-control" id="e_address" name="e_address" autocomplete="off" required >
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-8">
+                                                                        <label>Place of birth</label>
+                                                                        <input type="text" class="form-control" id="place_birth" name="place_birth" autocomplete="off" >
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Date of Birth</label>
+                                                                        <input type="date" class="form-control" id="e_birth_date" name="e_birth_date" >       
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Designation</label>
+                                                                        <select class="form-control" id="e_position" name="e_position" required>
+                                                                            <option></option>
+                                                                            <?php
+                                                                                $query = "SELECT * FROM position";
+                                                                                $result = mysqli_query($connection, $query);
+                                                                                if (mysqli_num_rows($result) > 0) {
+                                                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                                            ?>
+                                                                                <option value="<?=$row['position_id'] ?>"><?= $row['position_name'];?></option>
+
+                                                                            <?php 
+                                                                                    } 
+                                                                                }
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Department</label>
+                                                                        <select class="form-control" name="d_id" id="d_id">
+                                                                            <option></option>
+                                                                            <?php
+                                                                                $query = "SELECT * FROM department";
+                                                                                $result = mysqli_query($connection, $query);
+                                                                                if (mysqli_num_rows($result) > 0) {
+                                                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                                            ?>
+
+                                                                            <option value="<?= $row['id'] ?>"><?= $row['name']; ?></option>
+
+                                                                            <?php 
+                                                                                    } 
+                                                                                }
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Academic Rank</label>
+                                                                        <select class="form-control" name="e_academic" id="e_academic" required>
+                                                                            <option></option>
+                                                                            <?php
+                                                                                $query = "SELECT * FROM department";
+                                                                                $result = mysqli_query($connection, $query);
+                                                                                if (mysqli_num_rows($result) > 0) {
+                                                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                                                            ?>
+                                                                                <option value="<?= $row['academic_id'] ?>"><?= $row['academic_name']; ?></option>
+
+                                                                            <?php 
+                                                                                    } 
+                                                                                }
+                                                                            ?>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Type of Employment</label>
+                                                                        <select class="form-control" id="type_emp" name="type_emp" >
+                                                                            <option></option>
+                                                                            <option value="Full-time">Full-time</option>
+                                                                            <option value="Part-time">Part-time</option>
+                                                                            <option value="Contractual">Contractual</option>
+                                                                        </select>
+                                                                    </div>
+                                                                                
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Employee Status</label>
+                                                                        <select class="form-control" name="e_status" id="e_status" required>
+                                                                            <option></option>
+                                                                            <option value="0">Active</option>
+                                                                            <option value="1">Inactive</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Date of Appointment</label>
+                                                                        <input type="date" class="form-control" name="e_hire_date" id="e_hire_date"> 
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Plantilla Number</label>
+                                                                        <input type="text" class="form-control" id="plantilla" name="plantilla" autocomplete="off" > 
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Eligibility</label>
+                                                                        <input type="text" class="form-control" id="eligibility" name="eligibility" autocomplete="off" > 
+                                                                    </div>
+                                                                    
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>TIN No.</label>
+                                                                        <input type="text" class="form-control" id="tin_no" name="tin_no" autocomplete="off" > 
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>GSIS BP No.</label>
+                                                                        <input type="text" class="form-control" id="gsis_no" name="gsis_no" autocomplete="off" > 
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Pag-Ibig No.</label>
+                                                                        <input type="text" class="form-control" id="pagibig_no" name="pagibig_no" autocomplete="off" > 
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- ^end of Basic Information tab^ -->
+
+                                                            <!-- ^Educational Information^ -->
+                                                            <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-6">
+                                                                        <label>Bachelor's Degree</label>
+                                                                        <input type="text" class="form-control" id="bs_1" name="bs_1" autocomplete="off" required >
+                                                                    </div>
+
+                                                                    <div class="form-group col-sm-4">
+                                                                        <label>Year</label>
+                                                                        <input type="text" class="form-control" id="year_1" name="year_1" autocomplete="off" required >
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-8">
+                                                                        <label>School</label>
+                                                                        <input type="text" class="form-control" id="school_1" name="school_1" autocomplete="off" required >
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="form-group col-sm-12">
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="checkbox" id="is_master" name="is_master" value="1" <?php if(!empty($input)) { if($input['is_master'] === "true") { echo "checked"; } } ?>>
+                                                                            <label class="form-check-label" for="is_master"> Enable Master's Degree</label>
+                                                                        </div>
+
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="checkbox" id="is_doctorate" name="is_doctorate" value="1" <?php if(!empty($input)) { if($input['is_doctorate'] === "true") { echo "checked"; } } ?>>
+                                                                            <label class="form-check-label" for="is_doctorate"> Enable Doctorate</label>
+                                                                        </div>
+
+                                                                        <div class="form-check form-check-inline">
+                                                                            <input class="form-check-input" type="checkbox" id="other_degree" name="other_degree" value="1" <?php if(!empty($input)) { if($input['other_degree'] === "true") { echo "checked"; } } ?>>
+                                                                            <label class="form-check-label" for="other_degree"> Enable Other Degree</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div id="master_div" style="<?php if(!empty($input)) { if($input['is_master'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
+                                                                    <div class="row">
+                                                                        <div class="form-group col-sm-6">
+                                                                            <label>Master's Degree</label>
+                                                                            <input type="text" class="form-control" id="md_1" name="md_1" autocomplete="off" >
+                                                                        </div>
+                                                                        
+                                                                        <div class="form-group col-sm-3">
+                                                                            <label>With</label>
+                                                                            <input type="text" class="form-control" id="with_1" name="with_1" autocomplete="off" >
+                                                                        </div>
+
+                                                                        <div class="form-group col-sm-3">
+                                                                            <label>Year</label>
+                                                                            <input type="text" class="form-control" id="year_2" name="year_2" autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="form-group col-sm-8">
+                                                                            <label>School</label>
+                                                                            <input type="text" class="form-control" id="school_2" name="school_2" autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+                                                                </div>
+
+                                                                <div id="doctorate_div" style="<?php if(!empty($input)) { if($input['is_doctorate'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
+                                                                    <div class="row">
+                                                                        <div class="form-group col-sm-6">
+                                                                            <label>Doctorate Degree</label>
+                                                                            <input type="text" class="form-control" id="doctorate" name="doctorate" autocomplete="off" >
+                                                                        </div>
+                                                                        
+                                                                        <div class="form-group col-sm-3">
+                                                                            <label>With</label>
+                                                                            <input type="text" class="form-control" id="with_2" name="with_2" autocomplete="off" >
+                                                                        </div>
+
+                                                                        <div class="form-group col-sm-3">
+                                                                            <label>Year</label>
+                                                                            <input type="text" class="form-control" id="year_3" name="year_3" autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="form-group col-sm-8">
+                                                                            <label>School</label>
+                                                                            <input type="text" class="form-control" id="school_3" name="school_3" autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+                                                                </div>
+
+                                                                <div id="other_div" style="<?php if(!empty($input)) { if($input['other_degree'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
+                                                                    <div class="row">
+                                                                        <div class="form-group col-sm-6">
+                                                                            <label>Other Degree</label>
+                                                                            <input type="text" class="form-control" id="other" name="other" autocomplete="off">
+                                                                        </div>
+
+                                                                        <div class="form-group col-sm-4">
+                                                                            <label>Year</label>
+                                                                            <input type="text" class="form-control" id="year_4" name="year_4" autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="form-group col-sm-8">
+                                                                            <label>School</label>
+                                                                            <input type="text" class="form-control" id="school_4" name="school_4" autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                            
+                                                            </div>
+                                                            <!-- ^end of Educational Information^ -->
+
+
+                                                        </div>
+
+                                                        <button type="submit" class="btn btn-success btn-icon-split mt-4 float-right">
+                                                            <span class="icon text-white">
+                                                            <i class="fas fa-plus-circle"></i>
+                                                            </span>
+                                                            <span class="text">Add to system</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                                
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </section>
+                        <!-- /.container-fluid -->
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                
+                <?php include '../includes/footer.php'; ?>
+                
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+            
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <?php include '../includes/modal.php'; ?>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="../../assets/vendor/jquery/jquery.min.js"></script>
+        <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="../../assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="../../assets/js/sb-admin-2.min.js"></script>
+
+    </body>
+
+</html>

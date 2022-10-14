@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+require '../../connection/connect.php';
+
+
+// if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -55,23 +65,60 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>EmpID</th>
-                                                    <th>Employee</th>
+                                                    <th>Employee Name</th>
                                                     <th>Dept.ID</th>
-                                                    <th>Username</th>
+                                                    <th>Position</th>
+                                                    <th>Email</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                         
-                                            <tbody>
-                                                <tr>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" text-center align-middle"></td>
-                                                </tr>
-                                            </tbody>
+                                            <?php
+                                                $x = 1;
+                                                $query = "SELECT employee.name, employee.last_name, employee.id as employee_id, user_role.name as position, user.id, user.email, user.status, user.has_account, department.id as dept_code
+                                                                FROM employee 
+                                                                    LEFT JOIN user_role ON employee.position_id = user_role.id 
+                                                                    LEFT JOIN department ON employee.department_id = department.dept_id 
+                                                                    LEFT JOIN user ON employee.id = user.employee_id";
+                                                $result = mysqli_query($connection, $query);
+                                                if (mysqli_num_rows($result) > 0) {
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td class=" align-middle"><?=$x++?></td>
+                                                        <td class=" align-middle"><?=$row['employee_id']?></td>
+                                                        <td class=" align-middle"><?=$row['name']." ".$row['last_name']?></td>
+                                                        <td class=" align-middle"><?=$row['dept_code']?></td>
+                                                        <td class=" align-middle"><?=$row['position']?></td>
+                                                        <td class=" align-middle">
+                                                            <?php if ($row['has_account'] == 0){?>
+                                                                    
+
+                                                                <a href="a_users.php?ausers" class="btn btn-info">Create Account</a>
+                                                                
+                                                                
+                                                                <?php } elseif($row['status'] == 1){?>
+
+                                                                    <a href="e_designation.php?edesignation&id=<?=$row['position_id']?>" class="btn btn-primary btn-circle">
+                                                                        <span class="icon text-white" title="Edit">
+                                                                            <i class="fas fa-edit"></i>
+                                                                        </span>
+                                                                    </a>
+                                                                    |
+                                                                    <a href="../../ajaxadmin/ajaxadmin.php?deleteDesignation&id=<?=$row['position_id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+
+                                                                <?php }?>    
+                                                        </td>
+                                                        <td class=" text-center align-middle"></td>
+                                                    </tr>
+                                                </tbody>
+
+                                            <?php 
+                                                    }
+                                                }
+                                            ?>
                                         </table>
                                     </div>
                                 </div>
@@ -79,6 +126,34 @@
 
                         </div>
                         <!-- /.container-fluid -->
+
+                        <!-- modal for new Section  -->
+                        <div class="modal fade" id="modal-insert" style="display: none;" aria-hidden="true">
+                            <div class="modal-dialog-centered modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Add Section</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <form action="../../ajaxadmin/ajaxadmin.php?insertNewUser" method="POST">
+                                    <div class="modal-body" id="adduser">
+                                    </div>
+                                    </form>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success btn-icon-split mt-4 float-right">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-plus-circle"></i>
+                                            </span>
+                                            <span class="text">Add to system</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- /.modal-content -->
+                            </div>
+                            <!-- /.modal-dialog -->
+                        </div>
 
                     </div>
                     <!-- End of Main Content -->
@@ -106,6 +181,21 @@
 
         <!-- Custom scripts for all pages-->
         <script src="../../assets/js/sb-admin-2.min.js"></script>
+
+        <script>
+            $(document).on('click', '.adduser', function(){  
+                var user_id = $(this).attr("id");  
+                $.ajax({  
+                    url:"../../ajaxadmin/ajaxadmin.php?adduser",  
+                    method:"post",  
+                    data:{"user_id":user_id},  
+                    success:function(data){  
+                            $('#adduser').html(data);  
+                            $('#modal-insert').modal("show");  
+                    }  
+                });  
+            });
+        </script>
 
     </body>
 

@@ -4,8 +4,54 @@
 
 ?>
  
-<!-- VIEW -->
+<!-- MODAL -->
+    <!-- add designation -->
+    <?php
+        if (isset($_GET['adddesignation'])) {
+            
+            ?>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="name" autocomplete="off" class="form-control" placeholder="Enter Name" required>
+                            </div>
 
+                            <div class="form-group">
+                                <label>Code</label>
+                                <input type="text" name="code" autocomplete="off" class="form-control" placeholder="Enter Code" required/>
+                            </div>
+
+                        </div>
+
+                    
+
+            <?php
+        }
+    ?>
+
+     <!-- add user -->
+     <?php
+        if (isset($_GET['adddesignation'])) {
+            
+            ?>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="name" autocomplete="off" class="form-control" placeholder="Enter Name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Code</label>
+                                <input type="text" name="code" autocomplete="off" class="form-control" placeholder="Enter Code" required/>
+                            </div>
+
+                        </div>
+                        
+                    
+
+            <?php
+        }
+    ?>
 
 
 
@@ -37,11 +83,6 @@
             $thu_end=$_POST['thu_end'];
             $fri_end=$_POST['fri_end'];
             $sat_end=$_POST['sat_end'];
-
-            
-
-           
-            
             
 
             $query = "SELECT * FROM schedules WHERE employee_id = '".$emp_id."'";
@@ -64,6 +105,29 @@
             }
 
             header("location: ../admin/schedule/schedule.php");
+        }
+
+        // insert new Location
+        if (isset($_GET["insertNewLocation"])) {
+            $name=$_POST['location'];
+            
+            $query = "INSERT INTO location(`name`, `status`)
+                        VALUES ('".$name."',1)";
+            mysqli_query($connection, $query);
+
+            header("location: ../admin/location/location.php");
+        }
+
+        // insert new Designation
+        if (isset($_GET["insertNewDesignation"])) {
+            $name=$_POST['name'];
+            $code=$_POST['code'];
+
+            $query = "INSERT INTO position (`position_name`, `position_code`) VALUES ('".$name."', '".$code."')";
+            mysqli_query($connection, $query);
+
+            header("location: ../admin/designation/designation.php");
+            
         }
 
 
@@ -94,7 +158,7 @@
             header("location: ../admin/department/department.php");
         }
 
-        // submit edit Department
+        // submit edit Schedule
         if (isset($_GET['submitEditSchedule'])) {
 
             $sched_id=$_POST['sched_id'];
@@ -127,6 +191,46 @@
 
 
             header("location: ../admin/schedule/schedule.php");
+        }
+
+        // submit edit Location
+        if (isset($_GET['submitEditLocation'])) {
+
+            $id=$_POST['id'];
+            $name=$_POST['name'];
+
+            $query = "SELECT * FROM location WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE location SET name = '".$name."' WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+
+            header("location: ../admin/location/location.php");
+        }
+
+        // submit edit Designation
+        if (isset($_GET['submitEditDesignation'])) {
+
+            $id=$_POST['id'];
+            $name=$_POST['name'];
+            $code=$_POST['code'];
+            
+
+            $query = "SELECT * FROM position WHERE position_id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE position SET position_name = '".$name."', position_code = '".$code."' WHERE position_id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+
+            header("location: ../admin/designation/designation.php");
         }
 
 
@@ -167,6 +271,38 @@
             }
 
             header("location: ../admin/schedule/schedule.php");
+        }
+
+        //delete location
+        if (isset($_GET['deleteLoc'])) {
+            $id=$_GET['id'];
+
+            $query = "SELECT * FROM location WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE location SET status = 0 WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            header("location: ../admin/location/location.php");
+        }
+
+        //delete location
+        if (isset($_GET['deleteDesignation'])) {
+            $id=$_GET['id'];
+
+            $query = "SELECT * FROM position WHERE position_id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE position SET status = 0 WHERE position_id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            header("location: ../admin/designation/designation.php");
         }
 
 
@@ -211,6 +347,42 @@
 
 
             header("location: ../admin/schedule/schedule.php");
+        }
+
+        // restore delete Department
+        if (isset($_GET['restoreDeleteLoc'])) {
+            $id=$_GET['id'];
+            
+
+            $query = "SELECT * FROM location WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE location SET status = 1 WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+
+            header("location: ../admin/location/location.php");
+        }
+
+        // restore delete Department
+        if (isset($_GET['restoreDeleteDesignation'])) {
+            $id=$_GET['id'];
+            
+
+            $query = "SELECT * FROM position WHERE position_id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE position SET status = 1 WHERE position_id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+
+            header("location: ../admin/designation/designation.php");
         }
     
 

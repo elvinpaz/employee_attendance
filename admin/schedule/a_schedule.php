@@ -73,7 +73,7 @@ require '../../connection/connect.php';
                                     <select name="emp_id" id="emp_id" class="form-control" required>
                                     
                                             <?php
-                                                $query = "SELECT * FROM employee ORDER BY name ASC";
+                                                $query = "SELECT * FROM employee WHERE is_active = 0 ORDER BY name ASC";
                                                 $result = mysqli_query($connection, $query);
                                                 if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
