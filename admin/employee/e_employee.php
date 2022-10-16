@@ -440,7 +440,7 @@ require '../../connection/connect.php';
                                                                                 <hr style="height:2px;border-width:0;color:gray;background-color:gray">
                                                                             </div>
 
-                                                                            <div id="other_div" style="<?php if(!empty($input)) { if($input['other_degree'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
+                                                                            <div id="other_div" style="<?php if(!empty($input)) { if($input['is_other_degree'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
                                                                                 <div class="row">
                                                                                     <div class="form-group col-sm-6">
                                                                                         <label>Other Degree</label>
@@ -582,7 +582,7 @@ require '../../connection/connect.php';
                     $('#doctorate_div').hide();
                 }
 
-                $("#other_degree").click(function() {
+                $("#is_other_degree").click(function() {
                     if($(this).is(":checked")) {
                         $('#other').attr('required', true);
                         $('#other_year').attr('required', true);
@@ -596,7 +596,7 @@ require '../../connection/connect.php';
                     }
                 });
                 
-                if($("#other_degree").is(":checked")) {
+                if($("#is_other_degree").is(":checked")) {
                     $('#other').attr('required', true);
                     $('#other_year').attr('required', true);
                     $('#other_school').attr('required', true);

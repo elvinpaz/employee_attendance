@@ -130,11 +130,7 @@
             $gsis_no=$_POST['gsis_no'];
             $pagibig_no=$_POST['pagibig_no'];
             $e_status=$_POST['e_status'];
-            
-            
-            $is_master=$_POST['is_master'];
-            $is_doctorate=$_POST['is_doctorate'];
-            $is_other_degree=$_POST['is_other_degree'];
+
             $bd=$_POST['bd'];
             $bd_year=$_POST['bd_year'];
             $bd_school=$_POST['bd_school'];
@@ -150,50 +146,139 @@
             $other_year=$_POST['other_year'];
             $other_school=$_POST['other_school'];
 
+            $is_master=0;
+            $is_doctorate=0;
+            $is_other_degree=0;
+
+            if (isset($_POST["is_master"])) {
+                $is_master=1;
+            }
+
+            if (isset($_POST["is_doctorate"])) {
+                $is_doctorate=1;
+            }
+
+            if (isset($_POST["is_other_degree"])) {
+                $is_other_degree=1;
+            }
+
+            echo $is_master;
+
+            
 
             $query = "SELECT * FROM employee WHERE email = '".$email."'";
                 $result = mysqli_query($connection, $query);
 
                 $fileInfo = PATHINFO($_FILES["imgupload"]["name"]);
-
-                echo $_FILES["imgupload"]["name"];
                
                 if (mysqli_num_rows($result) == 0) {
 
                     if (empty($_FILES["imgupload"]["name"])){
                         $location="";
-                        ?>
-                        <script>
-                            window.alert('test');
                     
-                        </script>
-                    <?php
                     }
                     else{
                         if ($fileInfo['extension'] == "jpg" OR $fileInfo['extension'] == "png") {
                             $newFilename = $fileInfo['filename'] . "_" . time() . "." . $fileInfo['extension'];
-                            move_uploaded_file($_FILES["imgupload"]["tmp_name"], "../upload" . $newFilename);
-                            $location = "upload/" . $newFilename;
+                            move_uploaded_file($_FILES["imgupload"]["tmp_name"], "../upload/" . $newFilename);
+                            $location = $newFilename;
                           
                         
                         }
                         else{
-                            $location="";
-                            ?>
-                                <script>
-                                    window.alert('Photo not added. Please upload JPG or PNG photo only!');
-                                </script>
-                            <?php
+                            $location="default.png";
+                        
                         }
                     }
 
                         //Basic information query
-                        $query = "INSERT INTO employee (`name`, `middle_name`, `last_name`, `email`, `mobile_no`, `address`, `gender`, `image`, `birth_date`, `hire_date`, `shift_id`, `position_id`, `department_id`, `academic_id`, `place_birth`, `type_emp`, `status_emp`, `plantilla`, `eligibility`, `tin_no`, `gsis_no`, `pagibig_no`, `bacherlor_degree`, `bs_year`, `bs_school`, `is_master`, `is_doctorate`, `is_other_degree`, `master`, `md_with`, `md_year`, `md_school`, `doctorate`, `dd_with`, `dd_year`, `dd_school`, `other_degree`, `other_year`, `other_school`, `is_active`) 
-                                VALUES ('".$e_name."', '".$e_mname."', '".$e_lname."', '".$email."', '".$mobile."', '".$e_address."', '".$e_gender."', '".$location."','".$e_birth_date."', '".$e_hire_date."', 'NULL', '".$e_position."', '".$d_id."', '".$e_academic."', '".$place_birth."', '".$type_emp."', '".$e_status."', '".$plantilla."', '".$tin_no."', '".$gsis_no."', '".$pagibig_no."', '".$bd."', '".$bd_year."', '".$bd_school."', '".$is_master."', '".$is_doctorate."', '".$is_other_degree."', '".$md."', '".$md_with."', '".$md_year."', '".$md_school."', '".$dd."', '".$dd_with."', '".$dd_year."', '".$dd_school."', '".$other."', '".$other_year."', '".$other_school."', '".$e_status."')";
-                        mysqli_query($connection, $query);
+                        $query = "INSERT INTO employee (
+                         `name`,
+                         `middle_name`,
+                         `last_name`,
+                         `email`,
+                         `mobile_no`,
+                         `address`,
+                         `gender`,
+                         `image`,
+                         `birth_date`,
+                         `hire_date`,
+                         `position_id`,
+                         `department_id`,
+                         `academic_id`,
+                         `place_birth`,
+                         `type_emp`,
+                         `status_emp`,
+                         `plantilla`,
+                         `eligibility`,
+                         `tin_no`,
+                         `gsis_no`,
+                         `pagibig_no`,
+                         `bacherlor_degree`,
+                         `bs_year`,
+                         `bs_school`,
+                         `is_master`,
+                         `is_doctorate`,
+                         `is_other_degree`,
+                         `master`,
+                         `md_with`,
+                         `md_year`,
+                         `md_school`,
+                         `doctorate`,
+                         `dd_with`,
+                         `dd_year`,
+                         `dd_school`,
+                         `other_degree`,
+                         `other_year`,
+                         `other_school`,
+                         `is_active`) 
+                                VALUES (
+                                '".$e_name."', 
+                                '".$e_mname."', 
+                                '".$e_lname."', 
+                                '".$email."', 
+                                '".$mobile."', 
+                                '".$e_address."', 
+                                '".$e_gender."', 
+                                '".$location."','
+                                ".$e_birth_date."', 
+                                '".$e_hire_date."', 
+                                '".$e_position."', 
+                                '".$d_id."', 
+                                '".$e_academic."', 
+                                '".$place_birth."', 
+                                '".$type_emp."', 
+                                '".$e_status."', 
+                                '".$plantilla."', 
+                                '".$tin_no."', 
+                                '".$eligibility."', 
+                                '".$gsis_no."', 
+                                '".$pagibig_no."', 
+                                '".$bd."', 
+                                '".$bd_year."', 
+                                '".$bd_school."', 
+                                '".$is_master."', 
+                                '".$is_doctorate."', 
+                                '".$is_other_degree."', 
+                                '".$md."', 
+                                '".$md_with."', 
+                                '".$md_year."', 
+                                '".$md_school."', 
+                                '".$dd."', 
+                                '".$dd_with."', 
+                                '".$dd_year."', 
+                                '".$dd_school."', 
+                                '".$other."', 
+                                '".$other_year."', 
+                                '".$other_school."', 
+                                '".$e_status."')";
+                        mysqli_query($connection, 
+                        $query);
                         
-                        echo $query;
-
+                        if($query){
+                            echo $query;
+                        }
+                        
                     // header("location: ../admin/employee/employee.php");
                 } else {
                     header("location: ../admin/employee/employee.php?employeerrorr=E-mail already exist.");

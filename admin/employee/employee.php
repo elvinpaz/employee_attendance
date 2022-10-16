@@ -104,7 +104,7 @@
                                                         <td class=" align-middle"><?=$row['id']?></td>
                                                         <td class=" align-middle"><?=$row['name']." ".$row['last_name']?></td>
                                                         <td class=" align-middle"><?=$row['gender']?></td>
-                                                        <td class=" text-center"><img src="../../assets/img copy/default-image.jpg" style="width: 55px; height:55px" class="img-rounded"></td>
+                                                        <td class=" text-center"><img src="../../upload/<?=$row['image']?>" style="width: 55px; height:55px" class="img-rounded"></td>
                                                         <td class=" align-middle"><?=$row['birth_date']?></td>
                                                         <td class=" align-middle"><?=$row['hire_date']?></td>
                                                         <td class="align-middle text-center">

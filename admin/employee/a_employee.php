@@ -98,7 +98,7 @@ require '../../connection/connect.php';
 
                                             
                                                 <div class="card-body ">
-                                                    <form action="../../ajaxadmin/ajaxadmin.php?insertNewEmployee" method="POST">
+                                                    <form action="../../ajaxadmin/ajaxadmin.php?insertNewEmployee" method="POST" enctype="multipart/form-data">
                                                         <div class="tab-content" id="custom-tabs-one-tabContent">
 
                                                             <!-- ^Basic Information tab^ -->
@@ -125,7 +125,7 @@ require '../../connection/connect.php';
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-4">
                                                                         <label>Employee Image</label>
-                                                                        <input type="file" name="image" id="image">           
+                                                                        <input type="file" name="imgupload" id="imgupload">           
                                                                     </div>
 
                                                                     <div class="form-group col-sm-2">
@@ -394,7 +394,7 @@ require '../../connection/connect.php';
                                                                     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
                                                                 </div>
 
-                                                                <div id="other_div" style="<?php if(!empty($input)) { if($input['other_degree'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
+                                                                <div id="other_div" style="<?php if(!empty($input)) { if($input['is_other_degree'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-6">
                                                                             <label>Other Degree</label>
@@ -503,7 +503,7 @@ require '../../connection/connect.php';
                         }
                     });
 
-                    $("#other_degree").click(function() {
+                    $("#is_other_degree").click(function() {
                         if($(this).is(":checked")) {
                             $('#other').attr('required', true);
                             $('#other_year').attr('required', true);
