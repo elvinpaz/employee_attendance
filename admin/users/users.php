@@ -79,7 +79,8 @@ require '../../connection/connect.php';
                                                                 FROM employee 
                                                                     LEFT JOIN user_role ON employee.position_id = user_role.id 
                                                                     LEFT JOIN department ON employee.department_id = department.dept_id 
-                                                                    LEFT JOIN user ON employee.id = user.employee_id";
+                                                                    LEFT JOIN user ON employee.id = user.employee_id
+                                                                        WHERE employee.id != 25";
                                                 $result = mysqli_query($connection, $query);
                                                 if (mysqli_num_rows($result) > 0) {
                                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -92,22 +93,22 @@ require '../../connection/connect.php';
                                                         <td class=" align-middle"><?=$row['name']." ".$row['last_name']?></td>
                                                         <td class=" align-middle"><?=$row['dept_code']?></td>
                                                         <td class=" align-middle"><?=$row['position']?></td>
-                                                        <td class=" align-middle">
+                                                        <td class=" align-middle text-center">
                                                             <?php if ($row['has_account'] == 0){?>
                                                                     
 
-                                                                <a href="a_users.php?ausers" class="btn btn-info">Create Account</a>
+                                                                <a href="a_users.php?ausers&empid=<?=$row['employee_id']?>" class="btn btn-info">Create Account</a>
                                                                 
                                                                 
-                                                                <?php } elseif($row['status'] == 1){?>
+                                                                <?php } elseif($row['has_account'] == 1){?>
 
-                                                                    <a href="e_designation.php?edesignation&id=<?=$row['position_id']?>" class="btn btn-primary btn-circle">
+                                                                    <a href="e_designation.php?edesignation&id=<?=$row['id']?>" class="btn btn-primary btn-circle">
                                                                         <span class="icon text-white" title="Edit">
                                                                             <i class="fas fa-edit"></i>
                                                                         </span>
                                                                     </a>
                                                                     |
-                                                                    <a href="../../ajaxadmin/ajaxadmin.php?deleteDesignation&id=<?=$row['position_id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+                                                                    <a href="../../ajaxadmin/ajaxadmin.php?deleteDesignation&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
 
                                                                 <?php }?>    
                                                         </td>

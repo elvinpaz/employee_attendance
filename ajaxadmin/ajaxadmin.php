@@ -29,30 +29,6 @@
         }
     ?>
 
-     <!-- add user -->
-     <?php
-        if (isset($_GET['adddesignation'])) {
-            
-            ?>
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label>Name</label>
-                                <input type="text" name="name" autocomplete="off" class="form-control" placeholder="Enter Name" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Code</label>
-                                <input type="text" name="code" autocomplete="off" class="form-control" placeholder="Enter Code" required/>
-                            </div>
-
-                        </div>
-                        
-                    
-
-            <?php
-        }
-    ?>
-
 
 
 <!-- INSERT -->
@@ -186,8 +162,20 @@
 
                     header("location: ../admin/employee/employee.php");
                 } else {
-                    header("location: ../admin/employee/employee.php?employeerror=E-mail already exist.");
+                    header("location: ../admin/employee/employee.php?employeerrorr=E-mail already exist.");
                 }
+            
+        }
+
+        // insert new User
+        if (isset($_GET["insertNewUser"])) {
+            $email=$_POST['u_username'];
+            $password=$_POST['u_password'];
+
+            $query = "INSERT INTO user (`position_name`, `position_code`) VALUES ('".$name."', '".$code."')";
+            mysqli_query($connection, $query);
+
+            header("location: ../admin/designation/designation.php");
             
         }
 

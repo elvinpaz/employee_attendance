@@ -97,18 +97,6 @@
 
     <hr class="sidebar-divider mt-3">
 
-    <div class="sidebar-heading">
-        ANNOUNCEMENT
-    </div>
-    <li class="nav-item">
-        <a class="nav-link pb-0" href="">
-            <i class="fa fa-bullhorn"></i>
-            <span>Announcement</span>
-        </a>
-    </li>
-
-    <hr class="sidebar-divider mt-3">
-
 
 
     <!-- Sidebar Toggler (Sidebar) -->

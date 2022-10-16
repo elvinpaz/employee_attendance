@@ -28,6 +28,9 @@
       
         <!-- Custom styles for this template-->
         <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
+
+        <!-- Toastr -->
+        <link rel="stylesheet" href="../../assets/plugins/toastr/toastr.min.css">
       
         <!-- Page level plugins -->
 
@@ -167,6 +170,9 @@
         <!-- Custom scripts for all pages-->
         <script src="../../assets/js/sb-admin-2.min.js"></script>
 
+        <!-- Toastr -->
+        <script src="../../assets/plugins/toastr/toastr.min.js"></script>
+
     </body>
 
 </html>
@@ -174,15 +180,14 @@
 
 <?php
 
-if (isset($_GET['employeerror'])){
+if (isset($_GET['employeerrorr'])){
 
   $erromsg="";
 
-  if($_GET['employeerror'] == 'E-mail already exist.'){
+  if($_GET['employeerrorr'] == 'E-mail already exist.'){
 
-      $erromsg = $_GET['employeerror'];
+      $erromsg = $_GET['employeerrorr'];
       
-
 ?>
 
     <script>
@@ -195,7 +200,7 @@ if (isset($_GET['employeerror'])){
           
   }else{
 
-    $erromsg = $_GET['employeerror'];
+    $erromsg = $_GET['employeerrorr'];
 
 ?>
 
