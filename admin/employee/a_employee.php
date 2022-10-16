@@ -213,7 +213,7 @@ require '../../connection/connect.php';
                                                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                                             ?>
 
-                                                                            <option value="<?= $row['id'] ?>"><?= $row['name']; ?></option>
+                                                                            <option value="<?= $row['dept_id'] ?>"><?= $row['name']; ?></option>
 
                                                                             <?php 
                                                                                     } 

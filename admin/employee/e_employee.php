@@ -34,6 +34,7 @@ require '../../connection/connect.php';
                 $tin=$row['tin_no']; 
                 $gsis=$row['gsis_no']; 
                 $pagibig=$row['pagibig_no']; 
+                $image= $row['image'];
 
                 $bd=$row['bacherlor_degree']; 
                 $bdyear=$row['bs_year']; 
@@ -121,7 +122,7 @@ require '../../connection/connect.php';
                                                 <div class="row" style="background-color: #f0f0f0; margin: 0px !important;">
                                                     <div class="col-md-3">
                                                         <div class="card" style="width: 100%; height: 100%">
-                                                            <img src="../../assets/img copy/default-image.jpg" class="card-img-top w-75 mx-auto pt-3">
+                                                        <img src="../../upload/<?=$image?>" class="card-img-top w-75 mx-auto pt-3">
                                                             <div class="card-body mt-3">
                                                                 <label for="image">Change Employee Image</label>
                                                                 <input type="file" name="image" id="image" class="mt-2">
@@ -148,7 +149,7 @@ require '../../connection/connect.php';
 
                                                         
                                                             <div class="card-body ">
-                                                            <form action="../../ajaxadmin/ajaxadmin.php?submitEditEmployee" method="POST">
+                                                            <form action="../../ajaxadmin/ajaxadmin.php?submitEditEmployee" method="POST" enctype="multipart/form-data">
                                                                     <div class="tab-content" id="custom-tabs-one-tabContent">
 
                                                                         <!-- ^Basic Information tab^ -->
@@ -178,8 +179,8 @@ require '../../connection/connect.php';
                                                                                     <label>Gender</label>
                                                                                     <select class="form-control" id="e_gender" name="e_gender" required>
                                                                                         <option></option>
-                                                                                        <option value="Male" <?=$gender == "Male" ? "selected": ""?>>Male</option>
-                                                                                        <option value="Female" <?=$gender == "Female" ? "selected": ""?>>Female</option>
+                                                                                        <option value="Male" <?=$gender == "M" ? "selected": ""?>>Male</option>
+                                                                                        <option value="Female" <?=$gender == "F" ? "selected": ""?>>Female</option>
                                                                                     </select>
                                                                                     
                                                                                 </div>

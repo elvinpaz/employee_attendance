@@ -129,7 +129,6 @@
             $tin_no=$_POST['tin_no'];
             $gsis_no=$_POST['gsis_no'];
             $pagibig_no=$_POST['pagibig_no'];
-            $e_status=$_POST['e_status'];
 
             $bd=$_POST['bd'];
             $bd_year=$_POST['bd_year'];
@@ -162,10 +161,7 @@
                 $is_other_degree=1;
             }
 
-            echo $is_master;
-
-            
-
+    
             $query = "SELECT * FROM employee WHERE email = '".$email."'";
                 $result = mysqli_query($connection, $query);
 
@@ -174,7 +170,7 @@
                 if (mysqli_num_rows($result) == 0) {
 
                     if (empty($_FILES["imgupload"]["name"])){
-                        $location="";
+                        $location="default.png";
                     
                     }
                     else{
@@ -248,7 +244,7 @@
                                 '".$e_academic."', 
                                 '".$place_birth."', 
                                 '".$type_emp."', 
-                                '".$e_status."', 
+                                '".$emp_status."', 
                                 '".$plantilla."', 
                                 '".$tin_no."', 
                                 '".$eligibility."', 
@@ -274,12 +270,8 @@
                                 '".$e_status."')";
                         mysqli_query($connection, 
                         $query);
-                        
-                        if($query){
-                            echo $query;
-                        }
-                        
-                    // header("location: ../admin/employee/employee.php");
+                    
+                    header("location: ../admin/employee/employee.php");
                 } else {
                     header("location: ../admin/employee/employee.php?employeerrorr=E-mail already exist.");
                 }
@@ -409,7 +401,6 @@
             $e_mname=$_POST['e_mname'];
             $e_lname=$_POST['e_lname'];
             $e_gender=$_POST['e_gender'];
-            $email=$_POST['email'];
             $emp_status=$_POST['emp_status'];
             $mobile=$_POST['mobile'];
             $e_address=$_POST['e_address'];
@@ -426,11 +417,8 @@
             $tin_no=$_POST['tin_no'];
             $gsis_no=$_POST['gsis_no'];
             $pagibig_no=$_POST['pagibig_no'];
-            $e_status=$_POST['e_status'];
-            
-            $is_master=$_POST['is_master'];
-            $is_doctorate=$_POST['is_doctorate'];
-            $is_other_degree=$_POST['is_other_degree'];
+            $dept_id = $_POST['d_id'];
+    
             $bd=$_POST['bd'];
             $bd_year=$_POST['bd_year'];
             $bd_school=$_POST['bd_school'];
@@ -446,22 +434,55 @@
             $other_year=$_POST['other_year'];
             $other_school=$_POST['other_school'];
 
+            $is_master=0;
+            $is_doctorate=0;
+            $is_other_degree=0;
 
-            $query = "SELECT * FROM employee WHERE id = '".$id."'";
+            if (isset($_POST["is_master"])) {
+                $is_master=1;
+            }
+
+            if (isset($_POST["is_doctorate"])) {
+                $is_doctorate=1;
+            }
+
+            if (isset($_POST["is_other_degree"])) {
+                $is_other_degree=1;
+            }
+
+            if (empty($_FILES["imgupload"]["name"])){
+                $location="default.png";
+        
+            }
+            else{
+                if ($fileInfo['extension'] == "jpg" OR $fileInfo['extension'] == "png") {
+                    $newFilename = $fileInfo['filename'] . "_" . time() . "." . $fileInfo['extension'];
+                    move_uploaded_file($_FILES["imgupload"]["tmp_name"], "../upload/" . $newFilename);
+                    $location = $newFilename;
+                }
+                else{
+                    $location="default.png";
+                }
+            }
+
+
+
+            $query = "SELECT * FROM employee WHERE id = '".$id."' LIMIT 1";
                 $result = mysqli_query($connection, $query);
-                if (mysqli_num_rows($result) == 0) {
+
+
+                if (mysqli_num_rows($result) == 1) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     $update = "UPDATE employee 
-                                    SET name = '".$e_name."', 
+                                    SET `name` = '".$e_name."', 
                                     middle_name = '".$e_mname."', 
                                     last_name = '".$e_lname."', 
-                                    email = '".$email."', 
                                     mobile_no = '".$mobile."', 
                                     address = '".$e_address."', 
                                     gender = '".$e_gender."',
                                     birth_date = '".$e_birth_date."', 
                                     hire_date = '".$e_hire_date."', 
-                                    shift_id = 'NULL', 
+                                    image = '".$location."', 
                                     position_id = '".$e_position."', 
                                     department_id = '".$dept_id."', 
                                     academic_id = '".$e_academic."', 
@@ -493,10 +514,12 @@
                                     is_active = '".$e_status."' 
                                         WHERE id = '".$id."' ";
                     mysqli_query($connection, $update);
+
                 }
+               
             }
 
-            header("location: ../admin/employee/employee.php");
+            // header("location: ../admin/employee/employee.php");
         }
 
 

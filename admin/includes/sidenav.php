@@ -88,13 +88,12 @@
             <span>Print</span>
         </a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link pb-0" href="">
-            <i class="fa fa-database"></i>
+    <li class="nav-item <?=($f=='backup.php'?'active':'')?>">
+        <a class="nav-link pb-0" href="../backup/backup.php">
+        <i class="fa fa-database"></i>
             <span>Database Backup</span>
         </a>
     </li>
-
     <hr class="sidebar-divider mt-3">
 
 
