@@ -29,6 +29,31 @@
         }
     ?>
 
+    <!-- MODAL -->
+    <!-- add academic rank -->
+    <?php
+        if (isset($_GET['addrank'])) {
+            
+            ?>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="name" autocomplete="off" class="form-control" placeholder="Enter Name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Code</label>
+                                <input type="text" name="code" autocomplete="off" class="form-control" placeholder="Enter Code" required/>
+                            </div>
+
+                        </div>
+
+                    
+
+            <?php
+        }
+    ?>
+
 
 
 <!-- INSERT -->
@@ -103,6 +128,19 @@
             mysqli_query($connection, $query);
 
             header("location: ../admin/designation/designation.php");
+            
+        }
+
+
+         // insert new Rank
+         if (isset($_GET["insertNewRank"])) {
+            $name=$_POST['name'];
+            $code=$_POST['code'];
+
+            $query = "INSERT INTO academics (`academic_name`, `academic_code`,`is_deleted`) VALUES ('".$name."', '".$code."',0)";
+            mysqli_query($connection, $query);
+
+            header("location: ../admin/academicrank/academicrank.php");
             
         }
 
@@ -393,6 +431,27 @@
             header("location: ../admin/designation/designation.php");
         }
 
+
+          // submit edit rank
+          if (isset($_GET['submitEditRank'])) {
+
+            $id=$_POST['id'];
+            $name=$_POST['name'];
+            $code=$_POST['code'];
+            
+
+            $query = "SELECT * FROM academics WHERE academic_id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE academics SET academic_name = '".$name."', academic_code = '".$code."' WHERE academic_id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+
+            header("location: ../admin/academicrank/academicrank.php");
+        }
         // submit edit Employee
         if (isset($_GET['submitEditEmployee'])) {
 
@@ -594,6 +653,23 @@
             header("location: ../admin/designation/designation.php");
         }
 
+
+        
+        //delete academis
+        if (isset($_GET['deleteAcademic'])) {
+            $id=$_GET['id'];
+
+            $query = "SELECT * FROM academics WHERE academic_id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE academics SET is_deleted = 0 WHERE academic_id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            header("location: ../admin/academicrank/academicrank.php");
+        }
         //delete employee
         if (isset($_GET['deleteemployee'])) {
             $id=$_GET['id'];
@@ -688,6 +764,27 @@
 
 
             header("location: ../admin/designation/designation.php");
+        }
+
+
+        
+        // restore delete academic
+
+        if (isset($_GET['restoreDeleteAcademic'])) {
+            $id=$_GET['id'];
+            
+
+            $query = "SELECT * FROM academics WHERE academic_id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE academics SET is_deleted = 1 WHERE academic_id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+
+            header("location: ../admin/academicrank/academicrank.php");
         }
 
         // restore delete Employee

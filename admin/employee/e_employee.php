@@ -235,7 +235,7 @@ require '../../connection/connect.php';
                                                                                     <select class="form-control" value="<?=$pos?>" id="e_position" name="e_position" required>
                                                                                         <option></option>
                                                                                         <?php
-                                                                                            $query = "SELECT * FROM position";
+                                                                                            $query = "SELECT * FROM position where status =1";
                                                                                             $result = mysqli_query($connection, $query);
                                                                                             if (mysqli_num_rows($result) > 0) {
                                                                                                 while ($row = mysqli_fetch_assoc($result)) {
@@ -254,7 +254,7 @@ require '../../connection/connect.php';
                                                                                     <select class="form-control" name="d_id" id="d_id">
                                                                                         <option></option>
                                                                                         <?php
-                                                                                            $query = "SELECT * FROM department";
+                                                                                            $query = "SELECT * FROM department where status=1";
                                                                                             $result = mysqli_query($connection, $query);
                                                                                             if (mysqli_num_rows($result) > 0) {
                                                                                                 while ($row = mysqli_fetch_assoc($result)) {

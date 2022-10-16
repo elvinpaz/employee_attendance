@@ -19,7 +19,7 @@ require '../../connection/connect.php';
         <meta name="author" content="">
       
         <link rel='shortcut icon' type='image/x-icon' href='../../assets/img/logocvsu.png'/>
-        <title>Academic Rank | Admin</title>
+        <title>Designation | Admin</title>
       
         <!-- Custom fonts for this template-->
         <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -54,18 +54,18 @@ require '../../connection/connect.php';
                             -->
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <a href="#" class="btn btn-info btn-icon-split mb-4">
+                                    <a href="javascript:void(0)" class="btn btn-info btn-icon-split mb-4 addrank">
                                         <span class="icon text-white-600">
                                         <i class="fas fa-plus-circle"></i>
                                         </span>
-                                        <span class="text">Add Academic Rank</span>
+                                        <span class="text">Add New  Academic Rank</span>
                                     </a>
                                 </div>
                                 <!-- <div class="col-lg-5 offset-lg-4">
                                 </div> -->
                             </div>
 
-                            <!-- Data Table location-->
+                            <!-- Data Table designation-->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">DataTables Academic Rank</h6>
@@ -81,15 +81,48 @@ require '../../connection/connect.php';
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
+
+                                            <?php
+                                                $x = 1;
+                                                $query = "SELECT * FROM academics";
+                                                $result = mysqli_query($connection, $query);
+                                                if (mysqli_num_rows($result) > 0) {
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
                                         
                                             <tbody>
                                                 <tr>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" text-center align-middle"></td>
+                                                    <td class=" align-middle"><?=$x++?></td>
+                                                    <td class=" align-middle"><?=$row['academic_name']?></td>
+                                                    <td class=" align-middle"><?=$row['academic_code']?></td>
+                                                    <td class="align-middle text-center">
+
+                                                        <?php if ($row['is_deleted'] == 0){?>
+                                                            
+                                                            <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteAcademic&id=<?=$row['academic_id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore rank. Still want to restore?')">
+                                                                <i class="fa fa-undo"> </i>
+                                                            </a>
+                                                        
+                                                        
+                                                        <?php } elseif($row['is_deleted'] == 1){?>
+
+                                                            <a href="e_academicrank.php?eacademic&id=<?=$row['academic_id']?>" class="btn btn-primary btn-circle">
+                                                                <span class="icon text-white" title="Edit">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </span>
+                                                            </a>
+                                                             |
+                                                            <a href="../../ajaxadmin/ajaxadmin.php?deleteAcademic&id=<?=$row['academic_id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+
+                                                        <?php }?>    
+
+                                                    </td>
                                                 </tr>
                                             </tbody>
+                                            <?php
+                                                    }
+                                                }
+                                            ?>
                                         </table>
                                     </div>
                                 </div>
@@ -101,6 +134,32 @@ require '../../connection/connect.php';
                     </div>
                     <!-- End of Main Content -->
 
+
+                    <!-- modal for new Adviser  -->
+
+                    <div class="modal fade" id="modal-insert" style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add New Rank</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <form action="../../ajaxadmin/ajaxadmin.php?insertNewDesignation" method="POST">
+                                    <div class="modal-body" id="addrank">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- modal for new Adviser  -->
                 
                 <?php include '../includes/footer.php'; ?>
                 
@@ -125,14 +184,21 @@ require '../../connection/connect.php';
         <!-- Custom scripts for all pages-->
         <script src="../../assets/js/sb-admin-2.min.js"></script>
 
+        <script>
+            $(document).on('click', '.addrank', function(){  
+                var id = $(this).attr("id");
+                $.ajax({  
+                    url:"../../ajaxadmin/ajaxadmin.php?addrank",  
+                    method:"post",  
+                    data:{"id":id},  
+                    success:function(data){  
+                            $('#addrank').html(data);  
+                            $('#modal-insert').modal("show");  
+                    }  
+                });  
+            });
+        </script>
+
     </body>
 
 </html>
-
-
-
-<?php } else {
-  
-  header("location: index.html");
- 
-}?>
