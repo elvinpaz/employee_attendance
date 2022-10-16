@@ -34,6 +34,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                 $tin=$row['tin_no']; 
                 $gsis=$row['gsis_no']; 
                 $pagibig=$row['pagibig_no']; 
+                $image= $row['image'];
 
                 $bd=$row['bacherlor_degree']; 
                 $bdyear=$row['bs_year']; 
@@ -121,7 +122,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                 <div class="row" style="background-color: #f0f0f0; margin: 0px !important;">
                                                     <div class="col-md-3">
                                                         <div class="card" style="width: 100%; height: 100%">
-                                                            <img src="../../assets/img copy/default-image.jpg" class="card-img-top w-75 mx-auto pt-3">
+                                                        <img src="../../upload/<?=$image?>" class="card-img-top w-75 mx-auto pt-3">
                                                             <div class="card-body mt-3">
                                                                 <label for="image">Change Employee Image</label>
                                                                 <input type="file" name="image" id="image" class="mt-2">
@@ -148,7 +149,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                         
                                                             <div class="card-body ">
-                                                            <form action="../../ajaxadmin/ajaxadmin.php?submitEditEmployee" method="POST">
+                                                            <form action="../../ajaxadmin/ajaxadmin.php?submitEditEmployee" method="POST" enctype="multipart/form-data">
                                                                     <div class="tab-content" id="custom-tabs-one-tabContent">
 
                                                                         <!-- ^Basic Information tab^ -->
@@ -178,8 +179,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                                     <label>Gender</label>
                                                                                     <select class="form-control" id="e_gender" name="e_gender" required>
                                                                                         <option></option>
-                                                                                        <option value="Male" <?=$gender == "Male" ? "selected": ""?>>Male</option>
-                                                                                        <option value="Female" <?=$gender == "Female" ? "selected": ""?>>Female</option>
+                                                                                        <option value="Male" <?=$gender == "M" ? "selected": ""?>>Male</option>
+                                                                                        <option value="Female" <?=$gender == "F" ? "selected": ""?>>Female</option>
                                                                                     </select>
                                                                                     
                                                                                 </div>
@@ -234,7 +235,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                                     <select class="form-control" value="<?=$pos?>" id="e_position" name="e_position" required>
                                                                                         <option></option>
                                                                                         <?php
-                                                                                            $query = "SELECT * FROM position";
+                                                                                            $query = "SELECT * FROM position where status =1";
                                                                                             $result = mysqli_query($connection, $query);
                                                                                             if (mysqli_num_rows($result) > 0) {
                                                                                                 while ($row = mysqli_fetch_assoc($result)) {
@@ -253,7 +254,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                                     <select class="form-control" name="d_id" id="d_id">
                                                                                         <option></option>
                                                                                         <?php
-                                                                                            $query = "SELECT * FROM department";
+                                                                                            $query = "SELECT * FROM department where status=1";
                                                                                             $result = mysqli_query($connection, $query);
                                                                                             if (mysqli_num_rows($result) > 0) {
                                                                                                 while ($row = mysqli_fetch_assoc($result)) {
