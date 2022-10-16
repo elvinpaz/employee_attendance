@@ -4,7 +4,7 @@ session_start();
 require '../../connection/connect.php';
 
 
-// if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 ?>
 
@@ -74,16 +74,18 @@ require '../../connection/connect.php';
                                             </thead>
                                         
                                             <?php
+                                                
                                                 $x = 1;
-                                                $query = "SELECT employee.name, employee.last_name, employee.id as employee_id, user_role.name as position, user.id, user.email, user.status, user.has_account, department.id as dept_code
+                                                $query = "SELECT employee.name, employee.last_name, employee.id as employee_id, user_role.name as position, user.id, user.email, user.status, user.role, user.has_account, department.id as dept_code
                                                                 FROM employee 
                                                                     LEFT JOIN user_role ON employee.position_id = user_role.id 
                                                                     LEFT JOIN department ON employee.department_id = department.dept_id 
                                                                     LEFT JOIN user ON employee.id = user.employee_id
-                                                                        WHERE employee.id != 25";
+                                                                       WHERE employee.id != 25";
                                                 $result = mysqli_query($connection, $query);
                                                 if (mysqli_num_rows($result) > 0) {
                                                     while ($row = mysqli_fetch_assoc($result)) {
+                                                        $is_disabled = "disabled";
                                             ?>
 
                                                 <tbody>
@@ -92,27 +94,59 @@ require '../../connection/connect.php';
                                                         <td class=" align-middle"><?=$row['employee_id']?></td>
                                                         <td class=" align-middle"><?=$row['name']." ".$row['last_name']?></td>
                                                         <td class=" align-middle"><?=$row['dept_code']?></td>
-                                                        <td class=" align-middle"><?=$row['position']?></td>
+                                                        <td class=" align-middle"><?=$row['role']?></td>
                                                         <td class=" align-middle text-center">
-                                                            <?php if ($row['has_account'] == 0){?>
+                                                                <?php if ($row['has_account'] == 0){?>
                                                                     
 
-                                                                <a href="a_users.php?ausers&empid=<?=$row['employee_id']?>" class="btn btn-info">Create Account</a>
-                                                                
-                                                                
+                                                                    <a href="a_users.php?ausers&empid=<?=$row['employee_id']?>" class="btn btn-info">Create Account</a>
+                                                                    
+                                                                    
                                                                 <?php } elseif($row['has_account'] == 1){?>
-
-                                                                    <a href="e_designation.php?edesignation&id=<?=$row['id']?>" class="btn btn-primary btn-circle">
-                                                                        <span class="icon text-white" title="Edit">
-                                                                            <i class="fas fa-edit"></i>
-                                                                        </span>
-                                                                    </a>
-                                                                    |
-                                                                    <a href="../../ajaxadmin/ajaxadmin.php?deleteDesignation&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
-
-                                                                <?php }?>    
+    
+                                                                        <?=$row['email']?>
+    
+                                                                <?php }?>      
                                                         </td>
-                                                        <td class=" text-center align-middle"></td>
+                                                        <td class=" text-center align-middle">
+
+                                                                <?php if ($row['has_account'] == 0){?>
+                                                                    
+
+                                                                        <a href=""  class="btn btn-primary btn-circle disabled">
+                                                                            <span class="icon text-white" title="Edit">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                        |
+                                                                        <a href=""  class="btn btn-danger btn-circle disabled" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+                                                                    
+                                                                    
+                                                                    
+                                                                <?php } elseif($row['has_account'] == 1){?>
+    
+                                                                    <?php if ($row['status'] == 0){?>
+                                                                
+                                                                        <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteUser&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Department. Still want to restore?')">
+                                                                            <i class="fa fa-undo"> </i>
+                                                                        </a>
+
+
+                                                                        <?php } elseif($row['status'] == 1){?>
+
+                                                                        <a href="e_users.php?eusers&id=<?=$row['id']?>"  class="btn btn-primary btn-circle">
+                                                                            <span class="icon text-white" title="Edit">
+                                                                                <i class="fas fa-edit"></i>
+                                                                            </span>
+                                                                        </a>
+                                                                        |
+                                                                        <a href="../../ajaxadmin/ajaxadmin.php?deleteuser&id=<?=$row['id']?>"  class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+
+                                                                    <?php }?> 
+    
+                                                                <?php }?>
+
+                                                        </td>
                                                     </tr>
                                                 </tbody>
 
@@ -201,3 +235,9 @@ require '../../connection/connect.php';
     </body>
 
 </html>
+
+<?php } else {
+  
+  header("location: index.php");
+ 
+}?>

@@ -5,7 +5,7 @@
     require '../../connection/connect.php';
 
 
-    // if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+    if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 ?>
 
@@ -175,7 +175,12 @@
 
     </body>
 
-</html>
+
+<?php } else {
+  
+  header("location: index.php");
+ 
+}?>
 
 
 <?php

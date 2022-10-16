@@ -4,7 +4,7 @@ session_start();
 require '../../connection/connect.php';
 
 
-// if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 ?>
 
@@ -112,7 +112,7 @@ require '../../connection/connect.php';
 
                                                                     <div class="form-group col-sm-4">
                                                                         <label>Midlle Name</label>
-                                                                        <input type="text" required class="form-control" id="e_ne_mnameame" name="e_mname" autocomplete="off" autofocus >
+                                                                        <input type="text" class="form-control" id="e_ne_mnameame" name="e_mname" autocomplete="off" autofocus >
                                                                     </div>
 
                                                                     <div class="form-group col-sm-4">
@@ -213,7 +213,7 @@ require '../../connection/connect.php';
                                                                                     while ($row = mysqli_fetch_assoc($result)) {
                                                                             ?>
 
-                                                                            <option value="<?= $row['id'] ?>"><?= $row['name']; ?></option>
+                                                                            <option value="<?= $row['dept_id'] ?>"><?= $row['name']; ?></option>
 
                                                                             <?php 
                                                                                     } 
@@ -523,4 +523,9 @@ require '../../connection/connect.php';
 
     </body>
 
-</html>
+
+<?php } else {
+  
+  header("location: index.php");
+ 
+}?>

@@ -279,7 +279,7 @@
                             echo $query;
                         }
                         
-                    // header("location: ../admin/employee/employee.php");
+                    header("location: ../admin/employee/employee.php");
                 } else {
                     header("location: ../admin/employee/employee.php?employeerrorr=E-mail already exist.");
                 }
@@ -290,11 +290,14 @@
         if (isset($_GET["insertNewUser"])) {
             $email=$_POST['u_username'];
             $password=$_POST['u_password'];
+            $u_role=$_POST['u_role'];
+            $emp_id=$_POST['emp_id'];
 
-            $query = "INSERT INTO user (`position_name`, `position_code`) VALUES ('".$name."', '".$code."')";
-            mysqli_query($connection, $query);
+                $query = "INSERT INTO user (`email`, `password`, `employee_id`, `role`, `status`, `has_account`) 
+                    VALUES ('".$email."', '".$password."', '".$emp_id."', '".$u_role."', 1, 1)";
+                mysqli_query($connection, $query);
 
-            header("location: ../admin/designation/designation.php");
+                header("location: ../admin/users/users.php");
             
         }
 
@@ -499,6 +502,29 @@
             header("location: ../admin/employee/employee.php");
         }
 
+        // submit edit User
+        if (isset($_GET['submitEditUser'])) {
+
+            $id=$_POST['id'];
+            $u_password=$_POST['u_password'];
+            $u_role=$_POST['u_role'];
+            
+
+            $query = "SELECT * FROM user WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE user SET password = '".$u_password."', role = '".$u_role."' WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+
+            header("location: ../admin/users/users.php");
+        }
+
+        
+
 
     ?>
 
@@ -585,6 +611,22 @@
             }
 
             header("location: ../admin/employee/employee.php");
+        }
+
+        //delete user
+        if (isset($_GET['deleteuser'])) {
+            $id=$_GET['id'];
+
+            $query = "SELECT * FROM user WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE user SET status = 0 WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            header("location: ../admin/users/users.php");
         }
 
 
@@ -682,6 +724,23 @@
             }
 
             header("location: ../admin/employee/employee.php");
+        }
+
+        // restore delete User
+        if (isset($_GET['restoreDeleteUser'])) {
+            $id=$_GET['id'];
+            
+
+            $query = "SELECT * FROM user WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE user SET status = 1 WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            header("location: ../admin/users/users.php");
         }
     
 

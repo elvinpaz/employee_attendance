@@ -29,28 +29,49 @@
                             Login Here!
                         </h2>
                     </div>
-                        <div class="alert alert-success" style="margin-top: 20px;">
-                            <!-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button> -->
-                            test
-                        </div>
+
+                        <?php
+                            
+                            if (isset($_GET['usermsg'])){
+
+                                $erromsg="";
+
+                                if($_GET['usermsg'] == 'Sorry! Wrong username or password.'){
+
+                                    $erromsg = $_GET['usermsg'];
+
+                                    
+                                ?>
+                                    
+                                    <div class="alert alert-success" style="margin-top: 20px;">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                        <?php echo $erromsg;?>
+                                    </div>
+                                    
+                                <?php                       
+                                        
+                                } 
+                            }
+                        ?>
+
+                            
                         
                         
                         
                     
 
                     
-                    <form class="user" method="post" action="login.php" style="margin-bottom: 70px">
-                    <div class="form-group mt-4">
-                        <input type="email" class="form-control form-control-user" name="email" placeholder="Email (example: youremail@domain.com)" style="height: 45px; border-radius: 40px; margin-bottom: -20px;">
-                        <!-- <small class="text-danger pl-3">test</small> -->
-                    </div>
-                    <div class="form-group mt-4 mb-4">
-                        <input type="password" class="form-control form-control-user" name="password" placeholder="Password" style="height: 45px; border-radius: 40px; margin-bottom: -20px;">
-                        <!-- <small class="text-danger pl-3">test</small> -->
-                    </div>
-                    <button class="btn btn-info btn-user btn-block mt-4" style="background:linear-gradient(4deg, #32CD32, #006400, #32CD32); height: 40px; border-radius: 40px;" type="submit">
-                        Login
-                    </button>
+                    <form action="login.php" class="user" method="POST"  style="margin-bottom: 70px">
+                        <div class="form-group mt-4">
+                            <input type="email" class="form-control form-control-user" name="email" placeholder="Email (example: youremail@domain.com)" style="height: 45px; border-radius: 40px; margin-bottom: -20px;">
+                            <!-- <small class="text-danger pl-3">test</small> -->
+                        </div>
+                        <div class="form-group mt-4 mb-4">
+                            <input type="password" class="form-control form-control-user" name="password" placeholder="Password" style="height: 45px; border-radius: 40px; margin-bottom: -20px;">
+                            <!-- <small class="text-danger pl-3">test</small> -->
+                        </div>
+                        <input type="submit" value="Login" id="submit" name="submit" class="btn btn-info btn-user btn-block mt-4" style="background:linear-gradient(4deg, #32CD32, #006400, #32CD32); height: 40px; border-radius: 40px;" >
+                            
                     </form>
                 </div>
             </div>
@@ -81,5 +102,3 @@
     </body>
 
     <script src="assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-</html>

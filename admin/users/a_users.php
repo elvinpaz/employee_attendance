@@ -4,7 +4,7 @@ session_start();
 require '../../connection/connect.php';
 
 
-// if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
     if (isset($_GET['ausers'])) {
         $id = $_GET['empid'];
@@ -75,7 +75,7 @@ require '../../connection/connect.php';
                                         <span class="text">Back</span>
                                     </a>
                                     <div class="col-lg-5 p-0">
-                                        <form action="../../ajaxadmin/ajaxadmin.php?insertNewUser" method="POST">
+                                        <form action="../../ajaxadmin/ajaxadmin.php?insertNewUser" method="POST" >
                                             <div class="card">
                                                 <h5 class="card-header">Users Master Data</h5>
                                                 <div class="card-body">
@@ -94,12 +94,24 @@ require '../../connection/connect.php';
                                                             <input type="password" class="form-control col-lg" name="u_password" id="u_password">
                                                         </div>
                                                     </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-form-label col-lg-4">Role</label>
+                                                        <select class="form-control col-lg" id="u_role" name="u_role" required>
+                                                            <option></option>
+                                                            <option value="Admin">Admin</option>
+                                                            <option value="Employee">Employee</option>
+                                                        </select>
+                                                        
+                                                    </div>
+                                                    
                                                     <button type="submit" class="btn btn-success btn-icon-split mt-4 float-right">
                                                         <span class="icon text-white">
                                                             <i class="fas fa-plus-circle"></i>
                                                         </span>
                                                         <span class="text">Add to system</span>
                                                     </button>
+
+                                                    <input type="hidden" name="emp_id" value="<?=$id?>">
                                                 </div>
                                             </div>
                                         </form>
@@ -138,4 +150,9 @@ require '../../connection/connect.php';
 
     </body>
 
-</html>
+
+<?php } else {
+  
+  header("location: index.php");
+ 
+}?>

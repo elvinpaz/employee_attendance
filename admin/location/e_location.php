@@ -4,7 +4,7 @@ session_start();
 require '../../connection/connect.php';
 
 
-// if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
     
 if (isset($_GET['elocation'])) {
     $id = $_GET['id'];
@@ -128,4 +128,9 @@ if (isset($_GET['elocation'])) {
 
     </body>
 
-</html>
+
+<?php } else {
+  
+  header("location: index.php");
+ 
+}?>

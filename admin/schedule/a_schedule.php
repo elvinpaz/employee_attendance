@@ -4,7 +4,7 @@ session_start();
 require '../../connection/connect.php';
 
 
-// if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 
     
@@ -178,5 +178,10 @@ require '../../connection/connect.php';
 
     </body>
 
-</html>
+
+<?php } else {
+  
+  header("location: index.php");
+ 
+}?>
 

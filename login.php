@@ -1,53 +1,59 @@
 <?php
-
+echo "testing";
 session_start();
 require 'connection/connect.php';
+echo "testing";
+echo "testing";
+echo "testing";
 
-if (isset($_POST['submit']) && !empty($_POST['username']) && !empty($_POST['password'])) {
-    
-    $username = $_POST['username'];
+echo $_POST['submit'];
+echo $_POST['email'];
+echo $_POST['password'];
+
+if (isset($_POST['submit'])) {
+    echo "testing";
+
+    $username = $_POST['email'];
     $password = $_POST['password'];
-    $name="";
     $access="";
-    $status="";
 
     $count=0;
 
-    $query = "SELECT * FROM teacher WHERE teacher_email = '".$username."' AND teacher_password = '".$password."' AND status = 'Activate' ";
+    echo $username;
+    echo $password;
+
+    $query = "SELECT * FROM user WHERE email = '".$username."' AND password = '".$password."' AND status = 1 AND has_account = 1 ";
     $result = mysqli_query($connection, $query);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
            
                 $count++;
 
-                $name = $row['teacher_name'];
-                $status = $row['status'];
-                $access = $row['access'];
+                $access = $row['role'];
 
             }
         }
 
         if($count == 0){
             
-            header("location: index.php?usermsg=Sorry! Wrong LRN or password.");
+            header("location: index.php?usermsg=Sorry! Wrong email or password.");
             
         }else{
 
-            $_SESSION['name'] = $name;
+            
             $_SESSION['access'] = $access;
-            $_SESSION['status'] = $status;
 
             
+            if ($_SESSION['access'] == "Admin") {
 
-            if ($_SESSION['access'] == "student") {
-
-                header("location: dashboard.php");
+                header("location: admin/dashboard/dashboard.php");
             
             }
 
 
-
         }
+
+        echo "testing";
 
 }
 
