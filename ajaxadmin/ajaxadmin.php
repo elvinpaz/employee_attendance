@@ -130,6 +130,67 @@
             
         }
 
+        // insert new Employee
+        if (isset($_GET["insertNewEmployee"])) {
+            $e_name=$_POST['e_fname'];
+            $e_mname=$_POST['e_mname'];
+            $e_lname=$_POST['e_lname'];
+            $e_gender=$_POST['e_gender'];
+            $email=$_POST['email'];
+            $emp_status=$_POST['emp_status'];
+            $mobile=$_POST['mobile'];
+            $e_address=$_POST['e_address'];
+            $place_birth=$_POST['place_birth'];
+            $e_birth_date=$_POST['e_birth_date'];
+            $e_position=$_POST['e_position'];
+            $d_id=$_POST['d_id'];
+            $e_academic=$_POST['e_academic'];
+            $type_emp=$_POST['type_emp'];
+            $e_status=$_POST['e_status'];
+            $e_hire_date=$_POST['e_hire_date'];
+            $plantilla=$_POST['plantilla'];
+            $eligibility=$_POST['eligibility'];
+            $tin_no=$_POST['tin_no'];
+            $gsis_no=$_POST['gsis_no'];
+            $pagibig_no=$_POST['pagibig_no'];
+            $e_status=$_POST['e_status'];
+            
+            
+            $is_master=$_POST['is_master'];
+            $is_doctorate=$_POST['is_doctorate'];
+            $is_other_degree=$_POST['is_other_degree'];
+            $bd=$_POST['bd'];
+            $bd_year=$_POST['bd_year'];
+            $bd_school=$_POST['bd_school'];
+            $md=$_POST['md'];
+            $md_with=$_POST['md_with'];
+            $md_year=$_POST['md_year'];
+            $md_school=$_POST['md_school'];
+            $dd=$_POST['dd'];
+            $dd_with=$_POST['dd_with'];
+            $dd_year=$_POST['dd_year'];
+            $dd_school=$_POST['dd_school'];
+            $other=$_POST['other'];
+            $other_year=$_POST['other_year'];
+            $other_school=$_POST['other_school'];
+
+
+            $query = "SELECT * FROM employee WHERE email = '".$email."'";
+                $result = mysqli_query($connection, $query);
+                if (mysqli_num_rows($result) == 0) {
+
+                        //Basic information query
+                        $query = "INSERT INTO employee (`name`, `middle_name`, `last_name`, `email`, `mobile_no`, `address`, `gender`, `birth_date`, `hire_date`, `shift_id`, `position_id`, `department_id`, `academic_id`, `place_birth`, `type_emp`, `status_emp`, `plantilla`, `eligibility`, `tin_no`, `gsis_no`, `pagibig_no`, `bacherlor_degree`, `bs_year`, `bs_school`, `is_master`, `is_doctorate`, `is_other_degree`, `master`, `md_with`, `md_year`, `md_school`, `doctorate`, `dd_with`, `dd_year`, `dd_school`, `other_degree`, `other_year`, `other_school`, `is_active`) 
+                                VALUES ('".$e_name."', '".$e_mname."', '".$e_lname."', '".$email."', '".$mobile."', '".$e_address."', '".$e_gender."', '".$e_birth_date."', '".$e_hire_date."', 'NULL', '".$e_position."', '".$d_id."', '".$e_academic."', '".$place_birth."', '".$type_emp."', '".$e_status."', '".$plantilla."', '".$tin_no."', '".$gsis_no."', '".$pagibig_no."', '".$bd."', '".$bd_year."', '".$bd_school."', '".$is_master."', '".$is_doctorate."', '".$is_other_degree."', '".$md."', '".$md_with."', '".$md_year."', '".$md_school."', '".$dd."', '".$dd_with."', '".$dd_year."', '".$dd_school."', '".$other."', '".$other_year."', '".$other_school."', '".$e_status."')";
+                        mysqli_query($connection, $query);
+
+                    header("location: ../admin/employee/employee.php");
+                } else {
+                    header("location: ../admin/employee/employee.php?employeerror=E-mail already exist.");
+                }
+            
+        }
+
 
     ?>
 
@@ -233,6 +294,104 @@
             header("location: ../admin/designation/designation.php");
         }
 
+        // submit edit Employee
+        if (isset($_GET['submitEditEmployee'])) {
+
+            $id=$_POST['id'];
+            $e_name=$_POST['e_fname'];
+            $e_mname=$_POST['e_mname'];
+            $e_lname=$_POST['e_lname'];
+            $e_gender=$_POST['e_gender'];
+            $email=$_POST['email'];
+            $emp_status=$_POST['emp_status'];
+            $mobile=$_POST['mobile'];
+            $e_address=$_POST['e_address'];
+            $place_birth=$_POST['place_birth'];
+            $e_birth_date=$_POST['e_birth_date'];
+            $e_position=$_POST['e_position'];
+            $d_id=$_POST['d_id'];
+            $e_academic=$_POST['e_academic'];
+            $type_emp=$_POST['type_emp'];
+            $e_status=$_POST['e_status'];
+            $e_hire_date=$_POST['e_hire_date'];
+            $plantilla=$_POST['plantilla'];
+            $eligibility=$_POST['eligibility'];
+            $tin_no=$_POST['tin_no'];
+            $gsis_no=$_POST['gsis_no'];
+            $pagibig_no=$_POST['pagibig_no'];
+            $e_status=$_POST['e_status'];
+            
+            $is_master=$_POST['is_master'];
+            $is_doctorate=$_POST['is_doctorate'];
+            $is_other_degree=$_POST['is_other_degree'];
+            $bd=$_POST['bd'];
+            $bd_year=$_POST['bd_year'];
+            $bd_school=$_POST['bd_school'];
+            $md=$_POST['md'];
+            $md_with=$_POST['md_with'];
+            $md_year=$_POST['md_year'];
+            $md_school=$_POST['md_school'];
+            $dd=$_POST['dd'];
+            $dd_with=$_POST['dd_with'];
+            $dd_year=$_POST['dd_year'];
+            $dd_school=$_POST['dd_school'];
+            $other=$_POST['other'];
+            $other_year=$_POST['other_year'];
+            $other_school=$_POST['other_school'];
+
+
+            $query = "SELECT * FROM employee WHERE id = '".$id."'";
+                $result = mysqli_query($connection, $query);
+                if (mysqli_num_rows($result) == 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE employee 
+                                    SET name = '".$e_name."', 
+                                    middle_name = '".$e_mname."', 
+                                    last_name = '".$e_lname."', 
+                                    email = '".$email."', 
+                                    mobile_no = '".$mobile."', 
+                                    address = '".$e_address."', 
+                                    gender = '".$e_gender."',
+                                    birth_date = '".$e_birth_date."', 
+                                    hire_date = '".$e_hire_date."', 
+                                    shift_id = 'NULL', 
+                                    position_id = '".$e_position."', 
+                                    department_id = '".$dept_id."', 
+                                    academic_id = '".$e_academic."', 
+                                    place_birth = '".$place_birth."', 
+                                    type_emp = '".$type_emp."', 
+                                    status_emp = '".$emp_status."', 
+                                    plantilla = '".$plantilla."', 
+                                    eligibility = '".$eligibility."', 
+                                    tin_no = '".$tin_no."', 
+                                    gsis_no = '".$gsis_no."', 
+                                    pagibig_no = '".$pagibig_no."', 
+                                    bacherlor_degree = '".$bd."', 
+                                    bs_year = '".$bd_year."', 
+                                    bs_school = '".$bd_school."', 
+                                    is_master = '".$is_master."', 
+                                    is_doctorate = '".$is_doctorate."', 
+                                    is_other_degree = '".$is_other_degree."', 
+                                    master = '".$md."',
+                                    md_with = '".$md_with."', 
+                                    md_year = '".$md_year."', 
+                                    md_school = '".$md_school."', 
+                                    doctorate = '".$dd."', 
+                                    dd_with = '".$dd_with."', 
+                                    dd_year = '".$dd_year."', 
+                                    dd_school = '".$dd_school."', 
+                                    other_degree = '".$other."', 
+                                    other_year = '".$other_year."', 
+                                    other_school = '".$other_school."', 
+                                    is_active = '".$e_status."' 
+                                        WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            header("location: ../admin/employee/employee.php");
+        }
+
 
     ?>
 
@@ -289,7 +448,7 @@
             header("location: ../admin/location/location.php");
         }
 
-        //delete location
+        //delete designation
         if (isset($_GET['deleteDesignation'])) {
             $id=$_GET['id'];
 
@@ -303,6 +462,22 @@
             }
 
             header("location: ../admin/designation/designation.php");
+        }
+
+        //delete employee
+        if (isset($_GET['deleteemployee'])) {
+            $id=$_GET['id'];
+
+            $query = "SELECT * FROM employee WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE employee SET is_active = 1 WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            header("location: ../admin/employee/employee.php");
         }
 
 
@@ -349,7 +524,7 @@
             header("location: ../admin/schedule/schedule.php");
         }
 
-        // restore delete Department
+        // restore delete Location
         if (isset($_GET['restoreDeleteLoc'])) {
             $id=$_GET['id'];
             
@@ -367,7 +542,7 @@
             header("location: ../admin/location/location.php");
         }
 
-        // restore delete Department
+        // restore delete Designation
         if (isset($_GET['restoreDeleteDesignation'])) {
             $id=$_GET['id'];
             
@@ -383,6 +558,23 @@
 
 
             header("location: ../admin/designation/designation.php");
+        }
+
+        // restore delete Employee
+        if (isset($_GET['restoreDeleteEmployee'])) {
+            $id=$_GET['id'];
+            
+
+            $query = "SELECT * FROM employee WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE employee SET is_active = 0 WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            header("location: ../admin/employee/employee.php");
         }
     
 

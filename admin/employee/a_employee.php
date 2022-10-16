@@ -81,10 +81,10 @@ require '../../connection/connect.php';
                                             </center>
                                         </div>
 
-                                        <div class="col-md-9" style="padding-top: 10px;">
+                                        <div class="col-md-9">
 
                                             <div class="card card-outline card-outline-tabs">
-                                                <div class="card-header p-0 border-bottom-0">
+                                                
                                                     <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                                                         <li class="nav-item">
                                                             <a class="nav-link" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Basic Information</a>
@@ -93,12 +93,12 @@ require '../../connection/connect.php';
                                                             <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Educational Information</a>
                                                         </li>
                                                     </ul>
-                                                </div>
+                                                
                                             
 
                                             
                                                 <div class="card-body ">
-                                                    <form action="../../ajaxadmin/ajaxadmin.php" method="POST">
+                                                    <form action="../../ajaxadmin/ajaxadmin.php?insertNewEmployee" method="POST">
                                                         <div class="tab-content" id="custom-tabs-one-tabContent">
 
                                                             <!-- ^Basic Information tab^ -->
@@ -132,8 +132,8 @@ require '../../connection/connect.php';
                                                                         <label>Gender</label>
                                                                         <select class="form-control" id="e_gender" name="e_gender" required>
                                                                             <option></option>
-                                                                            <option value="M">Male</option>
-                                                                            <option value="F">Female</option>
+                                                                            <option value="Male">Male</option>
+                                                                            <option value="Female">Female</option>
                                                                         </select>
                                                                         
                                                                     </div>
@@ -157,9 +157,9 @@ require '../../connection/connect.php';
                                                                         </select>
                                                                     </div>
 
-                                                                    <div class="form-group col-sm-3">
+                                                                    <div class="form-group col-sm-5">
                                                                         <label>Mobile Number</label>
-                                                                        <input required type="tel" placeholder="Phone Number: 09XXXXXXXXX"  pattern="[0-9]{11}" name="mobile" id="mobile" class="form-control">   
+                                                                        <input required type="tel" placeholder="Phone Number: 09XXXXXXXXX"  pattern="[0-0]{1}[9-9]{1}[0-9]{9}" name="mobile" id="mobile" class="form-control">   
                                                                     </div>
                                                                 </div>
 
@@ -227,7 +227,7 @@ require '../../connection/connect.php';
                                                                         <select class="form-control" name="e_academic" id="e_academic" required>
                                                                             <option></option>
                                                                             <?php
-                                                                                $query = "SELECT * FROM department";
+                                                                                $query = "SELECT * FROM academics";
                                                                                 $result = mysqli_query($connection, $query);
                                                                                 if (mysqli_num_rows($result) > 0) {
                                                                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -304,19 +304,19 @@ require '../../connection/connect.php';
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-6">
                                                                         <label>Bachelor's Degree</label>
-                                                                        <input type="text" class="form-control" id="bs_1" name="bs_1" autocomplete="off" required >
+                                                                        <input type="text" class="form-control" id="bd" name="bd" autocomplete="off" required >
                                                                     </div>
 
                                                                     <div class="form-group col-sm-4">
                                                                         <label>Year</label>
-                                                                        <input type="text" class="form-control" id="year_1" name="year_1" autocomplete="off" required >
+                                                                        <input type="text" class="form-control" id="bd_year" name="bd_year" autocomplete="off" required >
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-8">
                                                                         <label>School</label>
-                                                                        <input type="text" class="form-control" id="school_1" name="school_1" autocomplete="off" required >
+                                                                        <input type="text" class="form-control" id="bd_school" name="bd_school" autocomplete="off" required >
                                                                     </div>
                                                                 </div>
 
@@ -333,7 +333,7 @@ require '../../connection/connect.php';
                                                                         </div>
 
                                                                         <div class="form-check form-check-inline">
-                                                                            <input class="form-check-input" type="checkbox" id="other_degree" name="other_degree" value="1" <?php if(!empty($input)) { if($input['other_degree'] === "true") { echo "checked"; } } ?>>
+                                                                            <input class="form-check-input" type="checkbox" id="is_other_degree" name="is_other_degree" value="1" <?php if(!empty($input)) { if($input['other_degree'] === "true") { echo "checked"; } } ?>>
                                                                             <label class="form-check-label" for="other_degree"> Enable Other Degree</label>
                                                                         </div>
                                                                     </div>
@@ -344,24 +344,24 @@ require '../../connection/connect.php';
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-6">
                                                                             <label>Master's Degree</label>
-                                                                            <input type="text" class="form-control" id="md_1" name="md_1" autocomplete="off" >
+                                                                            <input type="text" class="form-control" id="md" name="md" autocomplete="off" >
                                                                         </div>
                                                                         
                                                                         <div class="form-group col-sm-3">
                                                                             <label>With</label>
-                                                                            <input type="text" class="form-control" id="with_1" name="with_1" autocomplete="off" >
+                                                                            <input type="text" class="form-control" id="md_with" name="md_with" autocomplete="off" >
                                                                         </div>
 
                                                                         <div class="form-group col-sm-3">
                                                                             <label>Year</label>
-                                                                            <input type="text" class="form-control" id="year_2" name="year_2" autocomplete="off">
+                                                                            <input type="text" class="form-control" id="md_year" name="md_year" autocomplete="off">
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-8">
                                                                             <label>School</label>
-                                                                            <input type="text" class="form-control" id="school_2" name="school_2" autocomplete="off">
+                                                                            <input type="text" class="form-control" id="md_school" name="md_school" autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
@@ -371,24 +371,24 @@ require '../../connection/connect.php';
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-6">
                                                                             <label>Doctorate Degree</label>
-                                                                            <input type="text" class="form-control" id="doctorate" name="doctorate" autocomplete="off" >
+                                                                            <input type="text" class="form-control" id="dd" name="dd" autocomplete="off" >
                                                                         </div>
                                                                         
                                                                         <div class="form-group col-sm-3">
                                                                             <label>With</label>
-                                                                            <input type="text" class="form-control" id="with_2" name="with_2" autocomplete="off" >
+                                                                            <input type="text" class="form-control" id="dd_with" name="dd_with" autocomplete="off" >
                                                                         </div>
 
                                                                         <div class="form-group col-sm-3">
                                                                             <label>Year</label>
-                                                                            <input type="text" class="form-control" id="year_3" name="year_3" autocomplete="off">
+                                                                            <input type="text" class="form-control" id="dd_year" name="dd_year" autocomplete="off">
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-8">
                                                                             <label>School</label>
-                                                                            <input type="text" class="form-control" id="school_3" name="school_3" autocomplete="off">
+                                                                            <input type="text" class="form-control" id="dd_school" name="dd_school" autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                     <hr style="height:2px;border-width:0;color:gray;background-color:gray">
@@ -403,14 +403,14 @@ require '../../connection/connect.php';
 
                                                                         <div class="form-group col-sm-4">
                                                                             <label>Year</label>
-                                                                            <input type="text" class="form-control" id="year_4" name="year_4" autocomplete="off">
+                                                                            <input type="text" class="form-control" id="other_year" name="other_year" autocomplete="off">
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-8">
                                                                             <label>School</label>
-                                                                            <input type="text" class="form-control" id="school_4" name="school_4" autocomplete="off">
+                                                                            <input type="text" class="form-control" id="other_school" name="other_school" autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -466,6 +466,60 @@ require '../../connection/connect.php';
 
         <!-- Custom scripts for all pages-->
         <script src="../../assets/js/sb-admin-2.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+
+      
+                    $("#is_master").click(function() {
+                        if($(this).is(":checked")) {
+                            $('#md').attr('required', true);
+                            $('#md_with').attr('required', true);
+                            $('#md_year').attr('required', true);
+                            $('#md_school').attr('required', true);
+                            $('#master_div').show();
+                        } else {
+                            $('#md').attr('required', false);
+                            $('#md_with').attr('required', false);
+                            $('#md_year').attr('required', false);
+                            $('#md_school').attr('required', false);
+                            $('#master_div').hide();
+                        }
+                    });
+
+                    $("#is_doctorate").click(function() {
+                        if($(this).is(":checked")) {
+                            $('#doctorate').attr('required', true);
+                            $('#md_with').attr('required', true);
+                            $('#md_year').attr('required', true);
+                            $('#md_school').attr('required', true);
+                            $('#doctorate_div').show();
+                        } else {
+                            $('#doctorate').attr('required', false);
+                            $('#md_with').attr('required', false);
+                            $('#md_year').attr('required', false);
+                            $('#md_school').attr('required', false);
+                            $('#doctorate_div').hide();
+                        }
+                    });
+
+                    $("#other_degree").click(function() {
+                        if($(this).is(":checked")) {
+                            $('#other').attr('required', true);
+                            $('#other_year').attr('required', true);
+                            $('#other_school').attr('required', true);
+                            $('#other_div').show();
+                        } else {
+                            $('#other').attr('required', false);
+                            $('#other_year').attr('required', false);
+                            $('#other_school').attr('required', false);
+                            $('#other_div').hide();
+                        }
+                    });
+
+            });
+
+        </script>
 
     </body>
 

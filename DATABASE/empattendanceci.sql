@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 13, 2022 at 04:41 PM
+-- Generation Time: Oct 15, 2022 at 03:59 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -146,7 +146,8 @@ INSERT INTO `department` (`dept_id`, `id`, `name`, `status`) VALUES
 (7, 'QCD', 'Quality Control Department', 0),
 (8, 'SCD', 'Security Department', 1),
 (9, 'STD', 'Store Department1', 1),
-(10, 'fgb', 'asdasdsa', 1);
+(10, 'fgb', 'asdasdsa', 1),
+(17, 'try', 'yrt', 1);
 
 -- --------------------------------------------------------
 
@@ -191,7 +192,8 @@ INSERT INTO `educational_info` (`educ_id`, `employee_id`, `bachelor_degree`, `bs
 (0, 35, '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '2022-01-16 16:57:02'),
 (0, 36, 'CVSU', '2019', 'cabvitye', 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '2022-02-28 11:27:43'),
 (0, 37, 'Bachelors Of Science in Information Technology', '2018-2022', 'Cavite State University, Bacoor Campus City', 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '2022-05-05 20:52:16'),
-(0, 38, 'BSCS', '2020', 'cvsu', 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '2022-10-08 11:32:52');
+(0, 38, 'BSCS', '2020', 'cvsu', 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '2022-10-08 11:32:52'),
+(0, 39, 'test', '2020', 'test', 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '2022-10-14 08:41:32');
 
 -- --------------------------------------------------------
 
@@ -224,6 +226,24 @@ CREATE TABLE `employee` (
   `gsis_no` varchar(100) NOT NULL,
   `pagibig_no` varchar(100) NOT NULL,
   `acc_no` varchar(100) NOT NULL,
+  `bacherlor_degree` varchar(100) NOT NULL,
+  `bs_year` varchar(100) NOT NULL,
+  `bs_school` varchar(100) NOT NULL,
+  `is_master` int(1) NOT NULL,
+  `is_doctorate` int(1) NOT NULL,
+  `is_other_degree` int(1) NOT NULL,
+  `master` varchar(100) NOT NULL,
+  `md_with` varchar(100) NOT NULL,
+  `md_year` varchar(100) NOT NULL,
+  `md_school` varchar(100) NOT NULL,
+  `doctorate` varchar(100) NOT NULL,
+  `dd_with` varchar(100) NOT NULL,
+  `dd_year` varchar(100) NOT NULL,
+  `dd_school` varchar(100) NOT NULL,
+  `other_degree` int(11) NOT NULL,
+  `other_year` int(11) NOT NULL,
+  `other_school` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `is_active` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -231,31 +251,23 @@ CREATE TABLE `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`id`, `name`, `middle_name`, `last_name`, `email`, `mobile_no`, `address`, `gender`, `image`, `birth_date`, `hire_date`, `shift_id`, `position_id`, `department_id`, `academic_id`, `place_birth`, `type_emp`, `status_emp`, `plantilla`, `eligibility`, `tin_no`, `gsis_no`, `pagibig_no`, `acc_no`, `is_active`) VALUES
-(1, 'Sadie12', 'sool12', 'Kelso12', 'devi@gmail.com', '09823472343', 'sdasdsa', 'F', 'item-220512-6bdfb79619.png', '1996-06-06', '2020-03-01', 1, 1, 0, 0, 'Mandaluyong', 'Part-time', 'Widowed', 'dasd', 'sadsa', 'asd', 'asd', 'asdasd', '', 0),
-(2, 'Elsa', '', '', 'intan@gmail.com', '', '', 'F', 'default.png', '1998-02-01', '2020-03-01', 2, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(3, 'Robert', '', 'Northern', 'herman@gmail.com', '', '', 'M', 'default.png', '1997-11-06', '2020-03-12', 2, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(4, 'Jesse J', '', 'Walsh', 'andi@gmail.com', '', '', 'M', 'default.png', '1998-01-01', '2020-03-01', 3, 0, 0, 0, '', '', '', '', '', '', '', '', '', 1),
-(5, 'Madeline', '', 'Mitchell', 'clarita@gmail.com', '', '', 'F', 'default.png', '1996-04-06', '2020-04-08', 1, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(6, 'Emmy', '', 'Watts', 'oktapan@gmail.com', '', '', 'F', 'default.png', '1999-11-04', '2020-04-01', 1, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(7, 'Domingo', '', 'Yorke', 'mgb@gmail.com', '', '', 'M', 'default.png', '2000-10-29', '2020-03-01', 2, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(8, 'Stephen', '', 'Fernando', 'weve@gmail.com', '', '', 'M', 'default.png', '2000-11-07', '2020-03-01', 1, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(9, 'Yvonne J', '', 'Gunther', 'desi@gmail.com', '', '', 'F', 'default.png', '1994-07-05', '2020-04-01', 2, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(10, 'Blake1', '', 'Collins', 'ddry@gmail.com', '', '', 'M', 'default.png', '2000-12-01', '2020-04-06', 3, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(11, '', '', '', 'udin@gmail.com', '', '', '', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(24, '', '', '', '123@fmail.com', '', '', '', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(25, 'Admin ', '', '', 'admin@admin.com', '', '', 'M', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(26, 'Christine', '', '', 'christine@gmail.com', '', '', 'F', 'item-210516-ab8e9ef52f.jpg', '1995-04-01', '2021-05-16', 1, 0, 0, 0, '', '', '', '', '', '', '', '', '', 1),
-(27, 'sam,ple', '', '', 'johnny@mail.com', '', '', '', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(28, '', '', '', 'sample@gmail.com', '', '', '', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(29, '', '', '', 'kool@gmail.com', '', '', '', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(30, '', '', '', 'kojnsdg@gmail.com', '', 'Ligas 1', '', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(31, '', '', '', 'jessa@gmail.com', '', '', '', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(34, '', '', '', 'carla@gmail.com', '', '', '', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(35, '', '', '', 'karen@gmail.com', '', '', '', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', 0),
-(36, 'Carl', 'Martin', 'Bros', 'carl@gmail.com', '09788238342', '', 'M', 'default.png', '2022-02-03', '2022-02-23', 1, 1, 0, 0, 'Cavite', 'Full-time', 'Single', 'asd', 'asdsad', 'asd', 'dasd', 'asdas', '', 1),
-(37, 'Rosemarie', 'Rosales', 'Samson', 'rosesamsonmarie@gmail.com', '09514729180', '', 'F', 'default.png', '2000-01-08', '2022-05-05', 1, 1, 0, 0, 'San Francisco, Quezon', 'Full-time', 'Single', '', '', '', '', '', '', 0),
-(38, 'elvin', 'aquino', 'paz', 'elvin@elvin.com', '09999999999', '', 'M', 'default.png', '1990-04-05', '2020-04-05', 1, 6, 0, 0, 'Bacoor', 'Full-time', 'Single', 'na', 'na', 'na', 'na', 'na', '', 0);
+INSERT INTO `employee` (`id`, `name`, `middle_name`, `last_name`, `email`, `mobile_no`, `address`, `gender`, `image`, `birth_date`, `hire_date`, `shift_id`, `position_id`, `department_id`, `academic_id`, `place_birth`, `type_emp`, `status_emp`, `plantilla`, `eligibility`, `tin_no`, `gsis_no`, `pagibig_no`, `acc_no`, `bacherlor_degree`, `bs_year`, `bs_school`, `is_master`, `is_doctorate`, `is_other_degree`, `master`, `md_with`, `md_year`, `md_school`, `doctorate`, `dd_with`, `dd_year`, `dd_school`, `other_degree`, `other_year`, `other_school`, `created_at`, `is_active`) VALUES
+(1, 'Sadie12', 'sool12', 'Kelso12', 'devi@gmail.com', '09823472343', 'sdasdsa', 'F', 'item-220512-6bdfb79619.png', '1996-06-06', '2020-03-01', 1, 1, 0, 0, 'Mandaluyong', 'Part-time', 'Widowed', 'dasd', 'sadsa', 'asd', 'asd', 'asdasd', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(2, 'Elsa', '', '', 'intan@gmail.com', '', '', 'F', 'default.png', '1998-02-01', '2020-03-01', 2, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(3, 'Robert', '', 'Northern', 'herman@gmail.com', '', '', 'M', 'default.png', '1997-11-06', '2020-03-12', 2, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(4, 'Jesse J', '', 'Walsh', 'andi@gmail.com', '', '', 'M', 'default.png', '1998-01-01', '2020-03-01', 3, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 1),
+(5, 'Madeline', '', 'Mitchell', 'clarita@gmail.com', '', '', 'F', 'default.png', '1996-04-06', '2020-04-08', 1, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(6, 'Emmy', '', 'Watts', 'oktapan@gmail.com', '', '', 'F', 'default.png', '1999-11-04', '2020-04-01', 1, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(7, 'Domingo', '', 'Yorke', 'mgb@gmail.com', '', '', 'M', 'default.png', '2000-10-29', '2020-03-01', 2, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(8, 'Stephen', '', 'Fernando', 'weve@gmail.com', '', '', 'M', 'default.png', '2000-11-07', '2020-03-01', 1, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(9, 'Yvonne J', '', 'Gunther', 'desi@gmail.com', '', '', 'F', 'default.png', '1994-07-05', '2020-04-01', 2, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(10, 'Blake1', '', 'Collins', 'ddry@gmail.com', '', '', 'M', 'default.png', '2000-12-01', '2020-04-06', 3, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(25, 'Admin ', '', '', 'admin@admin.com', '', '', 'M', 'default.png', '0000-00-00', '0000-00-00', 0, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(26, 'Christine', '', '', 'christine@gmail.com', '', '', 'F', 'item-210516-ab8e9ef52f.jpg', '1995-04-01', '2021-05-16', 1, 0, 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 1),
+(36, 'Carl', 'Martin', 'Bros', 'carl@gmail.com', '09788238342', '', 'M', 'default.png', '2022-02-03', '2022-02-23', 1, 1, 0, 0, 'Cavite', 'Full-time', 'Single', 'asd', 'asdsad', 'asd', 'dasd', 'asdas', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 1),
+(37, 'Rosemarie', 'Rosales', 'Samson', 'rosesamsonmarie@gmail.com', '09514729180', '', 'F', 'default.png', '2000-01-08', '2022-05-05', 1, 1, 0, 0, 'San Francisco, Quezon', 'Full-time', 'Single', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(38, 'elvin', 'aquino', 'paz', 'elvin@elvin.com', '09999999999', '', 'M', 'default.png', '1990-04-05', '2020-04-05', 1, 6, 0, 0, 'Bacoor', 'Full-time', 'Single', 'na', 'na', 'na', 'na', 'na', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0),
+(39, 'test', 'test', 'test', 'test@test.com', '09999999999', '', 'M', 'default.png', '1992-04-04', '2022-05-09', 1, 6, 0, 0, 'test', 'Full-time', 'Single', '978987654312', '987754654', '9879876464', '98798765464', '98798765464', '', '', '', '', 0, 0, 0, '', '', '', '', '', '', '', '', 0, 0, 0, '2022-10-15 09:21:59', 0);
 
 -- --------------------------------------------------------
 
@@ -295,7 +307,8 @@ INSERT INTO `employee_department` (`id`, `employee_id`, `department_id`) VALUES
 (34, 035, 'PCD'),
 (35, 036, 'ACD'),
 (36, 037, 'ADM'),
-(37, 038, 'ACD');
+(37, 038, 'ACD'),
+(38, 039, 'STD');
 
 -- --------------------------------------------------------
 
@@ -352,7 +365,12 @@ INSERT INTO `location` (`id`, `name`, `status`) VALUES
 (2, 'Office', 1),
 (3, 'Store', 1),
 (4, 'Site', 1),
-(6, 'Field', 1);
+(6, 'Field', 1),
+(7, 'test', 1),
+(8, 'locationtest', 1),
+(9, 'locationtest1', 1),
+(10, 'locationtest', 1),
+(11, 'locationtest3', 1);
 
 -- --------------------------------------------------------
 
@@ -374,10 +392,14 @@ CREATE TABLE `position` (
 INSERT INTO `position` (`position_id`, `position_name`, `position_code`, `status`) VALUES
 (1, 'Sample12341', 'S1', 0),
 (2, 'kool12344', 'F123', 0),
-(3, 'asdasd', 'asd', 1),
-(4, 'asdasd', 'w2esd', 0),
+(3, 'test', 'zx', 0),
+(4, 'asdasd', 'w2esd', 1),
 (5, 'sadsa', 'sadasd', 1),
-(6, 'Dog Style', 'DS', 1);
+(6, 'Dog Style', 'DS', 1),
+(7, 'try', 'try', 1),
+(8, 'test', 'test', 1),
+(9, 'qwer', 'rewq', 1),
+(10, 'zxcv', 'vczx', 1);
 
 -- --------------------------------------------------------
 
@@ -411,7 +433,8 @@ INSERT INTO `schedule` (`sched_id`, `employee_id`, `day`, `meridian`, `start_tim
 (49, 7, '', '', '00:00:00', '00:00:00', '[{\"Monday\":\"12:00\",\"Tuesday\":\"08:10\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', '[{\"Monday\":\"17:00\",\"Tuesday\":\"23:15\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', 0, '2022-10-11 15:08:57'),
 (50, 38, '', '', '00:00:00', '00:00:00', '[{\"Monday\":\"06:00\",\"Tuesday\":\"\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', '[{\"Monday\":\"05:00\",\"Tuesday\":\"\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', 0, '2022-10-12 16:37:24'),
 (51, 2, '', '', '00:00:00', '00:00:00', '[{\"Monday\":\"08:08\",\"Tuesday\":\"08:08\",\"Wednesday\":\"08:08\",\"Thursday\":\"08:08\",\"Friday\":\"08:08\",\"Saturday\":\"08:08\"}]', '[{\"Monday\":\"20:08\",\"Tuesday\":\"20:08\",\"Wednesday\":\"20:08\",\"Thursday\":\"20:08\",\"Friday\":\"20:08\",\"Saturday\":\"20:08\"}]', 0, '2022-10-11 15:49:29'),
-(52, 0, '', '', '00:00:00', '00:00:00', '[{\"Monday\":\"\",\"Tuesday\":\"\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', '[{\"Monday\":\"\",\"Tuesday\":\"\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', 0, '2022-10-12 16:57:05');
+(52, 0, '', '', '00:00:00', '00:00:00', '[{\"Monday\":\"\",\"Tuesday\":\"\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', '[{\"Monday\":\"\",\"Tuesday\":\"\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', 0, '2022-10-12 16:57:05'),
+(53, 39, '', '', '00:00:00', '00:00:00', '[{\"Monday\":\"01:00\",\"Tuesday\":\"\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', '[{\"Monday\":\"12:00\",\"Tuesday\":\"\",\"Wednesday\":\"\",\"Thursday\":\"\",\"Friday\":\"\",\"Saturday\":\"\"}]', 0, '2022-10-14 00:49:18');
 
 -- --------------------------------------------------------
 
@@ -443,7 +466,8 @@ CREATE TABLE `schedules` (
 --
 
 INSERT INTO `schedules` (`sched_id`, `employee_id`, `mon_start`, `mon_end`, `tue_start`, `tue_end`, `wed_start`, `wed_end`, `thu_start`, `thu_end`, `fri_start`, `fri_end`, `sat_start`, `sat_end`, `created_at`, `status`) VALUES
-(15, 38, '', '', '', '', '', '', '', '', '', '', '', '', '2022-10-13 14:39:40', 1);
+(15, 38, '', '', '', '', '', '', '', '', '', '', '', '', '2022-10-13 14:39:40', 1),
+(16, 0, '', '', '', '', '', '', '', '', '', '', '', '', '2022-10-14 04:12:22', 1);
 
 -- --------------------------------------------------------
 
@@ -473,13 +497,30 @@ INSERT INTO `shift` (`id`, `start`, `end`, `status`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `employee_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` int(1) NOT NULL,
+  `has_account` int(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
   `username` char(6) NOT NULL,
   `password` varchar(128) NOT NULL,
-  `employee_id` int(3) UNSIGNED ZEROFILL NOT NULL,
+  `employee_id` int(11) NOT NULL,
   `role_id` int(1) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` tinyint(4) NOT NULL DEFAULT 1
@@ -490,26 +531,26 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`username`, `password`, `employee_id`, `role_id`, `created_at`, `status`) VALUES
-('ACD002', '$2y$10$5nv5ehyMVdljfKJ6izsOqOimsbv.cbzU.XLB9ji9zbA.eICdSrNvO', 002, 2, '2021-09-11 09:47:23', 1),
-('ACD006', '$2y$10$ZtCSdxUEx2iUSL1TAly7luba6d/XHEyX752FvzXuCBn4hNMbMaKZi', 006, 2, '2022-05-05 12:47:26', 1),
-('ACD036', '$2y$10$cGi/yj5QRL72Br67JQBtQOuPYcGwt/31PMekjOLMUEjVN.LkstG2W', 036, 2, '2022-02-28 03:56:38', 1),
-('ADM011', '$2y$10$BKpQcs4XKavCcYdFWujzx.Xqb7r9eNkDrOYss2VNXrMJUUpm1agUC', 011, 2, '2021-01-11 09:47:23', 1),
-('ADM037', '$2y$10$ZTIB1t.5t4ERIH1ECOmeb.p7ks1n08vydFUURlQObtDD1b942FoZq', 037, 1, '2022-05-05 12:52:58', 1),
-('ADM038', '$2y$10$qzqd9/H/cAK/7alZQV5nGelXYwzaYpqaSN0rtI60TbORzedQtVxiS', 038, 1, '2022-10-08 05:27:36', 1),
-('admin', '$2y$10$7rLSvRVyTQORapkDOqmkhetjF6H9lJHngr4hJMSM2lHObJbW5EQh6', 025, 1, '2021-10-11 09:47:23', 1),
-('HRD001', '$2y$10$s9d3si8KzkXwKGpDoqwE5.S6sn563Zirrns6oe7U0KborVKtMFuEW', 001, 2, '2021-04-11 09:47:23', 0),
-('HRD024', '$2y$10$eB5hs1eJ0vhV//mIFTV.TuhUt/i82PSwKZqCPEBJ6JjwoqqzenjsK', 024, 2, '2022-05-03 15:14:55', 1),
-('PCD010', '$2y$10$IEOvsQXHKIA8qePv64e7L./m5qh18ND/uZVik8Nt.m7nwW1s.uCAG', 010, 2, '2021-08-11 09:47:23', 1),
-('PLD007', '$2y$10$Ln.oC3A/cQSYSanOSvt15epZJ82t9ojIiG6N2PSJUKsHDl3jIxh7S', 007, 2, '2022-04-25 09:09:51', 1),
-('QCD00A', '$2y$10$zbdQvXLFHoujaUsl0P3sUOScu23p.bwho2KTZbEacIdpKhPhqErl.', 003, 2, '2022-02-17 10:06:25', 1),
-('QCD027', '$2y$10$peALJo.JKZyD6uMBd41UfuHGQSJe7ExOfDhPITvDbSRRXeWUGY9xy', 027, 2, '2022-01-11 09:47:23', 1),
-('QCD029', '$2y$10$rMuNYiFgLnhB7gX/m1A63ekGA8MI51nqYc.3xeL4zLEKMXgUdKiKK', 029, 2, '2022-05-05 12:55:34', 1),
-('rosesa', 'zxcvbn', 000, 0, '2022-05-05 13:05:34', 1),
-('SCD004', '$2y$10$es7Ni7mlMM5Zdr3yF6JWd.dRck8He67VO.TSWXyw25GHkbYf/s7WG', 004, 2, '2022-01-11 09:47:23', 1),
-('STD005', '$2y$10$hr35h1fIySFYCSRVL2jRD.RuYa9WtJCEJkkqvQfPboYK7VwURpLim', 005, 2, '2022-01-11 09:47:23', 1),
-('STD008', '$2y$10$8PGnFaiZPYtcIGrwzMmVZuNKbUb/A88f0NZOA9QVgHaUIJ6ddg.Si', 008, 2, '2022-01-11 09:47:23', 1),
-('STD009', '$2y$10$Ba3xjuhrprakPHwwW7FZK./OK6/KcPiR2BNXGKQ5/PAqnl.WAJStS', 009, 2, '2022-02-17 15:55:08', 1),
-('STD026', '$2y$10$8WNMvEEgNPWyRuSeeLDE1uXwnBkYNJE/heLT1zWbsUfYb/wKFyYIy', 026, 2, '2022-01-11 09:47:23', 1);
+('ACD002', '$2y$10$5nv5ehyMVdljfKJ6izsOqOimsbv.cbzU.XLB9ji9zbA.eICdSrNvO', 2, 2, '2021-09-11 09:47:23', 1),
+('ACD006', '$2y$10$ZtCSdxUEx2iUSL1TAly7luba6d/XHEyX752FvzXuCBn4hNMbMaKZi', 6, 2, '2022-05-05 12:47:26', 1),
+('ACD036', '$2y$10$cGi/yj5QRL72Br67JQBtQOuPYcGwt/31PMekjOLMUEjVN.LkstG2W', 36, 2, '2022-02-28 03:56:38', 1),
+('ADM011', '$2y$10$BKpQcs4XKavCcYdFWujzx.Xqb7r9eNkDrOYss2VNXrMJUUpm1agUC', 11, 2, '2021-01-11 09:47:23', 1),
+('ADM037', '$2y$10$ZTIB1t.5t4ERIH1ECOmeb.p7ks1n08vydFUURlQObtDD1b942FoZq', 37, 1, '2022-05-05 12:52:58', 1),
+('ADM038', '$2y$10$qzqd9/H/cAK/7alZQV5nGelXYwzaYpqaSN0rtI60TbORzedQtVxiS', 38, 1, '2022-10-08 05:27:36', 1),
+('admin', '$2y$10$7rLSvRVyTQORapkDOqmkhetjF6H9lJHngr4hJMSM2lHObJbW5EQh6', 25, 1, '2021-10-11 09:47:23', 1),
+('HRD001', '$2y$10$s9d3si8KzkXwKGpDoqwE5.S6sn563Zirrns6oe7U0KborVKtMFuEW', 1, 2, '2021-04-11 09:47:23', 0),
+('HRD024', '$2y$10$eB5hs1eJ0vhV//mIFTV.TuhUt/i82PSwKZqCPEBJ6JjwoqqzenjsK', 24, 2, '2022-05-03 15:14:55', 1),
+('PCD010', '$2y$10$IEOvsQXHKIA8qePv64e7L./m5qh18ND/uZVik8Nt.m7nwW1s.uCAG', 10, 2, '2021-08-11 09:47:23', 1),
+('PLD007', '$2y$10$Ln.oC3A/cQSYSanOSvt15epZJ82t9ojIiG6N2PSJUKsHDl3jIxh7S', 7, 2, '2022-04-25 09:09:51', 1),
+('QCD00A', '$2y$10$zbdQvXLFHoujaUsl0P3sUOScu23p.bwho2KTZbEacIdpKhPhqErl.', 3, 2, '2022-02-17 10:06:25', 1),
+('QCD027', '$2y$10$peALJo.JKZyD6uMBd41UfuHGQSJe7ExOfDhPITvDbSRRXeWUGY9xy', 27, 2, '2022-01-11 09:47:23', 1),
+('QCD029', '$2y$10$rMuNYiFgLnhB7gX/m1A63ekGA8MI51nqYc.3xeL4zLEKMXgUdKiKK', 29, 2, '2022-05-05 12:55:34', 1),
+('rosesa', 'zxcvbn', 0, 0, '2022-05-05 13:05:34', 1),
+('SCD004', '$2y$10$es7Ni7mlMM5Zdr3yF6JWd.dRck8He67VO.TSWXyw25GHkbYf/s7WG', 4, 2, '2022-01-11 09:47:23', 1),
+('STD005', '$2y$10$hr35h1fIySFYCSRVL2jRD.RuYa9WtJCEJkkqvQfPboYK7VwURpLim', 5, 2, '2022-01-11 09:47:23', 1),
+('STD008', '$2y$10$8PGnFaiZPYtcIGrwzMmVZuNKbUb/A88f0NZOA9QVgHaUIJ6ddg.Si', 8, 2, '2022-01-11 09:47:23', 1),
+('STD009', '$2y$10$Ba3xjuhrprakPHwwW7FZK./OK6/KcPiR2BNXGKQ5/PAqnl.WAJStS', 9, 2, '2022-02-17 15:55:08', 1),
+('STD026', '$2y$10$8WNMvEEgNPWyRuSeeLDE1uXwnBkYNJE/heLT1zWbsUfYb/wKFyYIy', 26, 2, '2022-01-11 09:47:23', 1);
 
 -- --------------------------------------------------------
 
@@ -703,6 +744,12 @@ ALTER TABLE `shift`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -763,19 +810,19 @@ ALTER TABLE `attendance`
 -- AUTO_INCREMENT for table `department`
 --
 ALTER TABLE `department`
-  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `dept_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(1) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(1) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `employee_department`
 --
 ALTER TABLE `employee_department`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `files`
@@ -787,31 +834,37 @@ ALTER TABLE `files`
 -- AUTO_INCREMENT for table `location`
 --
 ALTER TABLE `location`
-  MODIFY `id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `position`
 --
 ALTER TABLE `position`
-  MODIFY `position_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `position_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `schedule`
 --
 ALTER TABLE `schedule`
-  MODIFY `sched_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `sched_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `schedules`
 --
 ALTER TABLE `schedules`
-  MODIFY `sched_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `sched_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `shift`
 --
 ALTER TABLE `shift`
   MODIFY `id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_access`

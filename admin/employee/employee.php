@@ -1,3 +1,14 @@
+
+<?php
+
+    session_start();
+    require '../../connection/connect.php';
+
+
+    // if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,6 +30,7 @@
         <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
       
         <!-- Page level plugins -->
+
     </head>
 
     <body>
@@ -34,7 +46,6 @@
 
                     <!-- Main Content -->
                     <div id="content">
-            
                        
                         <!-- Begin Page Content -->
                         <div class="container-fluid">
@@ -68,7 +79,6 @@
                                                     <th>#</th>
                                                     <th>ID</th>
                                                     <th>Name</th>
-                                                    <th>Shift</th>
                                                     <th>Gender</th>
                                                     <th>Image</th>
                                                     <th>DOB</th>
@@ -76,20 +86,52 @@
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
+
+                                            <?php
+                                                $x = 1;
+                                                $query = "SELECT * FROM employee";
+                                                $result = mysqli_query($connection, $query);
+                                                if (mysqli_num_rows($result) > 0) {
+                                                    while ($row = mysqli_fetch_assoc($result)) {
+                                            ?>
                                         
-                                            <tbody>
-                                                <tr>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class="text-center"><img src="../../assets/img copy/default-image.jpg" style="width: 55px; height:55px" class="img-rounded"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class=" align-middle"></td>
-                                                    <td class="text-center align-middle"></td>
-                                                </tr>
-                                            </tbody>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class=" align-middle"><?=$x++?></td>
+                                                        <td class=" align-middle"><?=$row['id']?></td>
+                                                        <td class=" align-middle"><?=$row['name']." ".$row['last_name']?></td>
+                                                        <td class=" align-middle"><?=$row['gender']?></td>
+                                                        <td class=" text-center"><img src="../../assets/img copy/default-image.jpg" style="width: 55px; height:55px" class="img-rounded"></td>
+                                                        <td class=" align-middle"><?=$row['birth_date']?></td>
+                                                        <td class=" align-middle"><?=$row['hire_date']?></td>
+                                                        <td class="align-middle text-center">
+
+                                                            <?php if ($row['is_active'] == 1){?>
+                                                                
+                                                                <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteEmployee&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Department. Still want to restore?')">
+                                                                    <i class="fa fa-undo"> </i>
+                                                                </a>
+                                                            
+                                                            
+                                                            <?php } elseif($row['is_active'] == 0){?>
+
+                                                                <a href="e_employee.php?eemployee&id=<?=$row['id']?>" class="btn btn-primary btn-circle">
+                                                                    <span class="icon text-white" title="Edit">
+                                                                        <i class="fas fa-edit"></i>
+                                                                    </span>
+                                                                </a>
+                                                                |
+                                                                <a href="../../ajaxadmin/ajaxadmin.php?deleteEmployee&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+
+                                                            <?php }?>    
+
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            <?php
+                                                    }
+                                                }
+                                            ?>
                                         </table>
                                     </div>
                                 </div>
@@ -128,3 +170,44 @@
     </body>
 
 </html>
+
+
+<?php
+
+if (isset($_GET['employeerror'])){
+
+  $erromsg="";
+
+  if($_GET['employeerror'] == 'E-mail already exist.'){
+
+      $erromsg = $_GET['employeerror'];
+      
+
+?>
+
+    <script>
+        $(document).ready(function () {
+        toastr.error('<?php echo $erromsg;?>')
+        });
+    </script>
+     
+<?php
+          
+  }else{
+
+    $erromsg = $_GET['employeerror'];
+
+?>
+
+    <script>
+        $(document).ready(function () {
+        toastr.success('<?php echo $erromsg;?>')
+        });
+    </script>
+        
+<?php
+
+  } 
+}
+
+?>
