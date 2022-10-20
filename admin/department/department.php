@@ -26,6 +26,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
       
         <!-- Custom styles for this template-->
         <link href="../../assets/css/sb-admin-2.min.css" rel="stylesheet">
+
       
         <!-- Page level plugins -->
     </head>

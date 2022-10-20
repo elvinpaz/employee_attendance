@@ -70,7 +70,7 @@
                             <input type="password" class="form-control form-control-user" name="password" placeholder="Password" style="height: 45px; border-radius: 40px; margin-bottom: -20px;">
                             <!-- <small class="text-danger pl-3">test</small> -->
                         </div>
-                        <input type="submit" value="Login" id="submit" name="submit" class="btn btn-info btn-user btn-block mt-4" style="background:linear-gradient(4deg, #32CD32, #006400, #32CD32); height: 40px; border-radius: 40px;" >
+                        <input type="submit" name="submit" class="btn btn-info btn-user btn-block mt-4" style="background:linear-gradient(4deg, #32CD32, #006400, #32CD32); height: 40px; border-radius: 40px;" >
                             
                     </form>
                 </div>

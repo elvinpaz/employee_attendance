@@ -72,6 +72,13 @@
         // insert new Schedule
         if (isset($_GET["insertNewSchedule"])) {
             $emp_id=$_POST['emp_id'];
+            $week=$_POST['week'];
+            $bill_mon=$_POST['bill_mon'];
+            $bill_tue=$_POST['bill_tue'];
+            $bill_wed=$_POST['bill_wed'];
+            $bill_thu=$_POST['bill_thu'];
+            $bill_fri=$_POST['bill_fri'];
+            $bill_sat=$_POST['bill_sat'];
             $mon_start=$_POST['mon_start'];
             $tue_start=$_POST['tue_start'];
             $wed_start=$_POST['wed_start'];
@@ -86,21 +93,21 @@
             $sat_end=$_POST['sat_end'];
             
 
-            $query = "SELECT * FROM schedules WHERE employee_id = '".$emp_id."'";
+            $query = "SELECT * FROM schedules WHERE employee_id = '".$emp_id."' AND week = '".$week."'";
             $result  = mysqli_query($connection, $query);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     $update = "UPDATE schedules 
                             SET mon_start = '".$mon_start."', tue_start = '".$tue_start."', wed_start = '".$wed_start."', thu_start = '".$thu_start."', fri_start = '".$fri_start."', sat_start = '".$sat_start."', 
                                 mon_end = '".$mon_end."', tue_end = '".$tue_end."', wed_end = '".$wed_end."', thu_end = '".$thu_end."', fri_end = '".$fri_end."', sat_end = '".$sat_end."',
-                                status = 1, created_at = '".$date."'
+                                status = 1, created_at = '".$date."', mon_bill = '".$bill_mon."', tue_bill = '".$bill_tue."', wed_bill = '".$bill_wed."', thu_bill = '".$bill_thu."', fri_bill = '".$bill_fri."', sat_bill = '".$bill_sat."', week = '".$week."'
                             WHERE employee_id = '".$emp_id."' ";
                     mysqli_query($connection, $update);
                 }
             } else {
 
-                $insertqry = "INSERT INTO schedules (employee_id, mon_start, mon_end, tue_start, tue_end, wed_start, wed_end, thu_start, thu_end, fri_start, fri_end, sat_start, sat_end, status, created_at)
-                                VALUES ('".$emp_id."', '".$mon_start."', '".$mon_end."', '".$tue_start."', '".$tue_end."', '".$wed_start."', '".$wed_end."', '".$thu_start."', '".$thu_end."', '".$fri_start."', '".$fri_end."', '".$sat_start."', '".$sat_end."', 1,'".$date."')";
+                $insertqry = "INSERT INTO schedules (employee_id, mon_start, mon_end, tue_start, tue_end, wed_start, wed_end, thu_start, thu_end, fri_start, fri_end, sat_start, sat_end, status, created_at, mon_bill, tue_bill, wed_bill, thu_bill, fri_bill, sat_bill, week) 
+                                VALUES ('".$emp_id."', '".$mon_start."', '".$mon_end."', '".$tue_start."', '".$tue_end."', '".$wed_start."', '".$wed_end."', '".$thu_start."', '".$thu_end."', '".$fri_start."', '".$fri_end."', '".$sat_start."', '".$sat_end."', 1,'".$date."', '".$bill_mon."', '".$bill_tue."', '".$bill_wed."', '".$bill_thu."', '".$bill_fri."', '".$bill_sat."','".$week."')";
                         mysqli_query($connection, $insertqry);
 
             }
@@ -308,12 +315,9 @@
                                 '".$e_status."')";
                         mysqli_query($connection, 
                         $query);
+                      
                         
-                        if($query){
-                            echo $query;
-                        }
-                        
-                    // header("location: ../admin/employee/employee.php");
+                    header("location: ../admin/employee/employee.php");
                 } else {
                     header("location: ../admin/employee/employee.php?employeerrorr=E-mail already exist.");
                 }
@@ -367,6 +371,12 @@
         if (isset($_GET['submitEditSchedule'])) {
 
             $sched_id=$_POST['sched_id'];
+            $bill_mon=$_POST['bill_mon'];
+            $bill_tue=$_POST['bill_tue'];
+            $bill_wed=$_POST['bill_wed'];
+            $bill_thu=$_POST['bill_thu'];
+            $bill_fri=$_POST['bill_fri'];
+            $bill_sat=$_POST['bill_sat'];
             $mon_start=$_POST['mon_start'];
             $tue_start=$_POST['tue_start'];
             $wed_start=$_POST['wed_start'];
@@ -388,7 +398,7 @@
                     $update = "UPDATE schedules 
                             SET mon_start = '".$mon_start."', tue_start = '".$tue_start."', wed_start = '".$wed_start."', thu_start = '".$thu_start."', fri_start = '".$fri_start."', sat_start = '".$sat_start."', 
                                 mon_end = '".$mon_end."', tue_end = '".$tue_end."', wed_end = '".$wed_end."', thu_end = '".$thu_end."', fri_end = '".$fri_end."', sat_end = '".$sat_end."',
-                                status = 1, created_at = '".$date."'
+                                status = 1, created_at = '".$date."', mon_bill = '".$bill_mon."', tue_bill = '".$bill_tue."', wed_bill = '".$bill_wed."', thu_bill = '".$bill_thu."', fri_bill = '".$bill_fri."', sat_bill = '".$bill_sat."'
                                 WHERE sched_id = '".$sched_id."' ";
                     mysqli_query($connection, $update);
                 }
@@ -842,7 +852,7 @@
             $result  = mysqli_query($connection, $query);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE employee SET is_active = 0 WHERE id = '".$id."' ";
+                    $update = "UPDATE employee SET is_active = 1 WHERE id = '".$id."' ";
                     mysqli_query($connection, $update);
                 }
             }

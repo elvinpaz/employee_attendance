@@ -80,8 +80,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                 FROM employee 
                                                                     LEFT JOIN user_role ON employee.position_id = user_role.id 
                                                                     LEFT JOIN department ON employee.department_id = department.dept_id 
-                                                                    LEFT JOIN user ON employee.id = user.employee_id
-                                                                       WHERE employee.id != 25";
+                                                                    LEFT JOIN user ON employee.id = user.employee_id";
                                                 $result = mysqli_query($connection, $query);
                                                 if (mysqli_num_rows($result) > 0) {
                                                     while ($row = mysqli_fetch_assoc($result)) {

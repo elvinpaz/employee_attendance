@@ -109,14 +109,14 @@
                                                         <td class=" align-middle"><?=$row['hire_date']?></td>
                                                         <td class="align-middle text-center">
 
-                                                            <?php if ($row['is_active'] == 1){?>
+                                                            <?php if ($row['is_active'] == 0){?>
                                                                 
                                                                 <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteEmployee&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Department. Still want to restore?')">
                                                                     <i class="fa fa-undo"> </i>
                                                                 </a>
                                                             
                                                             
-                                                            <?php } elseif($row['is_active'] == 0){?>
+                                                            <?php } elseif($row['is_active'] == 1){?>
 
                                                                 <a href="e_employee.php?eemployee&id=<?=$row['id']?>" class="btn btn-primary btn-circle">
                                                                     <span class="icon text-white" title="Edit">

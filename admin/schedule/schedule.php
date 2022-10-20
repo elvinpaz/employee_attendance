@@ -78,6 +78,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Employee Name</th>
+                                                        <th style="width: 15%">Total Billable Hrs</th>
+                                                        <th>Year - Week</th>
                                                         <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -87,7 +89,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                 <?php
                                                     $x = 1;
-                                                    $query = "SELECT schedules.status, schedules.sched_id, employee.name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id";
+                                                    $query = "SELECT schedules.*, employee.name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id";
                                                     $result = mysqli_query($connection, $query);
                                                     if (mysqli_num_rows($result) > 0) {
                                                         while ($row = mysqli_fetch_assoc($result)) {
@@ -96,6 +98,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                     <tr>
                                                         <td class="align-middle"><?=$x++?></td>
                                                         <td class="align-middle"><?=$row['name']?></td>
+                                                        <td style="width: 15%"><?=$row['mon_bill'] + $row['tue_bill'] + $row['wed_bill'] + $row['thu_bill'] + $row['fri_bill'] + $row['sat_bill']." hrs"?></td>
+                                                        <td class="align-middle"><?=$row['week']?></td>
                                                         <td class=" align-middle">
                                                             <?php if ($row['status'] == 1) {
                                                                 echo 'Active';

@@ -6,6 +6,37 @@ require '../../connection/connect.php';
 
 if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
+    $yearweek = $year. "-" ."W".$week;
+    
+
+    switch ($day) {
+        case "Monday":
+            $daystart = 'mon_start';
+            $dayend = 'mon_end';
+            break;
+        case "Tuesday":
+            $daystart = 'tue_start';
+            $dayend = 'tue_end';
+            break;
+        case "Wednesday":
+            $daystart = 'wed_start';
+            $dayend = 'wed_end';
+            break;
+        case "Thursday":
+            $daystart = 'thu_start';
+            $dayend = 'thu_end';
+            break;
+        case "Friday":
+            $daystart = 'fri_start';
+            $dayend = 'fri_end';
+            break;
+        case "Saturday":
+            $daystart = 'sat_start';
+            $dayend = 'sat_end';
+            break;
+      }
+
+
 
 
     // query for total products 
@@ -18,7 +49,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
     }
 
     // query for total products 
-    $query = "SELECT COUNT(*) as shift FROM shift WHERE status=1";
+    $query = "SELECT COUNT(*) as shift FROM schedules WHERE week = '".$yearweek."' AND $daystart != ''";
     $result = mysqli_query($connection, $query);
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
@@ -27,20 +58,20 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
     }
 
     // query for total products 
-    $query = "SELECT COUNT(*) as employee FROM employee WHERE is_active=1";
+    $query = "SELECT COUNT(*) as employee FROM employee WHERE is_active=1 AND employee.id != 25";
     $result = mysqli_query($connection, $query);
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
             $employee = $row['employee'];
-        }
+        }   
     }
 
     // query for total products 
-    $query = "SELECT COUNT(*) as users FROM users WHERE status=1";
+    $query = "SELECT COUNT(*) as user FROM user WHERE status=1 AND employee_id != 25";
     $result = mysqli_query($connection, $query);
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
-            $users = $row['users'];
+            $user = $row['user'];
         }
     }
 
@@ -153,7 +184,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                     <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Users</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><strong><?= number_format($users)?> Active Users</strong></div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800"><strong><?= number_format($user)?> Active Users</strong></div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -200,14 +231,14 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                         
                                         <?php
                                             $x = 1;
-                                            $query = "SELECT department_id, COUNT(employee_id) AS qty FROM employee_department GROUP BY department_id";
+                                            $query = "SELECT department.id, COUNT(employee.id) as qty FROM department LEFT JOIN employee ON employee.department_id = department.dept_id WHERE department.status = 1";
                                             $result = mysqli_query($connection, $query);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
                                         ?>
                                             <tr>
                                                 <th scope="row"><?=$x++?></th>
-                                                <td><?=$row['department_id']?></td>
+                                                <td><?=$row['id']?></td>
                                                 <td><?=$row['qty']?></td>
                                             </tr>
 
@@ -237,15 +268,16 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                         <thead class="bg-info text-white">
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Shift Code</th>
                                             <th scope="col">Employees</th>
+                                            <th scope="col">Shift Start</th>
+                                            <th scope="col">Shift End</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
                                         <?php
                                             $x = 1;
-                                            $query = "SELECT shift_id, COUNT(id) AS qty FROM employee WHERE shift_id != 0 GROUP BY shift_id";
+                                            $query = "SELECT schedules.*, employee.name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id WHERE week = '".$yearweek."' AND $daystart != ''";
                                             $result = mysqli_query($connection, $query);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
@@ -253,8 +285,9 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                         
                                             <tr>
                                                 <th scope="row"><?=$x++?></th>
-                                                <td><?=$row['shift_id']?></td>
-                                                <td><?=$row['qty']?></td>
+                                                <td><?=$row['name']?></td>
+                                                <td><?=$row[$daystart]?></td>
+                                                <td><?=$row[$dayend]?></td>
                                             </tr>
 
 
@@ -291,21 +324,21 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                     <table class="table">
                                         <thead class="bg-info text-white">
                                         <tr>
-                                            <th scope="col">Username</th>
+                                            <th scope="col">Email</th>
                                             <th scope="col">Employee id</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
                                             <?php
-                                                $query = "SELECT username, employee_id FROM users WHERE status = 1 ORDER BY created_at DESC LIMIT 10";
+                                                $query = "SELECT email, employee_id FROM user WHERE status = 1 ORDER BY created_at DESC LIMIT 10";
                                                 $result = mysqli_query($connection, $query);
                                                 if (mysqli_num_rows($result) > 0) {
                                                     while ($row = mysqli_fetch_assoc($result)) {
                                             ?>
                                             
                                                 <tr>
-                                                <td><?=$row['username']?></td>
+                                                <td><?=$row['email']?></td>
                                                 <td><?=$row['employee_id']?></td>
                                                 </tr>
 

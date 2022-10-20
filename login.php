@@ -1,17 +1,9 @@
 <?php
-echo "testing";
+
 session_start();
 require 'connection/connect.php';
-echo "testing";
-echo "testing";
-echo "testing";
-
-echo $_POST['submit'];
-echo $_POST['email'];
-echo $_POST['password'];
 
 if (isset($_POST['submit'])) {
-    echo "testing";
 
     $username = $_POST['email'];
     $password = $_POST['password'];

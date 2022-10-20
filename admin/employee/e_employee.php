@@ -179,8 +179,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                                     <label>Gender</label>
                                                                                     <select class="form-control" id="e_gender" name="e_gender" required>
                                                                                         <option></option>
-                                                                                        <option value="Male" <?=$gender == "M" ? "selected": ""?>>Male</option>
-                                                                                        <option value="Female" <?=$gender == "F" ? "selected": ""?>>Female</option>
+                                                                                        <option value="Male" <?=$gender == "Male" ? "selected": ""?>>Male</option>
+                                                                                        <option value="Female" <?=$gender == "Female" ? "selected": ""?>>Female</option>
                                                                                     </select>
                                                                                     
                                                                                 </div>
@@ -370,17 +370,17 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                             <div class="row">
                                                                                 <div class="form-group col-sm-12">
                                                                                     <div class="form-check form-check-inline">
-                                                                                        <input class="form-check-input" type="checkbox" id="is_master" name="is_master" value="<?=$master?>" <?=$master == "1" ? "selected": ""?>>
+                                                                                        <input class="form-check-input" type="checkbox" id="is_master" name="is_master" value="<?=$master?>" <?=$master == "1" ? "checked": ""?>>
                                                                                         <label class="form-check-label" for="is_master"> Enable Master's Degree</label>
                                                                                     </div>
 
                                                                                     <div class="form-check form-check-inline">
-                                                                                        <input class="form-check-input" type="checkbox" id="is_doctorate" name="is_doctorate" value="<?=$doctorate?>" <?=$doctorate == "1" ? "selected": ""?>>
+                                                                                        <input class="form-check-input" type="checkbox" id="is_doctorate" name="is_doctorate" value="<?=$doctorate?>" <?=$doctorate == "1" ? "checked": ""?>>
                                                                                         <label class="form-check-label" for="is_doctorate"> Enable Doctorate</label>
                                                                                     </div>
 
                                                                                     <div class="form-check form-check-inline">
-                                                                                        <input class="form-check-input" type="checkbox" id="is_other_degree" name="is_other_degree" value="<?=$other?>" <?=$other == "1" ? "selected": ""?>>
+                                                                                        <input class="form-check-input" type="checkbox" id="is_other_degree" name="is_other_degree" value="<?=$other?>" <?=$other == "1" ? "checked": ""?>>
                                                                                         <label class="form-check-label" for="other_degree"> Enable Other Degree</label>
                                                                                     </div>
                                                                                 </div>
