@@ -6,7 +6,7 @@ require '../../connection/connect.php';
 
 if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
-    $yearweek = $year. "-" ."W".$week;
+   
     
 
     switch ($day) {
@@ -202,7 +202,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                             <div class="col-xl-4 col-lg-5">
                                 <!-- Pie Chart -->
                                 <div class="col p-0">
-                                <div class="card shadow mb-4">
+                                <div class="card shadow mb-4" style="height: 400px">
                                     <!-- Card Header - Dropdown -->
                                     <div class="card-header py-3 d-flex flex-rowz align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Departments' Employees</h6>
@@ -257,13 +257,13 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                             <div class="col-xl-4 col-lg-5">
                                 <!-- Pie Chart -->
                                 <div class="col p-0">
-                                <div class="card shadow mb-4">
+                                <div class="card shadow mb-4" style="height: 400px">
                                     <!-- Card Header - Dropdown -->
                                     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Employees per Shift</h6>
                                     </div>
                                     <!-- Card Body -->
-                                    <div class="card-body" style="max-height: 370px;">
+                                    <div class="card-body" style="max-height: 400px; overflow: scroll; overflow-x : hidden;">
                                     <table class="table">
                                         <thead class="bg-info text-white">
                                         <tr>
@@ -305,7 +305,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                             <div class="col-xl-4 col-lg-5">
                                 <!-- Pie Chart -->
                                 <div class="col p-0">
-                                <div class="card shadow mb-4">
+                                <div class="card shadow mb-4" style="height: 400px">
                                     <!-- Card Header - Dropdown -->
                                     <div class="card-header py-3 d-flex flex-rowz align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Recently Added Users</h6>
@@ -331,7 +331,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                         <tbody>
 
                                             <?php
-                                                $query = "SELECT email, employee_id FROM user WHERE status = 1 ORDER BY created_at DESC LIMIT 10";
+                                                $query = "SELECT email, employee_id FROM user WHERE status = 1 AND employee_id != 25 ORDER BY created_at DESC LIMIT 10";
                                                 $result = mysqli_query($connection, $query);
                                                 if (mysqli_num_rows($result) > 0) {
                                                     while ($row = mysqli_fetch_assoc($result)) {

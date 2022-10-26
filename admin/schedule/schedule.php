@@ -83,8 +83,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Employee Name</th>
-                                                        <th style="width: 15%">Total Billable Hrs</th>
-                                                        <th>Year - Week</th>
+                                                        <th style="width: 15%">Total Working Hrs</th>
+                                                        <th>Date Range</th>
                                                         <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -104,7 +104,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                         <td class="align-middle"><?=$x++?></td>
                                                         <td class="align-middle"><?=$row['name']?></td>
                                                         <td style="width: 15%"><?=$row['mon_bill'] + $row['tue_bill'] + $row['wed_bill'] + $row['thu_bill'] + $row['fri_bill'] + $row['sat_bill']." hrs"?></td>
-                                                        <td class="align-middle"><?=$row['week']?></td>
+                                                        <td class="align-middle"><?=date("M/d/Y", strtotime($row['week']));?> - <?=date("M/d/Y", strtotime($row['week']. ' +5 day'));?></td>
                                                         <td class=" align-middle">
                                                             <?php if ($row['status'] == 1) {
                                                                 echo 'Active';
@@ -174,8 +174,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
         <!-- jQuery -->
         <script src="../../plugins/jquery/jquery.min.js"></script>
-        <!-- Bootstrap 4 -->
-        <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- DataTables  & Plugins -->
         <script src="../../plugins/datatables/jquery.dataTables.min.js"></script>
         <script src="../../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>

@@ -91,6 +91,9 @@
             $thu_end=$_POST['thu_end'];
             $fri_end=$_POST['fri_end'];
             $sat_end=$_POST['sat_end'];
+
+            $date_start = date("Y-m-d", strtotime($_POST['week']));
+            $date_end = date("Y-m-d", strtotime($_POST['week']." +5 day"));
             
 
             $query = "SELECT * FROM schedules WHERE employee_id = '".$emp_id."' AND week = '".$week."'";
@@ -100,14 +103,15 @@
                     $update = "UPDATE schedules 
                             SET mon_start = '".$mon_start."', tue_start = '".$tue_start."', wed_start = '".$wed_start."', thu_start = '".$thu_start."', fri_start = '".$fri_start."', sat_start = '".$sat_start."', 
                                 mon_end = '".$mon_end."', tue_end = '".$tue_end."', wed_end = '".$wed_end."', thu_end = '".$thu_end."', fri_end = '".$fri_end."', sat_end = '".$sat_end."',
-                                status = 1, created_at = '".$date."', mon_bill = '".$bill_mon."', tue_bill = '".$bill_tue."', wed_bill = '".$bill_wed."', thu_bill = '".$bill_thu."', fri_bill = '".$bill_fri."', sat_bill = '".$bill_sat."', week = '".$week."'
+                                status = 1, created_at = '".$date."', mon_bill = '".$bill_mon."', tue_bill = '".$bill_tue."', wed_bill = '".$bill_wed."', thu_bill = '".$bill_thu."', fri_bill = '".$bill_fri."', 
+                                sat_bill = '".$bill_sat."', week = '".$week."', date_start = '".$date_start."', date_end = '".$date_end."'
                             WHERE employee_id = '".$emp_id."' ";
                     mysqli_query($connection, $update);
                 }
             } else {
 
-                $insertqry = "INSERT INTO schedules (employee_id, mon_start, mon_end, tue_start, tue_end, wed_start, wed_end, thu_start, thu_end, fri_start, fri_end, sat_start, sat_end, status, created_at, mon_bill, tue_bill, wed_bill, thu_bill, fri_bill, sat_bill, week) 
-                                VALUES ('".$emp_id."', '".$mon_start."', '".$mon_end."', '".$tue_start."', '".$tue_end."', '".$wed_start."', '".$wed_end."', '".$thu_start."', '".$thu_end."', '".$fri_start."', '".$fri_end."', '".$sat_start."', '".$sat_end."', 1,'".$date."', '".$bill_mon."', '".$bill_tue."', '".$bill_wed."', '".$bill_thu."', '".$bill_fri."', '".$bill_sat."','".$week."')";
+                $insertqry = "INSERT INTO schedules (employee_id, mon_start, mon_end, tue_start, tue_end, wed_start, wed_end, thu_start, thu_end, fri_start, fri_end, sat_start, sat_end, status, created_at, mon_bill, tue_bill, wed_bill, thu_bill, fri_bill, sat_bill, week, date_start, date_end) 
+                                VALUES ('".$emp_id."', '".$mon_start."', '".$mon_end."', '".$tue_start."', '".$tue_end."', '".$wed_start."', '".$wed_end."', '".$thu_start."', '".$thu_end."', '".$fri_start."', '".$fri_end."', '".$sat_start."', '".$sat_end."', 1,'".$date."', '".$bill_mon."', '".$bill_tue."', '".$bill_wed."', '".$bill_thu."', '".$bill_fri."', '".$bill_sat."','".$week."','".$date_start."','".$date_end."')";
                         mysqli_query($connection, $insertqry);
 
             }

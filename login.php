@@ -8,6 +8,7 @@ if (isset($_POST['submit'])) {
     $username = $_POST['email'];
     $password = $_POST['password'];
     $access="";
+    $empid="";
 
     $count=0;
 
@@ -22,6 +23,7 @@ if (isset($_POST['submit'])) {
                 $count++;
 
                 $access = $row['role'];
+                $empid = $row['employee_id'];
 
             }
         }
@@ -34,11 +36,16 @@ if (isset($_POST['submit'])) {
 
             
             $_SESSION['access'] = $access;
+            $_SESSION['emp_id'] = $empid;
 
             
             if ($_SESSION['access'] == "Admin") {
 
                 header("location: admin/dashboard/dashboard.php");
+            
+            }else if ($_SESSION['access'] == "Employee") {
+
+                header("location: employee/dashboard/dashboard.php");
             
             }
 

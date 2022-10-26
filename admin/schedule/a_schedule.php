@@ -4,9 +4,9 @@ session_start();
 require '../../connection/connect.php';
 
 
-if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
+if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin") {
 
-
+    
     
 
 ?>
@@ -95,7 +95,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                         <div class="form-group col-sm-12">
                                             <div class="row justify-content-between" style="margin-bottom: 20px; margin-top: -15px; margin-left: 5px; margin-right: 5px;" >
                                                 <label>Pickup Schedule</label>
-                                                <input  style="align-right" required type="week" name="week">
+                                                <input  style="align-right" required type="week" name="week" min="<?=$yearweek?>">
                                             </div>
                                             <table class="table table-bordered table-striped" style="margin-bottom:20px;">
                                                 <thead>
@@ -109,42 +109,42 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                     <tr>
                                                         <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
                                                         <td style="width: 25%">Monday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" name="bill_mon"></td>
+                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_mon"></td>
                                                         <td style="width: 30%"><input type="time" required id="mon_start" name="mon_start"  min="06:00" max="22:00" class="form-control  timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="mon_end" name="mon_end" min="06:00" max="22:00" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
                                                         <td style="width: 25%">Tuesday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" name="bill_tue"></td>
+                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_tue"></td>
                                                         <td style="width: 30%"><input type="time" required id="tue_start" name="tue_start" class="form-control  timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="tue_end" name="tue_end" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
                                                         <td style="width: 25%">Wednesday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" name="bill_wed"></td>
+                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_wed"></td>
                                                         <td style="width: 30%"><input type="time" required id="wed_start" name="wed_start" class="form-control  timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="wed_end" name="wed_end" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
                                                         <td style="width: 25%">Thursday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" name="bill_thu"></td>
+                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_thu"></td>
                                                         <td style="width: 30%"><input type="time" required id="thu_start" name="thu_start" class="form-control  timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="thu_end" name="thu_end" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
                                                         <td style="width: 25%">Friday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" name="bill_fri"></td>
+                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_fri"></td>
                                                         <td style="width: 30%"><input type="time" required id="fri_start" name="fri_start" class="form-control  timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="fri_end" name="fri_end" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
                                                         <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
                                                         <td style="width: 25%">Saturday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" name="bill_sat"></td>
+                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_sat"></td>
                                                         <td style="width: 30%"><input type="time" required id="sat_start" name="sat_start" class="form-control timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="sat_end" name="sat_end" class="form-control timepicker"></td>
                                                     </tr>
