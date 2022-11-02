@@ -92,31 +92,93 @@
             $fri_end=$_POST['fri_end'];
             $sat_end=$_POST['sat_end'];
 
-            $date_start = date("Y-m-d", strtotime($_POST['week']));
-            $date_end = date("Y-m-d", strtotime($_POST['week']." +5 day"));
+            $date_mon = date("Y-m-d", strtotime($_POST['week']));
+            $date_tue = date("Y-m-d", strtotime($_POST['week']." +1 day"));
+            $date_wed = date("Y-m-d", strtotime($_POST['week']." +2 day"));
+            $date_thu = date("Y-m-d", strtotime($_POST['week']." +3 day"));
+            $date_fri = date("Y-m-d", strtotime($_POST['week']." +4 day"));
+            $date_sat = date("Y-m-d", strtotime($_POST['week']." +5 day"));
+
+            $day_mon = date('l', strtotime($date_mon));
+            $day_tue = date('l', strtotime($date_tue));
+            $day_wed = date('l', strtotime($date_wed));
+            $day_thu = date('l', strtotime($date_thu));
+            $day_fri = date('l', strtotime($date_fri));
+            $day_sat = date('l', strtotime($date_sat));
+
+            $datestart=array();
+            array_push($datestart,$date_mon);
+            array_push($datestart,$date_tue);
+            array_push($datestart,$date_wed);
+            array_push($datestart,$date_thu);
+            array_push($datestart,$date_fri);
+            array_push($datestart,$date_sat);
+
+            $days=array();
+            array_push($days,$day_mon);
+            array_push($days,$day_tue);
+            array_push($days,$day_wed);
+            array_push($days,$day_thu);
+            array_push($days,$day_fri);
+            array_push($days,$day_sat);
+
+            $sched_week=array();
+            array_push($sched_week, $week=$_POST['week']);
+            array_push($sched_week, $week=$_POST['week']);
+            array_push($sched_week, $week=$_POST['week']);
+            array_push($sched_week, $week=$_POST['week']);
+            array_push($sched_week, $week=$_POST['week']);
+            array_push($sched_week, $week=$_POST['week']);
+
+            $bill=array();
+            array_push($bill,$bill_mon);
+            array_push($bill,$bill_tue);
+            array_push($bill,$bill_wed);
+            array_push($bill,$bill_thu);
+            array_push($bill,$bill_fri);
+            array_push($bill,$bill_sat);
+
+            $start=array();
+            array_push($start,$mon_start);
+            array_push($start,$tue_start);
+            array_push($start,$wed_start);
+            array_push($start,$thu_start);
+            array_push($start,$fri_start);
+            array_push($start,$sat_start);
+
+            $end=array();
+            array_push($end,$mon_end);
+            array_push($end,$tue_end);
+            array_push($end,$wed_end);
+            array_push($end,$thu_end);
+            array_push($end,$fri_end);
+            array_push($end,$sat_end);
+            
+            $array=array();
+            array_push($array,$datestart);
+            array_push($array,$days);
+            array_push($array,$start);
+            array_push($array,$end);
+            array_push($array,$sched_week);
+            array_push($array,$bill);
+            array_push($array,$_POST['sched_status']);
             
 
-            $query = "SELECT * FROM schedules WHERE employee_id = '".$emp_id."' AND week = '".$week."'";
-            $result  = mysqli_query($connection, $query);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE schedules 
-                            SET mon_start = '".$mon_start."', tue_start = '".$tue_start."', wed_start = '".$wed_start."', thu_start = '".$thu_start."', fri_start = '".$fri_start."', sat_start = '".$sat_start."', 
-                                mon_end = '".$mon_end."', tue_end = '".$tue_end."', wed_end = '".$wed_end."', thu_end = '".$thu_end."', fri_end = '".$fri_end."', sat_end = '".$sat_end."',
-                                status = 1, created_at = '".$date."', mon_bill = '".$bill_mon."', tue_bill = '".$bill_tue."', wed_bill = '".$bill_wed."', thu_bill = '".$bill_thu."', fri_bill = '".$bill_fri."', 
-                                sat_bill = '".$bill_sat."', week = '".$week."', date_start = '".$date_start."', date_end = '".$date_end."'
-                            WHERE employee_id = '".$emp_id."' ";
-                    mysqli_query($connection, $update);
-                }
-            } else {
+                $query = "SELECT * FROM schedules WHERE employee_id = '".$emp_id."' AND week = '".$week."'";
+                $result  = mysqli_query($connection, $query);
+                if (mysqli_num_rows($result) == 0) {
 
-                $insertqry = "INSERT INTO schedules (employee_id, mon_start, mon_end, tue_start, tue_end, wed_start, wed_end, thu_start, thu_end, fri_start, fri_end, sat_start, sat_end, status, created_at, mon_bill, tue_bill, wed_bill, thu_bill, fri_bill, sat_bill, week, date_start, date_end) 
-                                VALUES ('".$emp_id."', '".$mon_start."', '".$mon_end."', '".$tue_start."', '".$tue_end."', '".$wed_start."', '".$wed_end."', '".$thu_start."', '".$thu_end."', '".$fri_start."', '".$fri_end."', '".$sat_start."', '".$sat_end."', 1,'".$date."', '".$bill_mon."', '".$bill_tue."', '".$bill_wed."', '".$bill_thu."', '".$bill_fri."', '".$bill_sat."','".$week."','".$date_start."','".$date_end."')";
+                    for($x = 0; $x < count($array[0]); $x++){
+
+                        $insertqry = "INSERT INTO `schedules`(`employee_id`, `date`, `day`, `start`, `end`, `week`, `bill`, `status`) VALUES ('".$emp_id."','".$array[0][$x]."','".$array[1][$x]."','".$array[2][$x]."','".$array[3][$x]."','".$array[4][$x]."','".$array[5][$x]."','".$array[6][$x]."')";
                         mysqli_query($connection, $insertqry);
 
-            }
+                    }
+                    
+                }
 
-            header("location: ../admin/schedule/schedule.php");
+                header("location: ../admin/schedule/schedule.php");
+            
         }
 
         // insert new Location
@@ -374,38 +436,29 @@
         // submit edit Schedule
         if (isset($_GET['submitEditSchedule'])) {
 
-            $sched_id=$_POST['sched_id'];
-            $bill_mon=$_POST['bill_mon'];
-            $bill_tue=$_POST['bill_tue'];
-            $bill_wed=$_POST['bill_wed'];
-            $bill_thu=$_POST['bill_thu'];
-            $bill_fri=$_POST['bill_fri'];
-            $bill_sat=$_POST['bill_sat'];
-            $mon_start=$_POST['mon_start'];
-            $tue_start=$_POST['tue_start'];
-            $wed_start=$_POST['wed_start'];
-            $thu_start=$_POST['thu_start'];
-            $fri_start=$_POST['fri_start'];
-            $sat_start=$_POST['sat_start'];
-            $mon_end=$_POST['mon_end'];
-            $tue_end=$_POST['tue_end'];
-            $wed_end=$_POST['wed_end'];
-            $thu_end=$_POST['thu_end'];
-            $fri_end=$_POST['fri_end'];
-            $sat_end=$_POST['sat_end'];
-            
+            $array=array();
+            array_push($array,$_POST['sched_id']);
+            array_push($array,$_POST['start']);
+            array_push($array,$_POST['end']);
+            array_push($array,$_POST['bill']);
+            array_push($array,$_POST['sched_status']);
 
-            $query = "SELECT * FROM schedules WHERE sched_id = '".$sched_id."'";
-            $result  = mysqli_query($connection, $query);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE schedules 
-                            SET mon_start = '".$mon_start."', tue_start = '".$tue_start."', wed_start = '".$wed_start."', thu_start = '".$thu_start."', fri_start = '".$fri_start."', sat_start = '".$sat_start."', 
-                                mon_end = '".$mon_end."', tue_end = '".$tue_end."', wed_end = '".$wed_end."', thu_end = '".$thu_end."', fri_end = '".$fri_end."', sat_end = '".$sat_end."',
-                                status = 1, created_at = '".$date."', mon_bill = '".$bill_mon."', tue_bill = '".$bill_tue."', wed_bill = '".$bill_wed."', thu_bill = '".$bill_thu."', fri_bill = '".$bill_fri."', sat_bill = '".$bill_sat."'
-                                WHERE sched_id = '".$sched_id."' ";
-                    mysqli_query($connection, $update);
+
+
+            print_r($array);
+            
+            for($x = 0; $x < count($array[0]); $x++){
+
+                $query = "SELECT * FROM schedules WHERE sched_id = '".$array[0][$x]."'";
+                $result  = mysqli_query($connection, $query);
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $update = "UPDATE `schedules` SET `start`='".$array[1][$x]."',`end`='".$array[2][$x]."',`bill`='".$array[3][$x]."',`status`='".$array[4][$x]."'
+                                    WHERE sched_id = '".$array[0][$x]."' ";
+                        mysqli_query($connection, $update);
+                    }
                 }
+            
             }
 
 
@@ -513,6 +566,7 @@
             $other=$_POST['other'];
             $other_year=$_POST['other_year'];
             $other_school=$_POST['other_school'];
+            $fileInfo = PATHINFO($_FILES["imgupload"]["name"]);
 
             $is_master=0;
             $is_doctorate=0;
@@ -545,7 +599,7 @@
                 }
             }
 
-
+            echo $location;
 
             $query = "SELECT * FROM employee WHERE id = '".$id."' LIMIT 1";
                 $result = mysqli_query($connection, $query);
@@ -636,14 +690,17 @@
         if (isset($_GET['deleteDept'])) {
             $dept_id=$_GET['dept_id'];
 
-            $query = "SELECT * FROM department WHERE dept_id = '".$dept_id."' ";
-            $result  = mysqli_query($connection, $query);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE department SET status = 0 WHERE dept_id = '".$dept_id."' ";
-                    mysqli_query($connection, $update);
-                }
-            }
+            // $query = "SELECT * FROM department WHERE dept_id = '".$dept_id."' ";
+            // $result  = mysqli_query($connection, $query);
+            // if (mysqli_num_rows($result) > 0) {
+            //     while ($row = mysqli_fetch_assoc($result)) {
+            //         $update = "UPDATE department SET status = 0 WHERE dept_id = '".$dept_id."' ";
+            //         mysqli_query($connection, $update);
+            //     }
+            // }
+
+            $query = "DELETE FROM department WHERE dept_id = '".$dept_id."' ";
+            mysqli_query($connection, $query);
 
             header("location: ../admin/department/department.php");
         }
@@ -651,16 +708,20 @@
 
         //delete schedule
         if (isset($_GET['deleteSched'])) {
-            $sched_id=$_GET['sched_id'];
+            $emp_id=$_GET['emp_id'];
+            $week=$_GET['week'];
 
-            $query = "SELECT * FROM schedules WHERE sched_id = '".$sched_id."' ";
-            $result  = mysqli_query($connection, $query);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE schedules SET status = 0 WHERE sched_id = '".$sched_id."' ";
-                    mysqli_query($connection, $update);
-                }
-            }
+            // $query = "SELECT * FROM schedules WHERE sched_id = '".$sched_id."' ";
+            // $result  = mysqli_query($connection, $query);
+            // if (mysqli_num_rows($result) > 0) {
+            //     while ($row = mysqli_fetch_assoc($result)) {
+            //         $update = "UPDATE schedules SET status = 0 WHERE sched_id = '".$sched_id."' ";
+            //         mysqli_query($connection, $update);
+            //     }
+            // }
+
+            $query = "DELETE FROM schedules WHERE emp_id = '".$emp_id."' AND week = '".$week."'";
+            mysqli_query($connection, $query);
 
             header("location: ../admin/schedule/schedule.php");
         }
@@ -669,14 +730,17 @@
         if (isset($_GET['deleteLoc'])) {
             $id=$_GET['id'];
 
-            $query = "SELECT * FROM location WHERE id = '".$id."' ";
-            $result  = mysqli_query($connection, $query);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE location SET status = 0 WHERE id = '".$id."' ";
-                    mysqli_query($connection, $update);
-                }
-            }
+            // $query = "SELECT * FROM location WHERE id = '".$id."' ";
+            // $result  = mysqli_query($connection, $query);
+            // if (mysqli_num_rows($result) > 0) {
+            //     while ($row = mysqli_fetch_assoc($result)) {
+            //         $update = "UPDATE location SET status = 0 WHERE id = '".$id."' ";
+            //         mysqli_query($connection, $update);
+            //     }
+            // }
+
+            $query = "DELETE FROM location WHERE id = '".$id."' ";
+            mysqli_query($connection, $query);
 
             header("location: ../admin/location/location.php");
         }
@@ -685,14 +749,17 @@
         if (isset($_GET['deleteDesignation'])) {
             $id=$_GET['id'];
 
-            $query = "SELECT * FROM position WHERE position_id = '".$id."' ";
-            $result  = mysqli_query($connection, $query);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE position SET status = 0 WHERE position_id = '".$id."' ";
-                    mysqli_query($connection, $update);
-                }
-            }
+            // $query = "SELECT * FROM position WHERE position_id = '".$id."' ";
+            // $result  = mysqli_query($connection, $query);
+            // if (mysqli_num_rows($result) > 0) {
+            //     while ($row = mysqli_fetch_assoc($result)) {
+            //         $update = "UPDATE position SET status = 0 WHERE position_id = '".$id."' ";
+            //         mysqli_query($connection, $update);
+            //     }
+            // }
+
+            $query = "DELETE FROM position WHERE position_id = '".$id."' ";
+            mysqli_query($connection, $query);
 
             header("location: ../admin/designation/designation.php");
         }
@@ -703,14 +770,17 @@
         if (isset($_GET['deleteAcademic'])) {
             $id=$_GET['id'];
 
-            $query = "SELECT * FROM academics WHERE academic_id = '".$id."' ";
-            $result  = mysqli_query($connection, $query);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE academics SET is_deleted = 0 WHERE academic_id = '".$id."' ";
-                    mysqli_query($connection, $update);
-                }
-            }
+            // $query = "SELECT * FROM academics WHERE academic_id = '".$id."' ";
+            // $result  = mysqli_query($connection, $query);
+            // if (mysqli_num_rows($result) > 0) {
+            //     while ($row = mysqli_fetch_assoc($result)) {
+            //         $update = "UPDATE academics SET is_deleted = 0 WHERE academic_id = '".$id."' ";
+            //         mysqli_query($connection, $update);
+            //     }
+            // }
+
+            $query = "DELETE FROM academics WHERE academic_id = '".$id."' ";
+            mysqli_query($connection, $query);
 
             header("location: ../admin/academicrank/academicrank.php");
         }
@@ -734,14 +804,17 @@
         if (isset($_GET['deleteuser'])) {
             $id=$_GET['id'];
 
-            $query = "SELECT * FROM user WHERE id = '".$id."' ";
-            $result  = mysqli_query($connection, $query);
-            if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE user SET status = 0 WHERE id = '".$id."' ";
-                    mysqli_query($connection, $update);
-                }
-            }
+            // $query = "SELECT * FROM user WHERE id = '".$id."' ";
+            // $result  = mysqli_query($connection, $query);
+            // if (mysqli_num_rows($result) > 0) {
+            //     while ($row = mysqli_fetch_assoc($result)) {
+            //         $update = "UPDATE user SET status = 0 WHERE id = '".$id."' ";
+            //         mysqli_query($connection, $update);
+            //     }
+            // }
+
+            $query = "DELETE FROM user WHERE id = '".$id."' ";
+            mysqli_query($connection, $query);
 
             header("location: ../admin/users/users.php");
         }
@@ -766,6 +839,8 @@
                     mysqli_query($connection, $update);
                 }
             }
+            
+            
 
 
             header("location: ../admin/department/department.php");

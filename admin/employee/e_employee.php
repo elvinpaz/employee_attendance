@@ -116,16 +116,16 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                     </a>
 
                                     <section class="content">
-
+                                    <form action="../../ajaxadmin/ajaxadmin.php?submitEditEmployee" method="POST" enctype="multipart/form-data">
                                         <div class="box">
                                             <div class="box-body">
                                                 <div class="row" style="background-color: #f0f0f0; margin: 0px !important;">
                                                     <div class="col-md-3">
                                                         <div class="card" style="width: 100%; height: 100%">
-                                                        <img src="../../upload/<?=$image?>" class="card-img-top w-75 mx-auto pt-3">
+                                                        <img id="profileimg" src="../../upload/<?=$image?>" class="card-img-top w-75 mx-auto pt-3">
                                                             <div class="card-body mt-3">
-                                                                <label for="image">Change Employee Image</label>
-                                                                <input type="file" name="image" id="image" class="mt-2">
+                                                                <label for="image">Change Employee Image</label><br>
+                                                                <input type="file" name="imgupload" id="imgupload" accept="image/*" class="mt-2" style="width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -149,7 +149,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                         
                                                             <div class="card-body ">
-                                                            <form action="../../ajaxadmin/ajaxadmin.php?submitEditEmployee" method="POST" enctype="multipart/form-data">
+                                                            
                                                                     <div class="tab-content" id="custom-tabs-one-tabContent">
 
                                                                         <!-- ^Basic Information tab^ -->
@@ -163,7 +163,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                                                 <div class="form-group col-sm-4">
                                                                                     <label>Midlle Name</label>
-                                                                                    <input type="text" required class="form-control" value="<?=$mname?>" id="e_ne_mnameame" name="e_mname" autocomplete="off" autofocus >
+                                                                                    <input type="text" class="form-control" value="<?=$mname?>" id="e_ne_mnameame" name="e_mname" autocomplete="off" autofocus >
                                                                                 </div>
 
                                                                                 <div class="form-group col-sm-4">
@@ -304,8 +304,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                                     <label>Employee Status</label>
                                                                                     <select class="form-control"  name="e_status" id="e_status" required>
                                                                                         <option></option>
-                                                                                        <option value="0" <?=$is_active == "0" ? "selected": ""?>>Active</option>
-                                                                                        <option value="1" <?=$is_active == "1" ? "selected": ""?>>Inactive</option>
+                                                                                        <option value="1" <?=$is_active == "1" ? "selected": ""?>>Active</option>
+                                                                                        <option value="0" <?=$is_active == "0" ? "selected": ""?>>Inactive</option>
                                                                                     </select>
                                                                                 </div>
                                                                                 
@@ -519,6 +519,26 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
         <script src="../../assets/js/sb-admin-2.min.js"></script>
 
         <script>
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#profileimg').attr('src', e.target.result);
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#imgupload").change(function(){
+                readURL(this);
+            });
+
+           
+
+
             $(document).ready(function() {
 
                     
@@ -610,6 +630,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                 }
 
             });
+
+            
 
         </script>
 

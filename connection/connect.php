@@ -4,14 +4,13 @@ $tz_time = date("F j, Y g:i:s");
 
 $date = date('Y-m-d H:i:s');
 $daytoday = date('Y-m-d');
+$todaytimestamp = date('Y-m-d H:i');
+
 $day = date('l', strtotime($date));
 $week = date('W', strtotime($date));
 $year = date('Y', strtotime($date));
 $month = date("M d, Y",strtotime($date));
-$todaytimestamp = date('Y-m-d H:i');
-
 $yearweek = $year. "-" ."W".$week;
-
 $empdate = $day.", ".$month;
 
 

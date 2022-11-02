@@ -146,7 +146,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                     <span aria-hidden="true">×</span>
                                     </button>
                                 </div>
-                                <form action="../../ajaxadmin/ajaxadmin.php?insertNewDesignation" method="POST">
+                                <form action="../../ajaxadmin/ajaxadmin.php?insertNewRank" method="POST">
                                     <div class="modal-body" id="addrank">
                                     </div>
                                     <div class="modal-footer">

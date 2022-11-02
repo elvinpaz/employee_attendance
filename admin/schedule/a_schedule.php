@@ -6,8 +6,7 @@ require '../../connection/connect.php';
 
 if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin") {
 
-    
-    
+
 
 ?>
 
@@ -99,7 +98,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin") {
                                             </div>
                                             <table class="table table-bordered table-striped" style="margin-bottom:20px;">
                                                 <thead>
-                                                    <th style="padding-top:10px; text-align:center;"><input type="checkbox" name="disableRow" id="selectAll" checked/></th>
+                                                    <th style="width: 10%">Status</th>
                                                     <th style="width: 25%">Day</th>
                                                     <th style="width: 10%">Billable Hrs</th>
                                                     <th style="width: 30%">Start Time</th>
@@ -107,45 +106,76 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin") {
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
-                                                        <td style="width: 25%">Monday</td>
+                                                        <!-- <td style="text-align:center;"><input type="checkbox" class="disableRow" name="disableRow[]" value="REST" onchange="callFunction()"/></td> -->
+                                                        <td style="text-align:center;">
+                                                                        <select class="form-control" id="sched_status" name="sched_status[]">
+                                                                            <option value="REG" selected>REG</option>
+                                                                            <option value="REST">REST</option>
+                                                                        </select>
+                                                        </td>
+                                                        <td style="width: 25%">Monday </td>
                                                         <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_mon"></td>
-                                                        <td style="width: 30%"><input type="time" required id="mon_start" name="mon_start"  min="06:00" max="22:00" class="form-control  timepicker"></td>
-                                                        <td style="width: 30%"><input type="time" required id="mon_end" name="mon_end" min="06:00" max="22:00" class="form-control  timepicker"></td>
+                                                        <td style="width: 30%"><input type="time" required id="mon_start" name="mon_start"  min="00:00" max="23:59" class="form-control  timepicker"></td>
+                                                        <td style="width: 30%"><input type="time" required id="mon_end" name="mon_end" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
+                                                        <td style="text-align:center;">
+                                                                        <select class="form-control" id="sched_status" name="sched_status[]">
+                                                                            <option value="REG" selected>REG</option>
+                                                                            <option value="REST">REST</option>
+                                                                        </select>
+                                                        </td>
                                                         <td style="width: 25%">Tuesday</td>
                                                         <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_tue"></td>
-                                                        <td style="width: 30%"><input type="time" required id="tue_start" name="tue_start" class="form-control  timepicker"></td>
+                                                        <td style="width: 30%"><input type="time" required id="tue_start" name="tue_start" min="00:00" max="23:59" class="form-control  timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="tue_end" name="tue_end" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
+                                                        <td style="text-align:center;">
+                                                                        <select class="form-control" id="sched_status" name="sched_status[]">
+                                                                            <option value="REG" selected>REG</option>
+                                                                            <option value="REST">REST</option>
+                                                                        </select>
+                                                        </td>
                                                         <td style="width: 25%">Wednesday</td>
                                                         <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_wed"></td>
-                                                        <td style="width: 30%"><input type="time" required id="wed_start" name="wed_start" class="form-control  timepicker"></td>
+                                                        <td style="width: 30%"><input type="time" required id="wed_start" name="wed_start" min="00:00" max="23:59" class="form-control  timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="wed_end" name="wed_end" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
+                                                        <td style="text-align:center;">
+                                                                        <select class="form-control" id="sched_status" name="sched_status[]">
+                                                                            <option value="REG" selected>REG</option>
+                                                                            <option value="REST">REST</option>
+                                                                        </select>
+                                                        </td>
                                                         <td style="width: 25%">Thursday</td>
                                                         <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_thu"></td>
-                                                        <td style="width: 30%"><input type="time" required id="thu_start" name="thu_start" class="form-control  timepicker"></td>
+                                                        <td style="width: 30%"><input type="time" required id="thu_start" name="thu_start" min="00:00" max="23:59" class="form-control  timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="thu_end" name="thu_end" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
+                                                        <td style="text-align:center;">
+                                                                        <select class="form-control" id="sched_status" name="sched_status[]">
+                                                                            <option value="REG" selected>REG</option>
+                                                                            <option value="REST">REST</option>
+                                                                        </select>
+                                                        </td>
                                                         <td style="width: 25%">Friday</td>
                                                         <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_fri"></td>
-                                                        <td style="width: 30%"><input type="time" required id="fri_start" name="fri_start" class="form-control  timepicker"></td>
+                                                        <td style="width: 30%"><input type="time" required id="fri_start" name="fri_start" min="00:00" max="23:59" class="form-control  timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="fri_end" name="fri_end" class="form-control  timepicker"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
+                                                        <td style="text-align:center;">
+                                                                        <select class="form-control" id="sched_status" name="sched_status[]">
+                                                                            <option value="REG" selected>REG</option>
+                                                                            <option value="REST">REST</option>
+                                                                        </select>
+                                                        </td>
                                                         <td style="width: 25%">Saturday</td>
                                                         <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" min="1" name="bill_sat"></td>
-                                                        <td style="width: 30%"><input type="time" required id="sat_start" name="sat_start" class="form-control timepicker"></td>
+                                                        <td style="width: 30%"><input type="time" required id="sat_start" name="sat_start" min="00:00" max="23:59" class="form-control timepicker"></td>
                                                         <td style="width: 30%"><input type="time" required id="sat_end" name="sat_end" class="form-control timepicker"></td>
                                                     </tr>
                                                 </tbody>
@@ -195,29 +225,77 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin") {
         <!-- Custom scripts for all pages-->
         <script src="../../assets/js/sb-admin-2.min.js"></script>
 
-        <script>
-            $('#selectAll').click(function (e) {
-                $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
-                $("#selectAll").change(function(){
-                    $next = $(this).closest('table').find("[type='time']");
-                    $next1 = $(this).closest('table').find("[type='number']");
-                    $next.prop('disabled', !this.checked);
-                    $next1.prop('disabled', !this.checked);
-                    $next.val('');
-                    $next1.val('');
-                });
-            });
 
-            $(".disableRow").change(function(){
+        <script type='text/javascript'>
+
+            $(document).ready(function() {
+                    
+                $('select[name="sched_status[]"]').on('change',function(){
                     $next = $(this).closest('tr').find("[type='time']");
                     $next1 = $(this).closest('tr').find("[type='number']");
-                    $next.prop('disabled', !this.checked);
-                    $next1.prop('disabled', !this.checked);
-                    $next.val('');
-                    $next1.val('');
-                 
+                    
+                    var  status = $(this).val();
+
+                    if(status == "REST"){       
+                        $next.val('');
+                        $next1.val('');    
+                        $next.prop('readonly', true);
+                        $next1.prop('readonly', true);
+                        
+                    }else{
+                        $next.prop('readonly', false);
+                        $next1.prop('readonly', false);
+                    }  
+
+                });
             });
         </script>
+
+        <script>
+            // $('#selectAll').click(function (e) {
+            //     $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
+            //     $("#selectAll").change(function(){
+            //         $next = $(this).closest('table').find("[type='time']");
+            //         $next1 = $(this).closest('table').find("[type='number']");
+            //         $next.prop('disabled', this.checked);
+            //         $next1.prop('disabled', this.checked);
+            //         $next.val('');
+            //         $next1.val('');
+            //     });
+            // });
+
+            // $(".disableRow").change(function(){
+            //         $next = $(this).closest('tr').find("[type='time']");
+            //         $next1 = $(this).closest('tr').find("[type='number']");
+            //         $next.prop('disabled', this.val("REST"));
+            //         $next1.prop('disabled', this.val("REST"));
+            //         $next.val('');
+            //         $next1.val('');
+                 
+            // });
+
+            $("#mon_start").change(function() {
+                $("#mon_end").attr('min',$("#mon_start").val());
+            });
+            $("#tue_start").change(function() {
+                $("#tue_end").attr('min',$("#tue_start").val());
+            });
+            $("#wed_start").change(function() {
+                $("#wed_end").attr('min',$("#wed_start").val());
+            });
+            $("#thu_start").change(function() {
+                $("#thu_end").attr('min',$("#thu_start").val());
+            });
+            $("#fri_start").change(function() {
+                $("#fri_end").attr('min',$("#fri_start").val());
+            });
+            $("#sat_start").change(function() {
+                $("#sat_end").attr('min',$("#sat_start").val());
+            });
+            
+        </script>
+        
+        
 
     </body>
 

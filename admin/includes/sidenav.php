@@ -82,10 +82,10 @@
             <span>Files</span>
         </a>
     </li>
-    <li class="nav-item">
-        <a class="nav-link pb-0" href="">
+    <li class="nav-item" <?=($f=='report.php'?'active':'')?>>
+        <a class="nav-link pb-0" href="../report/report.php">
             <i class="fas fa-fw fa-paste"></i>
-            <span>Print</span>
+            <span>Summary Report</span>
         </a>
     </li>
     <li class="nav-item <?=($f=='backup.php'?'active':'')?>">

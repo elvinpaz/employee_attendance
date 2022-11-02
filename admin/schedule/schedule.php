@@ -85,7 +85,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                         <th>Employee Name</th>
                                                         <th style="width: 15%">Total Working Hrs</th>
                                                         <th>Date Range</th>
-                                                        <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -94,7 +93,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                 <?php
                                                     $x = 1;
-                                                    $query = "SELECT schedules.*, employee.name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id";
+                                                    $query = "SELECT schedules.*, SUM(schedules.bill) as bill, employee.name, employee.last_name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id GROUP BY schedules.employee_id, schedules.week";
                                                     $result = mysqli_query($connection, $query);
                                                     if (mysqli_num_rows($result) > 0) {
                                                         while ($row = mysqli_fetch_assoc($result)) {
@@ -102,34 +101,17 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                     <tr>
                                                         <td class="align-middle"><?=$x++?></td>
-                                                        <td class="align-middle"><?=$row['name']?></td>
-                                                        <td style="width: 15%"><?=$row['mon_bill'] + $row['tue_bill'] + $row['wed_bill'] + $row['thu_bill'] + $row['fri_bill'] + $row['sat_bill']." hrs"?></td>
+                                                        <td class="align-middle"><?=$row['name']." ".$row['last_name']?></td>
+                                                        <td style="width: 15%"><?=$row['bill']." hrs"?></td>
                                                         <td class="align-middle"><?=date("M/d/Y", strtotime($row['week']));?> - <?=date("M/d/Y", strtotime($row['week']. ' +5 day'));?></td>
-                                                        <td class=" align-middle">
-                                                            <?php if ($row['status'] == 1) {
-                                                                echo 'Active';
-                                                                } else {
-                                                                echo 'Inactive';
-                                                                }; 
-                                                            ?>
-                                                        </td>
                                                         <td class="align-middle text-center">
-                                                        <?php if ($row['status'] == 0){?>
-                                                            <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteSched&sched_id=<?=$row['sched_id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Department. Still want to restore?')">
-                                                                <i class="fa fa-undo"> </i>
-                                                            </a>
-                                                        
-                                                        
-                                                        <?php } elseif($row['status'] == 1){?>
-
-                                                            <a href="e_schedule.php?eschedule&sched_id=<?=$row['sched_id']?>" class="btn btn-primary btn-circle">
+                                                        <a href="e_schedule.php?eschedule&emp_id=<?=$row['employee_id']?>&week=<?=$row['week']?>&name=<?=$row['name']." ".$row['last_name']?>" class="btn btn-primary btn-circle">
                                                                 <span class="icon text-white" title="Edit">
                                                                     <i class="fas fa-edit"></i>
                                                                 </span>
                                                             </a> |
-                                                            <a href="../../ajaxadmin/ajaxadmin.php?deleteSched&sched_id=<?=$row['sched_id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
-
-                                                        <?php }?>       
+                                                        <a href="../../ajaxadmin/ajaxadmin.php?deleteSched&emp_id=<?=$row['employee_id']?>&week=<?=$row['week']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+    
                                                         </td>
                                                     </tr>
                                                 <?php

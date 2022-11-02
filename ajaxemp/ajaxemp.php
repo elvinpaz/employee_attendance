@@ -14,9 +14,37 @@ if (isset($_GET["insertNewAttendance"])) {
         $location=$_POST['location'];
         $daystarts=$_POST['daystartss'];
         $dayends=$_POST['dayendss'];
+        $time_in=$_POST['timein'];
+        $fileInfo = PATHINFO($_FILES["imgupload"]["name"]);
+
+        $query = "SELECT name, last_name FROM employee WHERE id = '".$empid."'";
+        $result = mysqli_query($connection, $query);
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+
+                $name = $row['name']."-".$row['last_name'];
+
+            }
+        }
+        
 
 
     if (isset($_POST["time_in"])) {
+
+        if (empty($_FILES["imgupload"]["name"])){
+            $image="default.png";
+    
+        }
+        else{
+            if ($fileInfo['extension'] == "jpg" OR $fileInfo['extension'] == "png") {
+                $newFilename = $name. "_" .$daytoday. "." . $fileInfo['extension'];
+                move_uploaded_file($_FILES["imgupload"]["tmp_name"], "../upload/employeeimage/" . $newFilename);
+                $image = $newFilename;
+            }
+            else{
+                $image="default.png";
+            }
+        }
 
         $timein = new DateTime($todaytimestamp);//start time
         $shiftstart = new DateTime($daystarts);//start shift
@@ -32,22 +60,24 @@ if (isset($_GET["insertNewAttendance"])) {
             $in_status = 'ON TIME';
         }
 
-        $query = "INSERT INTO `attendances`(`employee_id`, `time_in`, `date`, `timein_status`, `late_duration`, `location`) 
-            VALUES ('".$empid."','".$date."','".$daytoday."','".$in_status."','".$lateduration."','".$location."')";
+        $query = "INSERT INTO `attendances`(`employee_id`, `image`, `time_in`, `date`, `timein_status`, `late_duration`, `location`, `status`) 
+            VALUES ('".$empid."', '".$image."', '".$date."','".$daytoday."','".$in_status."','".$lateduration."','".$location."','IN')";
         mysqli_query($connection, $query);
         header("location: ../employee/dashboard/dashboard.php");
     }
 
     if (isset($_POST["time_out"])) {
-
+        $timeins = new DateTime($time_in);//start time
         $timeout = new DateTime($todaytimestamp);//end time
         $shiftend = new DateTime($dayends);//end shift
         $undertime = $shiftend->diff($timeout);
         $overtime = $timeout->diff($shiftend);
+        $render = $timeins->diff($timeout);
         // $gethoursduration = $interval->format('%H');
         // echo $interval->format(($gethoursduration == '00') ? '%i minutes' : '%H hour(s) %i minutes');
         $undertimeduration = "";
         $overtimeduration = "";
+        $totalrenderduration = $render->format('%H:%i:00');
 
         if($todaytimestamp < $dayends){
             $out_status = 'UNDERTIME';
@@ -59,26 +89,10 @@ if (isset($_GET["insertNewAttendance"])) {
             $out_status = 'ON TIME';
         }
 
-        $query = "UPDATE `attendances` SET `time_out`='".$date."',`timeout_status`='".$out_status."',`undertime_duration`='".$undertimeduration."',`overtime_duration`='".$overtimeduration."',`status`= 1 WHERE employee_id = '".$empid."' AND date = '".$daytoday."' AND status = 0";
+        $query = "UPDATE `attendances` SET `time_out`='".$date."',`timeout_status`='".$out_status."',`undertime_duration`='".$undertimeduration."',`overtime_duration`='".$overtimeduration."',`total_render`='".$totalrenderduration."',`status`= 'OUT' WHERE employee_id = '".$empid."' AND date = '".$daytoday."' AND status = 'IN'";
         mysqli_query($connection, $query);
     
         header("location: ../employee/dashboard/dashboard.php");
-    }
-
-    if (isset($_GET["Absent"])) {
-
-        if($_GET['shift'] == 1){
-
-            $query = "INSERT INTO `attendances`(`employee_id`, `date`, `status`) VALUES ('".$_GET['emp']."','".$_GET['date']."', 3)";
-            mysqli_query($connection, $query);
-        
-            header("location: ../employee/dashboard/dashboard.php");
-
-        }
-        header("location: ../employee/dashboard/dashboard.php");
-        
-
-
     }
 }
 

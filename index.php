@@ -36,15 +36,15 @@
 
                                 $erromsg="";
 
-                                if($_GET['usermsg'] == 'Sorry! Wrong username or password.'){
+                                if($_GET['usermsg'] == 'Sorry! Wrong email or password.'){
 
                                     $erromsg = $_GET['usermsg'];
 
                                     
                                 ?>
                                     
-                                    <div class="alert alert-success" style="margin-top: 20px;">
-                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                    <div class="alert alert-danger" style="margin-top: 20px;">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
                                         <?php echo $erromsg;?>
                                     </div>
                                     

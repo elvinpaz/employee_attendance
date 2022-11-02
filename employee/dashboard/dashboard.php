@@ -6,95 +6,77 @@ require '../../connection/connect.php';
 
 if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
 
- 
-    $daystarts;
-    $dayends;
-    $daytimeend="";
-    $hrs = "";
-    $mins = "";
-    $absent = false;
+
+        $timestamp = date("H:i", strtotime($todaytimestamp));
 
 
-    switch ($day) {
-        case "Monday":
-            $daystart = 'mon_start';
-            $dayend = 'mon_end';
-            $shift = 0;
-            break;
-        case "Tuesday":
-            $daystart = 'tue_start';
-            $dayend = 'tue_end';
-            $shift = 0;
-            break;
-        case "Wednesday":
-            $daystart = 'wed_start';
-            $dayend = 'wed_end';
-            $shift = 0;
-            break;
-        case "Thursday":
-            $daystart = 'thu_start';
-            $dayend = 'thu_end';
-            $shift = 0;
-            break;
-        case "Friday":
-            $daystart = 'fri_start';
-            $dayend = 'fri_end';
-            $shift = 0;
-            break;
-        case "Saturday":
-            $daystart = 'sat_start';
-            $dayend = 'sat_end';
-            $shift = 0;
-            break;
-      }
-        
 
-        $query = "SELECT $daystart, $dayend FROM schedules WHERE week = '".$yearweek."' AND $daystart != ''";
+
+        $query = "SELECT * FROM employee WHERE id = '".$_SESSION['emp_id']."'";
         $result = mysqli_query($connection, $query);
         if (mysqli_num_rows($result) > 0) {
-
-            $shift++;
-
             while ($row = mysqli_fetch_assoc($result)) {
-                $daystarts = date("h.i A", strtotime($row[$daystart]));
-                $dayends = date("h.i A", strtotime($row[$dayend]));
-
-                $daytimestart = $daytoday." ".$row[$daystart];
-                $daytimeend = $daytoday." ".$row[$dayend];
-
-                $hrs = date('H', strtotime($daytimeend));
-                $mins = date('i', strtotime($daytimeend));
+               
+                $name = $row['name']." ".$row['last_name'];
         
             }
         }
 
-        if($todaytimestamp > $daytimeend){
-            $absent = true;
-        }
-        
-        $status = "";
+        $start = "";
+        $end = "";
+        $hrs = 0;
+        $mins = 0;
+        $schedstatus = "";
+        $attendancestatus = "";
+        $schedattend_status = "";
         $location = "";
         $time_in = "";
         $time_out = "";
         $in_status = "";
         $out_status = "";
+        $image = "";
 
-        $query = "SELECT * FROM attendances WHERE employee_id = '".$_SESSION['emp_id']."' AND date = '".$daytoday."'";
+        
+
+        $query = "SELECT schedules.*, 
+                        CONCAT(schedules.date, ' ', schedules.start) AS shift_start, 
+                        CONCAT(schedules.date, ' ', schedules.end) AS shift_end, 
+                        schedules.status AS sched_status,
+                        IF(attendances.status IS NOT NULL, 'PRESENT', IF(schedules.end <> '' AND schedules.end <= '".$timestamp."', 'ABSENT', '')) AS attendance,
+                        attendances.* 
+                        FROM `schedules`
+                        LEFT JOIN `attendances` ON attendances.employee_id = schedules.employee_id AND attendances.date = schedules.date  
+                        WHERE schedules.date = '".$daytoday."' AND schedules.employee_id = '".$_SESSION['emp_id']."' ";
         $result = mysqli_query($connection, $query);
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-               
-                $status = $row['status'];
+
+                $schedstatus = $row['sched_status'];
+
+                $start = date("h:i A", strtotime($row['shift_start']));
+                $end = date("h:i A", strtotime($row['shift_end']));
+
+                $daytimestart = $row['shift_start'];
+                $daytimeend = $row['shift_end'];
+                
+                $hrs = date('H', strtotime($end));
+                $mins = date('i', strtotime($end))+1;
+
+                $attendancestatus = $row['status'];
+
                 $location = $row['location'];
                 $time_in = $row['time_in'];
                 $time_out = $row['time_out'];
+                
+                $schedattend_status = $row['attendance'];
+
                 $in_status = $row['timein_status'];
                 $out_status = $row['timeout_status'];
-        
+
+                $image = $row['image'];
+
             }
         }
-
-    
 
 ?>
 
@@ -161,8 +143,23 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                             </div>
 
                             <!-- content -->
+                            <form action="../../ajaxemp/ajaxemp.php?insertNewAttendance" method="POST" enctype="multipart/form-data">
+                            <div class="row justify-content-center mb-3">
+                                <div class="col-lg-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row justify-content-center">
+                                                <img id="profileimg" src="../../upload/employeeimage/<?=$image?>" class="card-img-top card-img-bottom mb-3" style="height: 200px; max-width: 270px;" <?= $image == '' ? 'hidden':''?>>
+                                                <label type="button" class="btn btn-outline-success btn-block" style="margin-bottom: -2px" <?=($attendancestatus == 'IN' || $attendancestatus == 'OUT' || $schedstatus == 'REST' || $schedattend_status == 'ABSENT') ? '' : 'for="imgupload"' ?>>Click me to upload image</label>
+                                                <input type="file" required name="imgupload" id="imgupload" accept="image/*" style="margin-top: -5px; opacity:0%; width: 100%; height:1px;" oninvalid="this.setCustomValidity('Please upload image')" oninput="this.setCustomValidity('')"
+                                                <?=($attendancestatus == 'IN' || $attendancestatus == 'OUT' || $schedstatus == 'REST' || $schedattend_status == 'ABSENT') ? 'disabled' : '' ?>>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="row justify-content-center">
-                               
                                 <div class="col-lg-4">
                                     <div class="card">
                                         <div class="card-body" style="height:180px;">
@@ -174,7 +171,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                                             <div id="timeindetails">
                                                                 <?php
                                                                 
-                                                                    if($todaytimestamp > $daytimeend && $shift == 1){
+                                                                    if($schedattend_status == 'ABSENT'){
 
                                                                 ?>
 
@@ -183,9 +180,9 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                                                 <?php
                                                                     }
                                                                 ?>
-                                                                <p style="font-size: 13px; text-align: center; margin-top: 20%;"><strong><?=$status == 0 ? "TIMED-IN" : ""?><?=$status == 1 ? "TIMED-OUT" : ""?></strong></p>
-                                                                <h4 style="text-align: center; margin-top: -5%;  font-weight: bolder;"><?=$status == 0 ? date("h:i A",strtotime($time_in)) : ""?><?=$status == 1 ? date("h:i A",strtotime($time_out)) : ""?></h4>
-                                                                <p id="inout_status" style="font-size: 13px;  text-align: center; margin-top: 10%;"><strong><?=$status == 0 ? $in_status : ""?><?=$status == 1 ? $out_status : ""?></strong></p>
+                                                                <p style="font-size: 13px; text-align: center; margin-top: 20%;"><strong><?=$attendancestatus == "IN" ? "TIMED-IN" : ""?><?=$attendancestatus == "OUT" ? "TIMED-OUT" : ""?></strong></p>
+                                                                <h4 style="text-align: center; margin-top: -5%;  font-weight: bolder;"><?=$attendancestatus == 'IN' ? date("h:i A",strtotime($time_in)) : ""?><?=$attendancestatus == 'OUT' ? date("h:i A",strtotime($time_out)) : ""?></h4>
+                                                                <p id="inout_status" style="font-size: 13px;  text-align: center; margin-top: 10%;"><strong><?=$attendancestatus == "IN" ? $in_status : ""?><?=$attendancestatus == "OUT" ? $out_status : ""?></strong></p>
                                                             </div>
                                                         </div>                                                                                  
                                                     </div>
@@ -200,12 +197,13 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                                        
                                                             <p style="font-size: 16px; line-height: 1px;" id="clock"></p>
                                                         
-                                                            <form action="../../ajaxemp/ajaxemp.php?insertNewAttendance" method="POST" >
+                                                            
+                                                            
                                                             
                                                                 <div class="col-row" style="margin-top: 20px;">
                                                                     
                                                                     <label style="font-size: 15px;">Location:</label>
-                                                                    <select style="width:105px; height:23px; font-size: 12px; margin-left: 5px;" name="location" id="location" required <?=($shift == 0 || $status == 1 || $absent == true) ? 'disabled' : '' ?>>
+                                                                    <select style="width:105px; height:23px; font-size: 12px; margin-left: 5px;" name="location" id="location" required <?=($attendancestatus == 'IN' || $attendancestatus == 'OUT' || $schedstatus == 'REST' || $schedattend_status == 'ABSENT') ? 'disabled' : '' ?>>
                                                                             <option value="" disabled selected hidden></option>
                                                                             
                                                                             <?php
@@ -215,7 +213,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                                                                 while ($row = mysqli_fetch_assoc($result)) {
                                                                             ?>
                                                                                     
-                                                                                    <option required value="<?=$row['name']?>" <?=($location == $row['name'] && ($status == 0 || $status == 1)) ? "selected": ""?> ><?=$row['name']?></option>
+                                                                                    <option required value="<?=$row['name']?>" <?=($location == $row['name'] && ($schedstatus == 'REST' || $attendancestatus == 'IN' || $attendancestatus == 'OUT')) ? "selected": ""?> ><?=$row['name']?></option>
                                                                                     
                                                                             <?php
                                                                                 }
@@ -228,11 +226,13 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                                                     <input type="hidden" name="empid" value="<?=$_SESSION['emp_id']?>">
                                                                     <input type="hidden" name="daystartss" value="<?=$daytimestart?>">
                                                                     <input type="hidden" name="dayendss" value="<?=$daytimeend?>">
+                                                                    <input type="hidden" name="timein" value="<?=$time_in?>">
+                                                                    <input type="hidden" name="timeout" value="<?=$time_out?>">
 
-                                                                    <button type="submit" name="time_in" id="time_in" class="btn btn-success" style="height: 30px; width: 175px; font-size: 13px; margin-top: 3px; <?=($status == 0 || $status == 1 ) ? 'display:none' : 'display:block' ?>" <?=($shift == 0 || $absent == true) ? 'disabled' : '' ?>>
+                                                                    <button type="submit" name="time_in" id="time_in" class="btn btn-success" style="height: 30px; width: 175px; font-size: 13px; margin-top: 3px; <?=($attendancestatus == 'IN' || $attendancestatus == 'OUT') ? 'display:none' : 'display:block' ?>" <?=($schedstatus == "REST" || $schedattend_status == "ABSENT") ? 'disabled' : '' ?>>
                                                                         <span class="text"><strong>TIME IN</strong></span>
                                                                     </button>
-                                                                    <button type="submit" name="time_out" id="time_out" class="btn btn-success" style="height: 30px; width: 175px; font-size: 13px; margin-top: 3px; <?=($status == "" || $status == 3) ? 'display:none' : 'display:block' ?>" <?=($status == 1) ? 'disabled' : '' ?>>
+                                                                    <button type="submit" name="time_out" id="time_out" class="btn btn-success" style="height: 30px; width: 175px; font-size: 13px; margin-top: 3px; <?=($attendancestatus == NULL) ? 'display:none' : 'display:block' ?>" <?=($attendancestatus == "OUT") ? 'disabled' : '' ?>>
                                                                         <span class="text"><strong>TIME OUT</strong></span>
                                                                     </button>
 
@@ -249,7 +249,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                     </div>
                                     <!-- /.card -->
                                 </div>
-
+                                
                                 <div class="col-lg-4">
                                     <div class="card">
                                         <div class="card-body" style="height:180px; margin-left: 20px; margin-right: 20px;">
@@ -260,17 +260,16 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                             <div class="row justify-content-center">
 
                                                 <?php
-                                                
-                                                if($shift != 0){
+                                                if($schedstatus == "REG"){
                                                 
                                                 ?>
 
                                                     <div class="col-6">
                                                         <div class="card">
-                                                            <div class="card-body" style="height:60px; margin-left: auto; margin-right: auto;">
+                                                            <div class="card-body" style="height:60px; width: 100%; margin-left: auto; margin-right: auto;">
                                                             
-                                                                <p style="color: #1cc88a; font-size: 11px; margin-top: -5px;"><strong>SCHEDULED TIME IN:</strong></p>
-                                                                <p style="color: #1cc88a;  font-size: 14px; margin-top: -15px;"><?=$daystarts?></p>
+                                                                <p style="color: #1cc88a; width: 100%; font-size: 10px; margin-top: -5px;"><strong>SCHEDULED TIME IN:</strong></p>
+                                                                <p style="color: #1cc88a;  font-size: 14px; margin-top: -15px;"><strong><?=$start?></strong></p>
 
                                                                 
                                                             </div>
@@ -278,10 +277,10 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="card">
-                                                        <div class="card-body" style="height:60px; margin-left: auto; margin-right: auto;">
+                                                        <div class="card-body" style="height:60px; width: 100%; margin-left: auto; margin-right: auto;">
                                                             
-                                                            <p style="color: #1cc88a; font-size: 10px; margin-top: -5px;"><strong>SCHEDULED TIME OUT:</strong></p>
-                                                            <p style="color: #1cc88a; font-size: 14px; margin-top: -15px;"><?=$dayends?></p>
+                                                            <p style="color: #1cc88a; width: 100%; font-size: 9px; margin-top: -5px;"><strong>SCHEDULED TIME OUT:</strong></p>
+                                                            <p style="color: #1cc88a; font-size: 14px; margin-top: -15px;"><strong><?=$end?></strong></p>
 
                                                             
                                                         </div>
@@ -354,7 +353,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                 <th colspan="9">
                                     <div class="row">
                                         <div class="col">
-                                            <p style="float:left; margin-bottom: 1px; font-size: 20px;">Juan Dela Cruz</p>
+                                            <p style="float:left; margin-bottom: 1px; font-size: 20px;"><?=$name?></p>
                                         </div>
                                     </div>
                                 </th>
@@ -375,17 +374,32 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                         <tbody>
                             <?php
                             
-                                $query = "SELECT `employee_id`, `time_in`, `time_out`, `date`, `timein_status`, `timeout_status`, `late_duration`, `undertime_duration`, `overtime_duration`, `location`, `status` FROM `attendances` WHERE `employee_id` ='".$_SESSION['emp_id']."'";
+                            $query = "SELECT schedules.*, 
+                            CONCAT(schedules.date, ' ', schedules.start) AS shift_start, 
+                            CONCAT(schedules.date, ' ', schedules.end) AS shift_end, 
+                            IF(attendances.status IS NOT NULL, 'PRESENT', IF(schedules.status = 'REST', 'REST', IF(schedules.end <> '' AND schedules.end >= '".$timestamp."' AND schedules.date >= '".$daytoday."', '', 'ABSENT'))) AS attendances,
+                            schedules.status AS sched_status, 
+                            schedules.date AS sched_date, 
+                            attendances.*,
+                            attendances.status AS attend_status
+                            FROM `schedules`
+                            LEFT JOIN `attendances` ON attendances.employee_id = schedules.employee_id AND attendances.date = schedules.date  
+                            WHERE schedules.date <= '".$daytoday."' AND schedules.employee_id = '".$_SESSION['emp_id']."' AND 
+                            IF(attendances.status IS NOT NULL, 'PRESENT', IF(schedules.end >= '".$timestamp."' AND schedules.date = '".$daytoday."', '', 'ABSENT')) <> ''
+                            ORDER BY schedules.date DESC";
                                 $result = mysqli_query($connection, $query);
                                 if (mysqli_num_rows($result) > 0) {
                                     while ($row = mysqli_fetch_assoc($result)) {
 
-                                        if($row['status']==3){
+                                     
+                                        
+                                        if($row['attendances']=='ABSENT'){
+                                           
                             
                             ?>
                                         <tr>
-                                            <td style="text-align: center;"><?=date("M d, Y",strtotime($row['date']))?></td>
-                                            <td colspan="8" style="text-align: center; color:orange"><strong><----------ABSENT----------></strong></td>
+                                            <td style="text-align: center;"><?=date("M d, Y",strtotime($row['sched_date']))?></td>
+                                            <td colspan="8" style="text-align: center; color:red"><strong><---------- ABSENT ----------></strong></td>
                                             <td hidden></td>
                                             <td hidden></td>
                                             <td hidden></td>
@@ -395,15 +409,53 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                             <td hidden></td>
                                         </tr>
                             <?php
+                                        } elseif($row['attend_status'] =='IN' && $row['time_out'] == '' && $row['sched_date'] < $daytoday) {
+                                            
+                            ?>            
+                            
+                                        <tr>
+                                            <td style="text-align: center;"><?=date("M d, Y",strtotime($row['sched_date']))?></td>
+                                            <td style="text-align: center;"><?=$row['location']?></td>
+                                            <td style="text-align: center;"><?=($row['time_in'] == "") ? "" : date("h:i A",strtotime($row['time_in']))?></td>
+                                            <td style="text-align: center;<?=$row['timein_status'] == "LATE" ? "color:orange;" : "color:#1cc88a;"?>"><?=$row['timein_status']?></td>
+                                            <td colspan="2" style="text-align: center; color:orange"><strong>TIME OUT MISSING</strong></td>
+                                            <td hidden></td>
+                                            <td style="text-align: center;"><?=$row['late_duration']?></td>
+                                            <td style="text-align: center;"><?=$row['undertime_duration']?></td>
+                                            <td style="text-align: center;"><?=$row['overtime_duration']?></td>
+                                        </tr>
+
+
+                            <?php
+                                        } elseif($row['attendances']=='REST') {
+                                            
+                            ?>            
+                            
+                                        <tr>
+                                        <td style="text-align: center;"><?=date("M d, Y",strtotime($row['sched_date']))?></td>
+                                            <td colspan="8" style="text-align: center; color:#1cc88a"><strong><---------- REST DAY ----------></strong></td>
+                                            <td hidden></td>
+                                            <td hidden></td>
+                                            <td hidden></td>
+                                            <td hidden></td>
+                                            <td hidden></td>
+                                            <td hidden></td>
+                                            <td hidden></td>
+                                        </tr>
+
+
+                            <?php
+                                            
                                         } else {
+                                                 
                             ?>
                                         <tr>
-                                            <td style="text-align: center;"><?=date("M d, Y",strtotime($row['date']))?></td>
+                                            <td style="text-align: center;"><?=date("M d, Y",strtotime($row['sched_date']))?></td>
                                             <td style="text-align: center;"><?=$row['location']?></td>
-                                            <td style="text-align: center;"><?=date("h:i A",strtotime($row['time_in']))?></td>
-                                            <td style="text-align: center;<?=$row['timein_status'] == "LATE" ? "color:orange;" : ""?>"><?=$row['timein_status']?></td>
-                                            <td style="text-align: center;"><?=date("h:i A",strtotime($row['time_out']))?></td>
-                                            <td style="text-align: center;<?=$row['timeout_status'] == "UNDERTIME" ? "color:orange;" : ""?>"><?=$row['timeout_status']?></td>
+                                            <td style="text-align: center;"><?=($row['time_in'] == "") ? "" : date("h:i A",strtotime($row['time_in']))?></td>
+                                            <td style="text-align: center;<?=$row['timein_status'] == "LATE" ? "color:orange;" : "color:#1cc88a;"?>"><?=$row['timein_status']?></td>
+                                            <td style="text-align: center;"><?=($row['time_out'] == "") ? "" : date("h:i A",strtotime($row['time_out']))?></td>
+                                            <td style="text-align: center;<?=$row['timeout_status'] == "UNDERTIME" ? "color:orange;" : "color:#1cc88a;"?>"><?=$row['timeout_status']?></td>
                                             <td style="text-align: center;"><?=$row['late_duration']?></td>
                                             <td style="text-align: center;"><?=$row['undertime_duration']?></td>
                                             <td style="text-align: center;"><?=$row['overtime_duration']?></td>
@@ -417,7 +469,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                             ?>
 
                         </tbody>
-                                                </table>
+                    </table>
                                             </div>
                                         </div>
                                     </div>
@@ -493,6 +545,26 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
 
         
 
+        <script>
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        $('#profileimg').attr('src', e.target.result);
+                        $('#profileimg').removeAttr("hidden")
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
+
+            $("#imgupload").change(function(){
+                readURL(this);
+            });
+        </script>
+        
+
         <script type="text/javascript">
 
             var minDate, maxDate;
@@ -529,7 +601,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
             $(function () {
 
                 $("#example1").DataTable({
-                "responsive": true, "lengthChange": true, "autoWidth": false
+                "responsive": true, "lengthChange": true, "autoWidth": false, "ordering":false,
+                "buttons": ["print"],
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
                 
             });
@@ -540,6 +613,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                     var min = minDate.val();
                     var max = maxDate.val();
                     var date = new Date( data[0] );
+
+                    
             
                     if (
                         ( min === null && max === null ) ||
@@ -550,8 +625,12 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                         return true;
                     }
                     return false;
+
+                    
                 }
             );
+
+            
             
             $(document).ready(function() {
                 // Create date inputs
@@ -599,9 +678,22 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
             }
             function digitalClock(){
                 servertime.setSeconds(servertime.getSeconds()+1);
-                var timestring=padlength(servertime.getHours())+":"+padlength(servertime.getMinutes())+":"+padlength(servertime.getSeconds());
-                var ampm = (servertime.getHours() >= 12) ? 'pm' : 'am';
-                document.getElementById("clock").innerHTML=timestring + " " +ampm;
+                // var timestring=padlength(servertime.getHours())+":"+padlength(servertime.getMinutes())+":"+padlength(servertime.getSeconds());
+                // var ampms = (servertime.getHours() >= 12) ? 'pm' : 'am';
+
+                var hours = servertime.getHours();
+                var minutes = servertime.getMinutes();
+                var ampm = hours >= 12 ? 'pm' : 'am';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                minutes = minutes < 10 ? '0'+minutes : minutes;
+                var strTime = hours + ':' + minutes + ':' + padlength(servertime.getSeconds()) +' ' + ampm;
+
+
+
+
+                
+                document.getElementById("clock").innerHTML=strTime;
             }
             window.onload=function(){
             setInterval("digitalClock()", 1000);
@@ -610,6 +702,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
 
 
         <script>
+           
             function refreshAt(hours, minutes, seconds) {
                 var now = new Date();
                 var then = new Date();
@@ -624,13 +717,24 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                 then.setSeconds(seconds);
 
                 var timeout = (then.getTime() - now.getTime());
-                setTimeout(function() { window.location.href="../../ajaxemp/ajaxemp.php?insertNewAttendance&Absent&emp=<?=$_SESSION['emp_id']?>&date=<?=$daytoday?>&shift=<?=$shift?>"; }, timeout);
+
+                
+                    setTimeout(function() { window.location.reload(true); }, timeout);
+                
+                
             }
-            refreshAt(<?php echo $hrs?>,<?php echo $mins+1?>,0); //Will refresh the page at 4:30pm
+                refreshAt(<?php echo $hrs?>,<?php echo $mins?>,0);
+                refreshAt(24,00,00); //Will refresh the page at 12:00am
+            
+
+          
+            
+
+            
         </script>
 
 
-        <script>
+        <!-- <script>
             function refreshAt(hours, minutes, seconds) {
                 var now = new Date();
                 var then = new Date();
@@ -647,8 +751,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                 var timeout = (then.getTime() - now.getTime());
                 setTimeout(function() { window.location.reload(true); }, timeout);
             }
-            refreshAt(24,00,0); //Will refresh the page at 12:00am
-        </script>
+            refreshAt(5,47,30); //Will refresh the page at 12:00am
+        </script> -->
         
         
 

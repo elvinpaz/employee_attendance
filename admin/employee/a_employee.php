@@ -257,8 +257,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                         <label>Employee Status</label>
                                                                         <select class="form-control" name="e_status" id="e_status" required>
                                                                             <option></option>
-                                                                            <option value="0">Active</option>
-                                                                            <option value="1">Inactive</option>
+                                                                            <option value="1">Active</option>
+                                                                            <option value="0">Inactive</option>
                                                                         </select>
                                                                     </div>
                                                                     

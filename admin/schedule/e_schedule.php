@@ -7,40 +7,9 @@ require '../../connection/connect.php';
 if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
     if (isset($_GET['eschedule'])) {
-        $sched_id = $_GET['sched_id'];
-    
-
-        $query = "SELECT employee.name, 
-                         schedules.*
-                    FROM schedules
-                    LEFT JOIN employee ON schedules.employee_id = employee.id
-                    WHERE sched_id='".$sched_id."'";
-        $result = mysqli_query($connection, $query);
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $name=$row['name'];
-                $week=$row['week'];
-                $mon_bill=$row['mon_bill'];
-                $tue_bill=$row['tue_bill'];
-                $wed_bill=$row['wed_bill'];
-                $thu_bill=$row['thu_bill'];
-                $fri_bill=$row['fri_bill'];
-                $sat_bill=$row['sat_bill'];
-                $mon_start=$row['mon_start'];
-                $tue_start=$row['tue_start'];
-                $wed_start=$row['wed_start'];
-                $thu_start=$row['thu_start'];
-                $fri_start=$row['fri_start'];
-                $sat_start=$row['sat_start'];
-                $mon_end=$row['mon_end'];
-                $tue_end=$row['tue_end'];
-                $wed_end=$row['wed_end'];
-                $thu_end=$row['thu_end'];
-                $fri_end=$row['fri_end'];
-                $sat_end=$row['sat_end'];
-            }
-        }
-    
+        $emp_id = $_GET['emp_id'];
+        $week = $_GET['week'];
+        $name = $_GET['name'];
     }
     
 
@@ -118,55 +87,42 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                             </div>
                                             <table class="table table-bordered table-striped" style="margin-bottom:20px;">
                                                 <thead>
-                                                    <th style="padding-top:10px; text-align:center;"><input type="checkbox" name="disableRow" id="selectAll" checked/></th>
+                                                    <th style="width: 10%">Status</th>
                                                     <th style="width: 25%">Day</th>
                                                     <th style="width: 10%">Billable Hrs</th>
                                                     <th style="width: 30%">Start Time</th>
                                                     <th style="width: 30%">End Time</th>
                                                 </thead>
                                                 <tbody>
+
+                                                <?php
+                                                    $x = 1;
+                                                    $query = "SELECT * FROM `schedules` WHERE employee_id = '".$emp_id."' AND week = '".$week."'";
+                                                    $result = mysqli_query($connection, $query);
+                                                    if (mysqli_num_rows($result) > 0) {
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                ?>
+
                                                     <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
-                                                        <td style="width: 25%">Monday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" type="number" name="bill_mon" id="bill_mon" value="<?=$mon_bill?>"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$mon_start?>" id="mon_start" name="mon_start"  min="6" max="12" class="form-control  timepicker"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$mon_end?>" id="mon_end" name="mon_end" min="12" max="25" class="form-control  timepicker"></td>
+                                                        <input type="hidden" name="sched_id[]" value="<?=$row['sched_id']?>">
+                                                    <td style="text-align:center;">
+                                                                        <select class="form-control" id="sched_status" name="sched_status[]">
+                                                                            <option value="REG" <?=$row['status'] == "REG" ? "selected": ""?>>REG</option>
+                                                                            <option value="REST" <?=$row['status'] == "REST" ? "selected": ""?>>REST</option>
+                                                                        </select>
+                                                        </td>
+                                                        <td style="width: 25%"><?=$row['day']?></td>
+                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" value="<?=$row['bill']?>" min="1" name="bill[]"></td>
+                                                        <td style="width: 30%"><input type="time" value="<?=$row['start']?>" required id="mon_start" name="start[]"  min="00:00" max="23:59" class="form-control  startpicker"></td>
+                                                        <td style="width: 30%"><input type="time" value="<?=$row['end']?>" required id="mon_end" name="end[]" class="form-control  endpicker"></td>
                                                     </tr>
-                                                    <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
-                                                        <td style="width: 25%">Tuesday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" type="number" name="bill_tue" id="bill_tue" value="<?=$tue_bill?>"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$tue_start?>" id="tue_start" name="tue_start" class="form-control  timepicker"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$tue_end?>" id="tue_end" name="tue_end" class="form-control  timepicker"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
-                                                        <td style="width: 25%">Wednesday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" type="number" name="bill_wed" id="bill_wed" value="<?=$wed_bill?>"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$wed_start?>" id="wed_start" name="wed_start" class="form-control  timepicker"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$wed_end?>" id="wed_end" name="wed_end" class="form-control  timepicker"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()"/></td>
-                                                        <td style="width: 25%">Thursday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" type="number" name="bill_thu" id="bill_thu" value="<?=$thu_bill?>"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$thu_start?>" id="thu_start" name="thu_start" class="form-control  timepicker"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$thu_end?>" id="thu_end" name="thu_end" class="form-control  timepicker"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()" id="<?=$sched_id?>" value="<?=$sched_id?>"/></td>
-                                                        <td style="width: 25%">Friday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" type="number" name="bill_fri" id="bill_fri" value="<?=$fri_bill?>"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$fri_start?>" id="fri_start" name="fri_start" class="form-control  timepicker"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$fri_end?>" id="fri_end" name="fri_end" class="form-control  timepicker"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="text-align:center;"><input type="checkbox" checked class="disableRow" name="disableRow[]" onchange="callFunction()" id="<?=$sched_id?>" value="<?=$sched_id?>"/></td>
-                                                        <td style="width: 25%">Saturday</td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" type="number" name="bill_sat" id="bill_sat" value="<?=$sat_bill?>"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$sat_start?>" id="sat_start" name="sat_start" class="form-control timepicker"></td>
-                                                        <td style="width: 30%"><input type="time" required value="<?=$sat_end?>" id="sat_end" name="sat_end" class="form-control timepicker"></td>
-                                                    </tr>
+
+
+                                                <?php
+                                                        }
+                                                    }
+                                                ?>
+                        
                                                 </tbody>
                                             </table>
                                         </div>
@@ -181,7 +137,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                     </span>
                                     <span class="text">Add to system</span>
                                     </button>
-                                    <input type="hidden" name="sched_id" value="<?=$sched_id?>">
+                                    
                                 </form>
                             </div>
                         </div>
@@ -215,7 +171,52 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
         <!-- Custom scripts for all pages-->
         <script src="../../assets/js/sb-admin-2.min.js"></script>
 
+        <script type='text/javascript'>
+
+            $(document).ready(function() {
+                    
+                $('select[name="sched_status[]"]').on('change',function(){
+                    $next = $(this).closest('tr').find("[type='time']");
+                    $next1 = $(this).closest('tr').find("[type='number']");
+                    
+                    var  status = $(this).val();
+
+                    if(status == "REST"){       
+                        $next.val('');
+                        $next1.val('');    
+                        $next.prop('readonly', true);
+                        $next1.prop('readonly', true);
+                        
+                    }else{
+                        $next.prop('readonly', false);
+                        $next1.prop('readonly', false);
+                    }  
+
+                });
+            });
+        </script>
+
         <script>
+
+            $('select[name="sched_status[]"]').change(function() {
+                $next = $(this).closest('tr').find("[type='time']");
+                $next1 = $(this).closest('tr').find("[type='number']");
+
+                var  status = $(this).val();
+
+                    if(status == "REST"){       
+                        $next.val('');
+                        $next1.val('');    
+                        $next.prop('readonly', true);
+                        $next1.prop('readonly', true);
+                        
+                    }else{
+                        $next.prop('readonly', false);
+                        $next1.prop('readonly', false);
+                    }
+            }).change(); //to trigger on load
+
+
             $('#selectAll').click(function (e) {
                 $(this).closest('table').find('td input:checkbox').prop('checked', this.checked);
                 $("#selectAll").change(function(){
@@ -237,6 +238,12 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                     $next1.val('');
                  
             });
+
+            $(".startpicker").change(function() {
+                var end = $(this).closest('tr').find("[id='mon_end']");
+                end.attr('min',$(this).val());
+            }).change();
+            
         </script>
 
     </body>

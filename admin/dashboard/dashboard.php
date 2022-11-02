@@ -6,36 +6,6 @@ require '../../connection/connect.php';
 
 if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
-   
-    
-
-    switch ($day) {
-        case "Monday":
-            $daystart = 'mon_start';
-            $dayend = 'mon_end';
-            break;
-        case "Tuesday":
-            $daystart = 'tue_start';
-            $dayend = 'tue_end';
-            break;
-        case "Wednesday":
-            $daystart = 'wed_start';
-            $dayend = 'wed_end';
-            break;
-        case "Thursday":
-            $daystart = 'thu_start';
-            $dayend = 'thu_end';
-            break;
-        case "Friday":
-            $daystart = 'fri_start';
-            $dayend = 'fri_end';
-            break;
-        case "Saturday":
-            $daystart = 'sat_start';
-            $dayend = 'sat_end';
-            break;
-      }
-
 
 
 
@@ -49,7 +19,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
     }
 
     // query for total products 
-    $query = "SELECT COUNT(*) as shift FROM schedules WHERE week = '".$yearweek."' AND $daystart != ''";
+    $query = "SELECT COUNT(*) as shift FROM schedules WHERE date = '".$daytoday."' AND status = 'REG'";
     $result = mysqli_query($connection, $query);
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
@@ -221,7 +191,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                     <table class="table">
                                         <thead class="bg-info text-white">
                                             <tr>
-                                                <th scope="col">#</th>
+                                                
                                                 <th scope="col">Dept Code</th>
                                                 <th scope="col">Employees</th>
                                             </tr>
@@ -230,23 +200,27 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                         
                                         <?php
-                                            $x = 1;
-                                            $query = "SELECT department.id, COUNT(employee.id) as qty FROM department LEFT JOIN employee ON employee.department_id = department.dept_id WHERE department.status = 1";
+                                            //$x = 1;
+                                            $qty = "";
+                                            $query = "SELECT department.*, COUNT(employee.id) as qty FROM department LEFT JOIN employee ON employee.department_id = department.dept_id WHERE department.status = 1 GROUP BY dept_id";
                                             $result = mysqli_query($connection, $query);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
+
+                                                    if($row['id'] != ""){
+                                                        $qty = $row['qty'];
+                                                    }
                                         ?>
                                             <tr>
-                                                <th scope="row"><?=$x++?></th>
+                                                
                                                 <td><?=$row['id']?></td>
-                                                <td><?=$row['qty']?></td>
+                                                <td><?=$qty?></td>
                                             </tr>
 
                                         <?php
                                                 }
                                             }
                                         ?>
-
 
                                         </tbody>
                                     </table>
@@ -277,7 +251,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                         <?php
                                             $x = 1;
-                                            $query = "SELECT schedules.*, employee.name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id WHERE week = '".$yearweek."' AND $daystart != ''";
+                                            $query = "SELECT schedules.*, employee.name, employee.last_name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id WHERE date = '".$daytoday."' AND status = 'REG'";
                                             $result = mysqli_query($connection, $query);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
@@ -285,9 +259,9 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                         
                                             <tr>
                                                 <th scope="row"><?=$x++?></th>
-                                                <td><?=$row['name']?></td>
-                                                <td><?=$row[$daystart]?></td>
-                                                <td><?=$row[$dayend]?></td>
+                                                <td><?=$row['name']." ".$row['last_name']?></td>
+                                                <td><?=date("h:i A",strtotime($row['name']))?></td>
+                                                <td><?=date("h:i A",strtotime($row['end']))?></td>
                                             </tr>
 
 
