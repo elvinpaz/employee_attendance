@@ -89,7 +89,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
     <body>
         <!-- Page Wrapper -->
-        <div id="wrapper">
+        <div id="wrapper" style="overflow: hidden">
 
             <?php include '../includes/sidenav.php'; ?>
 
@@ -126,6 +126,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                             <div class="card-body mt-3">
                                                                 <label for="image">Change Employee Image</label><br>
                                                                 <input type="file" name="imgupload" id="imgupload" accept="image/*" class="mt-2" style="width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                            
                                                             </div>
                                                         </div>
                                                     </div>
@@ -476,6 +477,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                     </button>
 
                                                                     <input type="hidden" name="id" value="<?=$id?>">
+                                                                    <input type="hidden" name="imageprevious" value="<?=$image?>">
                                                                 </form>
                                                             </div>
                                                         </div>

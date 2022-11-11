@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
     require '../connection/connect.php';
 
 ?>
@@ -29,7 +29,128 @@
         }
     ?>
 
-    <!-- MODAL -->
+    <!-- view sent files by employee -->
+    <?php
+            if (isset($_GET['viewfiles'])) {
+                $id = $_POST['id'];
+
+                $query = "SELECT CONCAT_WS(' ', employee.name, employee.last_name) AS fullname 
+                        FROM `employee` WHERE id = '".$id."'";
+                        $result = mysqli_query($connection, $query);
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $fullname=$row['fullname'];
+                            }
+                        }
+
+                ?>
+
+                    <div class="box-body">
+                        <h5>Employee's file manager</h5>
+                        <h6 style="margin-top:-5px">Submitted files</h6>
+                        <div class="row">
+                            <i style="font-size: 30px; margin-left:15px; margin-right:10px;" class="fas fa-envelope"></i>
+                            <h6 style="margin-top:5px">From: <?=$fullname?></h6>
+                        </div>
+                        <div  style="border-style: dashed; border-radius: 10px; height: 400px; margin-top: 10px; padding: 5px; overflow-y: scroll;">
+
+
+                <?php
+                        
+                        $query = "SELECT * FROM `e_uploadfile` WHERE status = 0 AND e_uploadfile.employee_id = '".$id."' ORDER BY id DESC";
+                        $result = mysqli_query($connection, $query);
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+
+                
+                ?>
+                       
+                        <div class="callout callout-success" style="margin-left:15px; margin-right:15px; margin-top:15px; height:25%">
+                                <div class="row filedisplay" style="border-radius: 5px; height:100%; width: 100%; margin-left:0px; padding-top: -20px">
+                                    <i style="margin-top: -5px; padding-bottom: 30px; padding-left:20px; padding-right:-10px; font-size: 35px" class="col-1 fas fa-file-alt"></i>
+                                    <div class="col-10" style="height: 50px; margin-top:-15px; margin-left:-10px">
+                                        <a href="../../filesupload/employee/posted/<?php echo $row['filename'];?>" target="_blank">
+                                            <p class="col-12 filename" style="margin-left:-2px; margin-top: 9px; font-size: 15px; color:#28a745; white-space: nowrap;overflow: hidden; text-overflow: ellipsis; width:70%"><strong><?php echo $row['filename'];?></strong></p>
+                                        </a>  
+                                        <p class="col-12 filesize" style="margin-left:-2px; margin-top: 0px; font-size: 12px"><?php echo $row['filesize'];?> KB</p>
+                                    </div>
+                                    <div class="col-1">
+                                        <img src="../../assets/img/new.png" style="<?=$row['readnotif'] == 1 ? 'display: none;' : ''?>position: absolute; right: -538px; top: -25px; height:125px; width:125px; margin-right: 500px; margin-bottom: -10px;">
+                                    </div>
+                                    <p class="col-10" style="margin-top: -23px; margin-left: 5px; font-size: 15px;">Description: <?php echo $row['description'];?></p>
+                                    <p class="col-10" style="margin-top: -20px; margin-left: 5px; font-size: 15px;">Date Uploaded: <?php echo date("M j, Y", strtotime($row['date']))." at ".date("H:i:s a", strtotime($row['date']));?></p>
+                                </div>
+                        </div>
+
+                <?php
+                            }
+                        }
+
+                       
+                        $query = "SELECT * FROM e_uploadfile WHERE e_uploadfile.employee_id = '".$id."'";
+                        $result  = mysqli_query($connection, $query);
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $update = "UPDATE e_uploadfile SET readnotif = 1 WHERE e_uploadfile.employee_id = '".$id."'";
+                                mysqli_query($connection, $update);
+                            }
+                        }
+       
+                ?>
+                        </div>
+                <?php
+            }
+    ?>
+
+    <!-- send requested files -->
+    <?php
+            if (isset($_GET['sendrequest'])) {
+                $id = $_POST['id'];
+
+                $query = "SELECT e_requestfile.*, CONCAT_WS(' ', employee.name, employee.last_name)AS fullname FROM `e_requestfile`
+                LEFT JOIN `employee` ON employee.id = e_requestfile.employee_id WHERE e_requestfile.id = '".$id."'";
+                        $result = mysqli_query($connection, $query);
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                $fullname=$row['fullname'];
+                                $empid=$row['employee_id'];
+                            }
+                        }
+
+        ?>
+
+                <div class="card">
+                    <div class="card-body" style="min-height:250px;">
+                            <p style="text-align: start; font-size:20px;" class="mb-4">Submit files to: <b><?=$fullname?></b></p>
+                            <p>Description:</p>
+                            <input required class="col-12" style="height:40px; margin-top: -50px" type="text" name="filedescription" id="filedescription">
+                            <div class="row" style="margin-bottom: 10px;">
+                                <label class="col-2" type="button"  
+                                    style="margin-bottom: -2px; margin-left:10px; margin-top: 10px; width: 75px; height:75px; padding-top: 15px; padding-bottom: 15px; padding-left:15px; padding-right:15px;" 
+                                    for="fileupload"><i style="color:#154c79; font-size: 45px" class="fas fa-folder-open"></i>
+                                </label>
+                                <div class="col-8" style="height: 75px;">
+                                    <p class="col-12" style="margin-left:-10px; margin-top: 25px;">Choose file to post</p>
+                                    <p class="col-12" style="margin-left:-10px; margin-top: -18px; color:orange; font-size: 12px">you can only upload one file at a time. </p>
+                                </div>
+                                <input required type="file" name="fileupload[]" multiple id="fileupload" style="margin-top: -15px; margin-left: -90px; opacity:0%; width: 100%; height:1px;" onchange="javascript:updateList()" oninvalid="this.setCustomValidity('Please choose a file')" oninput="this.setCustomValidity('')">
+                            </div>
+                            <p>Attached file:</p>
+                            <div style="border-style: dashed; border-radius: 10px; min-height: 75px; max-height: 250px; margin-top: -15px; padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; overflow-y: scroll;">
+                            <div id="fileList"></div>
+                            </div>
+                            <input type="hidden" name="empid" value="<?=$empid?>">
+                            <input type="hidden" name="reqid" value="<?=$id?>">
+                            
+                    </div>
+                </div>
+
+
+                    
+        <?php
+            }
+    ?>
+
     <!-- add academic rank -->
     <?php
         if (isset($_GET['addrank'])) {
@@ -53,6 +174,8 @@
             <?php
         }
     ?>
+
+    <!-- MODAL -->
 
 
 
@@ -405,6 +528,64 @@
             
         }
 
+        // insert upload files
+        if (isset($_GET["insertNewPostedFile"])) {
+            $fileName = PATHINFO($_FILES['fileupload']['name']);
+            $fileSize = intval($_FILES['fileupload']['size']/1024);
+            $description = $_POST['filedescription'];
+            $newFileName = $fileName['filename']."_".$filetimestamp.".".$fileName['extension'];
+            move_uploaded_file($_FILES["fileupload"]["tmp_name"], "../filesupload/admin/posted/".$newFileName);
+
+            echo $newFileName;
+
+            $query = "SELECT * FROM employee";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "INSERT INTO `fileupload`(`employee_id`, `filename`, `filesize`, `description`) 
+                            VALUES ('".$row['id']."','".$newFileName."','".$fileSize."','".$description."') ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            
+            
+            
+            header("location: ../admin/postedfile/postedfile.php");
+
+        }
+
+        // insert sent requested files
+        if (isset($_GET["insertNewRequestFile"])) {
+            $totalfiles = count($_FILES['fileupload']['name']);
+            $description = $_POST['filedescription'];
+            $empid = $_POST['empid'];
+            $id = $_POST['reqid'];
+
+
+            // Looping over all files
+            for($i=0;$i<$totalfiles;$i++){
+                $fileName = PATHINFO($_FILES['fileupload']['name'][$i]);
+                $fileSize = intval($_FILES['fileupload']['size'][$i]/1024);
+                $newFileName = $fileName['filename']."_".$filetimestamp.".".$fileName['extension'];
+
+                // Upload files and store in database
+                if(move_uploaded_file($_FILES["fileupload"]["tmp_name"][$i],"../filesupload/admin/submitted/".$newFileName)){
+                    // Image db insert sql
+                    $insert = "INSERT INTO `filesubmit`(`employee_id`, `filename`, `filesize`, `description`) VALUES ('".$empid."','".$newFileName."','".$fileSize."','".$description."')";
+                    mysqli_query($connection, $insert);
+                }
+
+            }
+
+            $update = "UPDATE e_requestfile SET sent_status = 1 WHERE id = '".$id."' ";
+            mysqli_query($connection, $update);
+
+            header("location: ../admin/requestfile/requestfile.php");
+
+
+
+        }
 
     ?>
 
@@ -567,6 +748,9 @@
             $other_year=$_POST['other_year'];
             $other_school=$_POST['other_school'];
             $fileInfo = PATHINFO($_FILES["imgupload"]["name"]);
+            $imageprevious=$_POST['imageprevious'];
+
+            echo $imageprevious;
 
             $is_master=0;
             $is_doctorate=0;
@@ -585,7 +769,7 @@
             }
 
             if (empty($_FILES["imgupload"]["name"])){
-                $location="default.png";
+                $location=$imageprevious;
         
             }
             else{
@@ -595,7 +779,7 @@
                     $location = $newFilename;
                 }
                 else{
-                    $location="default.png";
+                    $location=$imageprevious;
                 }
             }
 
@@ -675,6 +859,32 @@
 
 
             header("location: ../admin/users/users.php");
+        }
+
+        // submit edit User
+        if (isset($_GET['updatefilesreceived'])) {
+
+            
+            $update = "UPDATE e_uploadfile SET notif = 1";
+            mysqli_query($connection, $update);
+              
+            
+
+
+            header("location: ../admin/receivedfile/receivedfile.php");
+        }
+
+        // submit edit User
+        if (isset($_GET['updatefilesrequest'])) {
+
+            
+            $update = "UPDATE e_requestfile SET notif = 1";
+            mysqli_query($connection, $update);
+              
+            
+
+
+            header("location: ../admin/requestfile/requestfile.php");
         }
 
         
@@ -819,6 +1029,47 @@
             header("location: ../admin/users/users.php");
         }
 
+        //delete user
+        if (isset($_GET['deleteposted'])) {
+            $date=$_GET['date'];
+
+            $query = "SELECT * FROM fileupload WHERE date = '".$date."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE fileupload SET status = 1 WHERE date = '".$date."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            // $query = "DELETE FROM user WHERE id = '".$id."' ";
+            // mysqli_query($connection, $query);
+
+            header("location: ../admin/postedfile/postedfile.php");
+        }
+
+
+        //delete user
+        if (isset($_GET['deletesubmitted'])) {
+            $id=$_GET['id'];
+
+            $query = "SELECT * FROM filesubmit WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE filesubmit SET status = 1 WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            // $query = "DELETE FROM user WHERE id = '".$id."' ";
+            // mysqli_query($connection, $query);
+
+            header("location: ../admin/requestfile/requestfile.php");
+        }
+
+        
+
 
     ?>
 
@@ -954,6 +1205,48 @@
             }
 
             header("location: ../admin/users/users.php");
+        }
+
+
+        // restore delete User
+        if (isset($_GET['restoreDeletePosted'])) {
+            $date=$_GET['date'];
+            
+
+            $query = "SELECT * FROM fileupload WHERE date = '".$date."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE fileupload SET status = 0 WHERE date = '".$date."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            // $query = "DELETE FROM user WHERE id = '".$id."' ";
+            // mysqli_query($connection, $query);
+
+            header("location: ../admin/postedfile/postedfile.php");
+        }
+
+
+        // restore delete User
+        if (isset($_GET['restoreDeleteSubmitted'])) {
+            $id=$_GET['id'];
+            
+
+            $query = "SELECT * FROM filesubmit WHERE id = '".$id."' ";
+            $result  = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $update = "UPDATE filesubmit SET status = 0 WHERE id = '".$id."' ";
+                    mysqli_query($connection, $update);
+                }
+            }
+
+            // $query = "DELETE FROM user WHERE id = '".$id."' ";
+            // mysqli_query($connection, $query);
+
+            header("location: ../admin/requestfile/requestfile.php");
         }
     
 

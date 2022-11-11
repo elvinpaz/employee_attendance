@@ -41,7 +41,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
     <body>
         <!-- Page Wrapper -->
-        <div id="wrapper">
+        <div id="wrapper" style="overflow: hidden">
 
             <?php include '../includes/sidenav.php'; ?>
 

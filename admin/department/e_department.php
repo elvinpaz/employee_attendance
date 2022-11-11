@@ -46,7 +46,7 @@ if (isset($_GET['edepartment'])) {
 
     <body>
         <!-- Page Wrapper -->
-        <div id="wrapper">
+        <div id="wrapper" style="overflow: hidden">
 
             <?php include '../includes/sidenav.php'; ?>
 

@@ -1,3 +1,40 @@
+<?php
+
+  $empid = $_SESSION['emp_id'];
+  
+  $query = "SELECT * FROM `employee` WHERE id ='".$empid."'";
+  $result = mysqli_query($connection, $query);
+  if (mysqli_num_rows($result) > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          $name = $row['name']." ".$row['last_name'];
+          $profilepic = $row['image'];
+      }
+  }
+
+  $query = "SELECT COUNT(*) AS newpost FROM e_uploadfile WHERE status = 0 AND notif = 0";
+  $result = mysqli_query($connection, $query);
+  if (mysqli_num_rows($result) > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          
+          $emppost = $row['newpost'];
+      }
+  }
+
+  $query = "SELECT COUNT(*) AS newsubmit FROM e_requestfile WHERE status = 0 AND notif = 0";
+  $result = mysqli_query($connection, $query);
+  if (mysqli_num_rows($result) > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          
+          $empsubmit = $row['newsubmit'];
+      }
+  }
+
+
+?>
+
+
+
+
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
                         
@@ -16,36 +53,27 @@
 
         <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="" href="#">
+      <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <span class="badge badge-success navbar-badge" style="<?=($emppost + $empsubmit) == 0 ? 'display:none':''?>"><?=$emppost + $empsubmit?></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <span class="dropdown-item dropdown-header"><?=$emppost + $empsubmit?> Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+          <a href="../../ajaxadmin/ajaxadmin.php?updatefilesreceived" class="dropdown-item">
+           <b> <?=$emppost?> files received </b>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
+          <a href="../../ajaxadmin/ajaxadmin.php?updatefilesrequest" class="dropdown-item">
+           <b> <?=$empsubmit?> Files request </b> 
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
 
         <!-- Nav Item - User Information -->
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Admin</span>
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$name?></span>
             <img class="img-profile rounded-circle" src="../../upload/default.png">
             </a>
 

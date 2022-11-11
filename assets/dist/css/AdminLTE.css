@@ -24,11 +24,8 @@ body {
   overflow-y: auto;
 }
 /* Layout */
-.wrapper {
-  height: 100%;
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
+#wrapper {
+  overflow: hidden;
 }
 .wrapper:before,
 .wrapper:after {

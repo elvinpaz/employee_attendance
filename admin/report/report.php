@@ -55,7 +55,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
     <body>
         <!-- Page Wrapper -->
-        <div id="wrapper">
+        <div id="wrapper" style="overflow: hidden">
 
             <?php include '../includes/sidenav.php'; ?>
 
@@ -72,7 +72,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                         <div class="container-fluid">
 
                             <!-- Page Heading  -->
-                            <h1 class="h3 mb-4 text-gray-800">Date Time Record</h1>
+                            <h1 class="h3 mb-4 text-gray-800">Daily Time Record</h1>
 
                             <div class="row justify-content-center">
 
@@ -239,7 +239,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                             
                                             ?>
                                                             <tr>
-                                                                <td style="text-align: center;"><?=date("M d, Y",strtotime($row['sched_date']))?></td>
+                                                                <td style="text-align: center;"><?=date("m-d-Y",strtotime($row['sched_date']))?></td>
                                                                 <td colspan="10" style="text-align: center; color:red"><strong> ABSENT </strong></td>
                                                                 <td hidden>ABSENT</td>
                                                                 <td hidden>ABSENT</td>
@@ -257,7 +257,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                             ?>       
 
                                                             <tr>
-                                                                <td style="text-align: center;"><?=date("M d, Y",strtotime($row['sched_date']))?></td>
+                                                                <td style="text-align: center;"><?=date("m-d-Y",strtotime($row['sched_date']))?></td>
                                                                 <td colspan="10" style="text-align: center; color:#1cc88a"><strong> REST DAY </strong></td>
                                                                 <td hidden>REST DAY</td>
                                                                 <td hidden>REST DAY</td>
@@ -278,7 +278,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                             ?>
 
                                                             <tr>
-                                                                <td style="text-align: center;"><?=date("M d, Y",strtotime($row['sched_date']))?></td>
+                                                                <td style="text-align: center;"><?=date("m-d-Y",strtotime($row['sched_date']))?></td>
                                                                 <td class=" text-center"><img src="../../upload/employeeimage/<?=$row['image']?>" style="width: 55px; height:55px" class="img-rounded"></td>
                                                                 <td style="text-align: center;"><?=$row['location']?></td>
                                                                 <td style="text-align: center;"><?=($row['time_in'] == "") ? "" : date("h:i A",strtotime($row['time_in']))?></td>
@@ -299,7 +299,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                 
                                             ?>
-                                            
+                                                            
                                         </tbody>
                                         
                                             

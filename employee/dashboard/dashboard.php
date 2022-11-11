@@ -92,7 +92,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
         <meta name="author" content="">
       
         <link rel='shortcut icon' type='image/x-icon' href='../../assets/img/logocvsu.png'/>
-        <title>CVSU | Employee Dashboard</title>
+        <title>CVSU | Employee</title>
       
         <!-- Custom fonts for this template-->
         <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -119,7 +119,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
 
     <body>
         <!-- Page Wrapper -->
-        <div id="wrapper">
+        <div id="wrapper" style="overflow: hidden">
 
             <?php include '../includes/sidenav.php'; ?>
 
@@ -433,7 +433,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                             
                                         <tr>
                                         <td style="text-align: center;"><?=date("M d, Y",strtotime($row['sched_date']))?></td>
-                                            <td colspan="8" style="text-align: center; color:#1cc88a"><strong><---------- REST DAY ----------></strong></td>
+                                            <td colspan="8" style="text-align: center; color:#1cc88a"><strong><--------- REST DAY ---------></strong></td>
                                             <td hidden></td>
                                             <td hidden></td>
                                             <td hidden></td>

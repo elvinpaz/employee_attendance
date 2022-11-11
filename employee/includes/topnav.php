@@ -11,6 +11,24 @@
       }
   }
 
+  $query = "SELECT COUNT(*) AS newpost FROM fileupload WHERE status = 0 AND notif = 0 AND employee_id = '".$_SESSION['emp_id']."'";
+  $result = mysqli_query($connection, $query);
+  if (mysqli_num_rows($result) > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          
+          $adminpost = $row['newpost'];
+      }
+  }
+
+  $query = "SELECT COUNT(*) AS newsubmit FROM filesubmit WHERE status = 0 AND notif = 0 AND employee_id = '".$_SESSION['emp_id']."'";
+  $result = mysqli_query($connection, $query);
+  if (mysqli_num_rows($result) > 0) {
+      while ($row = mysqli_fetch_assoc($result)) {
+          
+          $adminsubmit = $row['newsubmit'];
+      }
+  }
+
 
 ?>
 
@@ -32,29 +50,20 @@
 
         <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="" href="#">
+      <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
+          <span class="badge badge-success navbar-badge" style="<?=($adminpost + $adminsubmit) == 0 ? 'display:none':''?>"><?=$adminpost + $adminsubmit?></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <span class="dropdown-item dropdown-header"><?=$adminpost + $adminsubmit?> Notifications</span>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
+          <a href="../../ajaxemp/ajaxemp.php?updateadminpostnotif" class="dropdown-item">
+           <b> <?=$adminpost?> New admin post </b>
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
+          <a href="../../ajaxemp/ajaxemp.php?updateadminsubmitnotif" class="dropdown-item">
+           <b> <?=$adminsubmit?> New files received </b>
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
 

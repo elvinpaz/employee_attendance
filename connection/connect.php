@@ -5,6 +5,7 @@ $tz_time = date("F j, Y g:i:s");
 $date = date('Y-m-d H:i:s');
 $daytoday = date('Y-m-d');
 $todaytimestamp = date('Y-m-d H:i');
+$filetimestamp = date('YmdHis');
 
 $day = date('l', strtotime($date));
 $week = date('W', strtotime($date));
