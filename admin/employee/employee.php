@@ -71,72 +71,130 @@
 
                             <!-- Data Table employee-->
                             <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">DataTables Employee</h6>
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                        <li class="pt-2 px-3"><h6 class="m-0 font-weight-bold text-primary">DataTables Employee</h6></li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Active</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">In-Active</a>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Gender</th>
-                                                    <th>Image</th>
-                                                    <th>DOB</th>
-                                                    <th>Hire Date</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
+                                <div class="tab-content" id="custom-tabs-one-tabContent">
 
-                                            <?php
-                                                $x = 1;
-                                                $query = "SELECT * FROM employee";
-                                                $result = mysqli_query($connection, $query);
-                                                if (mysqli_num_rows($result) > 0) {
-                                                    while ($row = mysqli_fetch_assoc($result)) {
-                                            ?>
-                                        
-                                                <tbody>
+                                    <!-- ^Active tab^ -->
+                                    <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
                                                     <tr>
-                                                        <td class=" align-middle"><?=$x++?></td>
-                                                        <td class=" align-middle"><?=$row['id']?></td>
-                                                        <td class=" align-middle"><?=$row['name']." ".$row['last_name']?></td>
-                                                        <td class=" align-middle"><?=$row['gender']?></td>
-                                                        <td class=" text-center"><img src="../../upload/<?=$row['image']?>" style="width: 55px; height:55px" class="img-rounded"></td>
-                                                        <td class=" align-middle"><?=$row['birth_date']?></td>
-                                                        <td class=" align-middle"><?=$row['hire_date']?></td>
-                                                        <td class="align-middle text-center">
+                                                        <th>#</th>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Gender</th>
+                                                        <th>Image</th>
+                                                        <th>DOB</th>
+                                                        <th>Hire Date</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
 
-                                                            <?php if ($row['is_active'] == 0){?>
-                                                                
-                                                                <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteEmployee&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Department. Still want to restore?')">
-                                                                    <i class="fa fa-undo"> </i>
-                                                                </a>
-                                                            
-                                                            
-                                                            <?php } elseif($row['is_active'] == 1){?>
-
+                                                <?php
+                                                    $x = 1;
+                                                    $query = "SELECT * FROM employee WHERE id != 25 AND is_active = 1";
+                                                    $result = mysqli_query($connection, $query);
+                                                    if (mysqli_num_rows($result) > 0) {
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                ?>
+                                            
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class=" align-middle"><?=$x++?></td>
+                                                            <td class=" align-middle"><?=$row['id']?></td>
+                                                            <td class=" align-middle"><?=$row['name']." ".$row['last_name']?></td>
+                                                            <td class=" align-middle"><?=$row['gender']?></td>
+                                                            <td class=" text-center"><img src="../../upload/<?=$row['image']?>" style="width: 55px; height:55px" class="img-rounded"></td>
+                                                            <td class=" align-middle"><?=$row['birth_date']?></td>
+                                                            <td class=" align-middle"><?=$row['hire_date']?></td>
+                                                            <td class="align-middle text-center">
                                                                 <a href="e_employee.php?eemployee&id=<?=$row['id']?>" class="btn btn-primary btn-circle">
                                                                     <span class="icon text-white" title="Edit">
                                                                         <i class="fas fa-edit"></i>
                                                                     </span>
                                                                 </a>
                                                                 |
-                                                                <a href="../../ajaxadmin/ajaxadmin.php?deleteEmployee&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
-
-                                                            <?php }?>    
-
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            <?php
+                                                                <a href="../../ajaxadmin/ajaxadmin.php?deleteEmployee&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Employee. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                <?php
+                                                        }
                                                     }
-                                                }
-                                            ?>
-                                        </table>
+                                                ?>
+                                            </table>
+                                        </div>
+
+                                        
                                     </div>
+                                    <!-- ^end of Active tab^ -->
+
+                                    <!-- ^In-Active tab^ -->
+                                    <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>ID</th>
+                                                        <th>Name</th>
+                                                        <th>Gender</th>
+                                                        <th>Image</th>
+                                                        <th>DOB</th>
+                                                        <th>Hire Date</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <?php
+                                                    $x = 1;
+                                                    $query = "SELECT * FROM employee WHERE id != 25 AND is_active = 0";
+                                                    $result = mysqli_query($connection, $query);
+                                                    if (mysqli_num_rows($result) > 0) {
+                                                        while ($row = mysqli_fetch_assoc($result)) {
+                                                ?>
+                                            
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class=" align-middle"><?=$x++?></td>
+                                                            <td class=" align-middle"><?=$row['id']?></td>
+                                                            <td class=" align-middle"><?=$row['name']." ".$row['last_name']?></td>
+                                                            <td class=" align-middle"><?=$row['gender']?></td>
+                                                            <td class=" text-center"><img src="../../upload/<?=$row['image']?>" style="width: 55px; height:55px" class="img-rounded"></td>
+                                                            <td class=" align-middle"><?=$row['birth_date']?></td>
+                                                            <td class=" align-middle"><?=$row['hire_date']?></td>
+                                                            <td class="align-middle text-center">
+                                                                    <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteEmployee&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Employee. Still want to restore?')">
+                                                                        <i class="fa fa-undo"> </i>
+                                                                    </a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                <?php
+                                                        }
+                                                    }
+                                                ?>
+                                            </table>
+                                        </div>
+                                                    
+                                    </div>
+                                    <!-- ^end of In-Active tab^ -->
+
+
+                                    </div>
+                                    
                                 </div>
                             </div>
 
@@ -178,7 +236,7 @@
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>
 

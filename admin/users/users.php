@@ -76,11 +76,12 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                             <?php
                                                 
                                                 $x = 1;
-                                                $query = "SELECT employee.name, employee.last_name, employee.id as employee_id, user_role.name as position, user.id, user.email, user.status, user.role, user.has_account, department.id as dept_code
+                                                $query = "SELECT employee.is_active, employee.name, employee.last_name, employee.id as employee_id, user_role.name as position, user.id, user.email, user.status, user.role, user.has_account, department.id as dept_code
                                                                 FROM employee 
                                                                     LEFT JOIN user_role ON employee.position_id = user_role.id 
                                                                     LEFT JOIN department ON employee.department_id = department.dept_id 
-                                                                    LEFT JOIN user ON employee.id = user.employee_id";
+                                                                    LEFT JOIN user ON employee.id = user.employee_id
+                                                                    WHERE employee.id != 25";
                                                 $result = mysqli_query($connection, $query);
                                                 if (mysqli_num_rows($result) > 0) {
                                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -98,7 +99,15 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                 <?php if ($row['has_account'] == 0){?>
                                                                     
 
-                                                                    <a href="a_users.php?ausers&empid=<?=$row['employee_id']?>" class="btn btn-info">Create Account</a>
+                                                                    <?php if ($row['is_active'] == 0){?>
+
+                                                                        <a href="" class="btn btn-warning disabled">Deleted Employee</a>
+
+                                                                    <?php } elseif($row['is_active'] == 1){?>
+
+                                                                        <a href="a_users.php?ausers&empid=<?=$row['employee_id']?>" class="btn btn-info">Create Account</a>
+
+                                                                    <?php }?> 
                                                                     
                                                                     
                                                                 <?php } elseif($row['has_account'] == 1){?>
@@ -126,7 +135,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
     
                                                                     <?php if ($row['status'] == 0){?>
                                                                 
-                                                                        <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteUser&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Department. Still want to restore?')">
+                                                                        <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteUser&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Users. Still want to restore?')">
                                                                             <i class="fa fa-undo"> </i>
                                                                         </a>
 
@@ -139,7 +148,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                             </span>
                                                                         </a>
                                                                         |
-                                                                        <a href="../../ajaxadmin/ajaxadmin.php?deleteuser&id=<?=$row['id']?>"  class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+                                                                        <a href="../../ajaxadmin/ajaxadmin.php?deleteuser&id=<?=$row['id']?>"  class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Users. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
 
                                                                     <?php }?> 
     
@@ -237,6 +246,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

@@ -55,12 +55,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                     <div class="col-sm-6">
                                     <h1 class="m-0">Employee</h1>
                                     </div>
-                                    <div class="col-sm-6">
-                                    <ol class="breadcrumb float-sm-right">
-                                        <li class="breadcrumb-item"><a href="#"><i class="fa fa-folder"></i> Employee</a></li>
-                                        <li class="breadcrumb-item active"><i class="fa fa-folder"></i> Add Employee </li>
-                                    </ol>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -89,9 +83,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                         <li class="nav-item">
                                                             <a class="nav-link" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Basic Information</a>
                                                         </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Educational Information</a>
-                                                        </li>
                                                     </ul>
                                                 
                                             
@@ -105,7 +96,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                             <div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>First Name</label>
+                                                                        <label>First Name <span style="color:red">*</span></label>
                                                                         <input type="text" required class="form-control" id="e_fname" name="e_fname" autocomplete="off" autofocus >
                                                                         
                                                                     </div>
@@ -116,7 +107,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                     </div>
 
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Last Name</label>
+                                                                        <label>Last Name<span style="color:red">*</span></label>
                                                                         <input type="text" required class="form-control" id="e_lname" name="e_lname" autocomplete="off" autofocus >
                                                                         
                                                                     </div>
@@ -124,12 +115,12 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Employee Image</label>
-                                                                        <input type="file" name="imgupload" id="imgupload">           
+                                                                        <label>Employee Image<span style="color:red">*</span></label>
+                                                                        <input type="file" name="imgupload" accept="image/*" id="imgupload">           
                                                                     </div>
 
                                                                     <div class="form-group col-sm-2">
-                                                                        <label>Gender</label>
+                                                                        <label>Gender<span style="color:red">*</span></label>
                                                                         <select class="form-control" id="e_gender" name="e_gender" required>
                                                                             <option></option>
                                                                             <option value="Male">Male</option>
@@ -141,13 +132,13 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Email Address</label>
+                                                                        <label>Email Address<span style="color:red">*</span></label>
                                                                         <input type="text" autocomplete="off" class="form-control col-lg" name="email" id="email">
                                                                         
                                                                     </div>
 
                                                                     <div class="form-group col-sm-3">
-                                                                        <label>Status</label>
+                                                                        <label>Status<span style="color:red">*</span></label>
                                                                         <select class="form-control" id="emp_status" name="emp_status" required>
                                                                             <option></option>
                                                                             <option value="Single">Single</option>
@@ -158,33 +149,33 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                     </div>
 
                                                                     <div class="form-group col-sm-5">
-                                                                        <label>Mobile Number</label>
+                                                                        <label>Mobile Number<span style="color:red">*</span></label>
                                                                         <input required type="tel" placeholder="Phone Number: 09XXXXXXXXX"  pattern="[0-0]{1}[9-9]{1}[0-9]{9}" name="mobile" id="mobile" class="form-control">   
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-12">
-                                                                        <label>Address</label>
+                                                                        <label>Address<span style="color:red">*</span></label>
                                                                         <input type="text" class="form-control" id="e_address" name="e_address" autocomplete="off" required >
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-8">
-                                                                        <label>Place of birth</label>
+                                                                        <label>Place of birth<span style="color:red">*</span></label>
                                                                         <input type="text" class="form-control" id="place_birth" name="place_birth" autocomplete="off" >
                                                                     </div>
 
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Date of Birth</label>
+                                                                        <label>Date of Birth<span style="color:red">*</span></label>
                                                                         <input type="date" class="form-control" id="e_birth_date" name="e_birth_date" >       
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Designation</label>
+                                                                        <label>Designation<span style="color:red">*</span></label>
                                                                         <select class="form-control" id="e_position" name="e_position" required>
                                                                             <option></option>
                                                                             <?php
@@ -203,7 +194,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                     </div>
                                                                     
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Department</label>
+                                                                        <label>Department<span style="color:red">*</span></label>
                                                                         <select class="form-control" name="d_id" id="d_id">
                                                                             <option></option>
                                                                             <?php
@@ -223,7 +214,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                     </div>
 
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Academic Rank</label>
+                                                                        <label>Academic Rank<span style="color:red">*</span></label>
                                                                         <select class="form-control" name="e_academic" id="e_academic" required>
                                                                             <option></option>
                                                                             <?php
@@ -244,17 +235,20 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Type of Employment</label>
+                                                                        <label>Type of Employment<span style="color:red">*</span></label>
                                                                         <select class="form-control" id="type_emp" name="type_emp" >
                                                                             <option></option>
                                                                             <option value="Full-time">Full-time</option>
                                                                             <option value="Part-time">Part-time</option>
                                                                             <option value="Contractual">Contractual</option>
+                                                                            <option value="COS Full-time">COS Full-time</option>
+                                                                            <option value="COS Part-time">COS Part-time</option>
+                                                                            <option value="Permanent">Permanent</option>
                                                                         </select>
                                                                     </div>
                                                                                 
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Employee Status</label>
+                                                                        <label>Employee Status<span style="color:red">*</span></label>
                                                                         <select class="form-control" name="e_status" id="e_status" required>
                                                                             <option></option>
                                                                             <option value="1">Active</option>
@@ -263,7 +257,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                     </div>
                                                                     
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Date of Appointment</label>
+                                                                        <label>Date of Appointment/Contract<span style="color:red">*</span></label>
                                                                         <input type="date" class="form-control" name="e_hire_date" id="e_hire_date"> 
                                                                     </div>
                                                                 </div>
@@ -296,26 +290,22 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                         <input type="text" class="form-control" id="pagibig_no" name="pagibig_no" autocomplete="off" > 
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <!-- ^end of Basic Information tab^ -->
 
-                                                            <!-- ^Educational Information^ -->
-                                                            <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-6">
-                                                                        <label>Bachelor's Degree</label>
+                                                                        <label>Bachelor's Degree<span style="color:red">*</span></label>
                                                                         <input type="text" class="form-control" id="bd" name="bd" autocomplete="off" required >
                                                                     </div>
 
                                                                     <div class="form-group col-sm-4">
-                                                                        <label>Year</label>
+                                                                        <label>Year<span style="color:red">*</span></label>
                                                                         <input type="text" class="form-control" id="bd_year" name="bd_year" autocomplete="off" required >
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="row">
                                                                     <div class="form-group col-sm-8">
-                                                                        <label>School</label>
+                                                                        <label>School<span style="color:red">*</span></label>
                                                                         <input type="text" class="form-control" id="bd_school" name="bd_school" autocomplete="off" required >
                                                                     </div>
                                                                 </div>
@@ -343,24 +333,24 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                 <div id="master_div" style="<?php if(!empty($input)) { if($input['is_master'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-6">
-                                                                            <label>Master's Degree</label>
+                                                                            <label>Master's Degree<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="md" name="md" autocomplete="off" >
                                                                         </div>
                                                                         
                                                                         <div class="form-group col-sm-3">
-                                                                            <label>With</label>
+                                                                            <label>With<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="md_with" name="md_with" autocomplete="off" >
                                                                         </div>
 
                                                                         <div class="form-group col-sm-3">
-                                                                            <label>Year</label>
+                                                                            <label>Year<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="md_year" name="md_year" autocomplete="off">
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-8">
-                                                                            <label>School</label>
+                                                                            <label>School<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="md_school" name="md_school" autocomplete="off">
                                                                         </div>
                                                                     </div>
@@ -370,24 +360,24 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                 <div id="doctorate_div" style="<?php if(!empty($input)) { if($input['is_doctorate'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-6">
-                                                                            <label>Doctorate Degree</label>
+                                                                            <label>Doctorate Degree<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="dd" name="dd" autocomplete="off" >
                                                                         </div>
                                                                         
                                                                         <div class="form-group col-sm-3">
-                                                                            <label>With</label>
+                                                                            <label>With<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="dd_with" name="dd_with" autocomplete="off" >
                                                                         </div>
 
                                                                         <div class="form-group col-sm-3">
-                                                                            <label>Year</label>
+                                                                            <label>Year<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="dd_year" name="dd_year" autocomplete="off">
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-8">
-                                                                            <label>School</label>
+                                                                            <label>School<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="dd_school" name="dd_school" autocomplete="off">
                                                                         </div>
                                                                     </div>
@@ -397,36 +387,38 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                 <div id="other_div" style="<?php if(!empty($input)) { if($input['is_other_degree'] !== "true") { echo "display:none"; } } else { echo 'display:none';  } ?>" >
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-6">
-                                                                            <label>Other Degree</label>
+                                                                            <label>Other Degree<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="other" name="other" autocomplete="off">
                                                                         </div>
 
                                                                         <div class="form-group col-sm-4">
-                                                                            <label>Year</label>
+                                                                            <label>Year<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="other_year" name="other_year" autocomplete="off">
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="row">
                                                                         <div class="form-group col-sm-8">
-                                                                            <label>School</label>
+                                                                            <label>School<span style="color:red">*</span></label>
                                                                             <input type="text" class="form-control" id="other_school" name="other_school" autocomplete="off">
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                            
-                                                            </div>
-                                                            <!-- ^end of Educational Information^ -->
 
+                                                                <button type="submit" class="btn btn-success btn-icon-split mt-4 float-right">
+                                                                    <span class="icon text-white">
+                                                                    <i class="fas fa-plus-circle"></i>
+                                                                    </span>
+                                                                    <span class="text">Add to system</span>
+                                                                </button>
+                                                            </div>
+                                                            <!-- ^end of Basic Information tab^ -->
+
+                                                            
 
                                                         </div>
 
-                                                        <button type="submit" class="btn btn-success btn-icon-split mt-4 float-right">
-                                                            <span class="icon text-white">
-                                                            <i class="fas fa-plus-circle"></i>
-                                                            </span>
-                                                            <span class="text">Add to system</span>
-                                                        </button>
+                                                        
                                                     </form>
                                                 </div>
                                             </div>
@@ -466,6 +458,22 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
         <!-- Custom scripts for all pages-->
         <script src="../../assets/js/sb-admin-2.min.js"></script>
+        <script type="text/javascript">
+            $(function(){
+                var dtToday = new Date();
+            
+                var month = dtToday.getMonth() + 1;// jan=0; feb=1 .......
+                var day = dtToday.getDate();
+                var year = dtToday.getFullYear() - 18;
+                if(month < 10)
+                    month = '0' + month.toString();
+                if(day < 10)
+                    day = '0' + day.toString();
+                var minDate = year + '-' + month + '-' + day;
+                var maxDate = year + '-' + month + '-' + day;
+                $('#e_birth_date').attr('max', maxDate);
+            });
+        </script>
 
         <script>
             $(document).ready(function() {
@@ -526,6 +534,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

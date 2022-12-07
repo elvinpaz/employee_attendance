@@ -90,7 +90,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                                     </div>
                                                     <p style="margin-top:0px;">File type: <b><?=$row['filetype']?></b> </p>
                                                     <p style="margin-top:-15px;">Description: <b><?=$row['description']?></b></p>
-                                                    <p style="margin-top:-15px;">Status: <b style="<?=$row['sent_status'] == 0 ? "color:orange":"color:#28a745"?>"><?=$row['sent_status'] == 0 ? "Pending":"Received"?></b></p>
+                                                    <p style="margin-top:-15px;">Status: <b style="<?=($row['sent_status'] == 0 ? "color:orange": ($row['sent_status'] == 1 ? "color:#28a745":"color:red"))?>"><?=($row['sent_status'] == 0 ? "Pending": ($row['sent_status'] == 1 ? "Received":"Rejected"))?></b></p>
+                                                    <p style="margin-top:-15px; <?=$row['sent_status'] == 2 ? "display:block":"display:none"?>">Reason: <b><?=$row['reason']?></b></p>
                                                     <div class="row justify-content-end">
                                                     <a href="../../ajaxemp/ajaxemp.php?deleteRequest&id=<?=$row['id']?>"><button type="submit" name="submit" class="btn btn-danger" style="font-size: 12px; margin-top:-5px" onclick="return confirm('Remove request. Still want to remove?')">Remove</button></a>
                                                     </div>
@@ -302,7 +303,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
             $result  = mysqli_query($connection, $query);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE filesubmit SET readnotif = 1 WHERE employee_id = '".$_SESSION['emp_id']."'";
+                    $update = "UPDATE filesubmit SET readnotif = 1, notif = 1 WHERE employee_id = '".$_SESSION['emp_id']."'";
                     mysqli_query($connection, $update);
                 }
             }
@@ -313,6 +314,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

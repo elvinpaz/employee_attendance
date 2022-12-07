@@ -485,18 +485,18 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                     $(win.document.body)
                                         .css( 'font-size', '8pt' )
                                         .prepend(
-                                            
-                                            '<h1 style="text-align:center;">Cavite State University - Date Time Record</h1>',
-                                            '<br><br><h5>Employee Name:<strong><?php echo "  ".$name?></strong></h5>',
+                                            '<img src="https://i.ibb.co/b6MshdM/cvsu-bacoor.png" style="display: block; margin-left: auto; margin-right: auto; width: 520px;"/><br>',
+                                            '<h2>Daily Time Record</h2>',
+                                            '<h5>Employee Name:<strong><?php echo "  ".$name?></strong></h5>',
                                             '<h5>From:<strong><?php echo "  ".$startdate?></strong></h5>',
                                             '<h5>To:<strong><?php echo "  ".$enddate?></strong></h5><br>',
-                                            '<h4><strong>Attendance</strong></h4>',
+                                            '<h4><strong>Attendance</strong></h4><br>',
+                                            
                                         );
                                     
                                     $(win.document.body).find( 'table' )
                                         .addClass( 'compact' )
                                         .css( 'font-size', 'inherit' );
-                                    
                                     
                                 }
                             }
@@ -512,6 +512,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

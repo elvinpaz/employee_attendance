@@ -93,7 +93,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                 <?php
                                                     $x = 1;
-                                                    $query = "SELECT schedules.*, SUM(schedules.bill) as bill, employee.name, employee.last_name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id GROUP BY schedules.employee_id, schedules.week";
+                                                    $query = "SELECT schedules.*, SUM(schedules.bill) as bill, employee.name, employee.last_name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id GROUP BY schedules.employee_id, schedules.week ORDER BY sched_id DESC";
                                                     $result = mysqli_query($connection, $query);
                                                     if (mysqli_num_rows($result) > 0) {
                                                         while ($row = mysqli_fetch_assoc($result)) {
@@ -110,7 +110,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                     <i class="fas fa-edit"></i>
                                                                 </span>
                                                             </a> |
-                                                        <a href="../../ajaxadmin/ajaxadmin.php?deleteSched&emp_id=<?=$row['employee_id']?>&week=<?=$row['week']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+                                                        <a href="../../ajaxadmin/ajaxadmin.php?deleteSched&emp_id=<?=$row['employee_id']?>&week=<?=$row['week']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Schedule. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
     
                                                         </td>
                                                     </tr>
@@ -187,6 +187,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

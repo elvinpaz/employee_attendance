@@ -31,7 +31,7 @@
     <li class="nav-item <?=($f=='adminpostedfile.php'?'active':'')?>">
         <a class="nav-link pb-0" href="../adminpostedfile/adminpostedfile.php">
         <i class="fas fa-file-upload"></i>
-            <span>Admin Posted Files</span>
+            <span>Downloadable Forms</span>
         </a>
     </li>
     <li class="nav-item <?=($f=='uploadfile.php'?'active':'')?>">

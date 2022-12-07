@@ -222,12 +222,17 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                 var outputname = document.getElementById('filename');
                 var outputsize = document.getElementById('filesize');
                 var filename = input.files[0].name;
-                var filesize = parseInt(input.files[0].size/1024);
+                var filesize = parseInt(input.files[0].size/1048576);
                 console.log(filesize);
+                if(input.files[0].size > 25000000) {
+                    alert("Please upload file less than 25MB. Thanks!!");
+                    $(this).val('');
+                }else{
                 outputname.innerHTML = '<strong>'+filename+'</strong>';
-                outputsize.innerHTML = '<strong>'+filesize+' KB</strong>';
+                outputsize.innerHTML = '<strong>'+filesize+' MB</strong>';
                 
                 document.getElementById('filedisplay').style.display = '';
+                }
             }
         </script>
 
@@ -247,6 +252,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

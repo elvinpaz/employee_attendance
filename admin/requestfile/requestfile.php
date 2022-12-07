@@ -18,7 +18,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
         <meta name="author" content="">
       
         <link rel='shortcut icon' type='image/x-icon' href='../../assets/img/logocvsu.png'/>
-        <title>Department | Admin</title>
+        <title>Files | Admin</title>
       
         <!-- Custom fonts for this template-->
         <link href="../../assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -87,7 +87,8 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                     <p style="margin-top:-15px;">Description: <b><?=$row['description']?></b></p>
                                                     <img src="../../assets/img/newrev.png" style="<?=$row['readnotif'] == 1 ? 'display: none;' : ''?>position: absolute; left: -9px; top: -9px; height:100px; width:100px;">
                                                     <div class="row justify-content-end">
-                                                        <button id="<?=$row['id'];?>" name="requestfiles" type="button" class="btn btn-primary requestfiles" style="font-size: 12px; margin-top:-5px">Send Files</button>
+                                                        <button id="<?=$row['id'];?>" name="rejectfiles" type="button" class="btn btn-outline-danger rejectfiles" style="font-size: 12px; margin-top:-5px; margin-right: 10px">Reject</button>
+                                                        <button id="<?=$row['id'];?>" name="requestfiles" type="button" class="btn btn-primary requestfiles" style="font-size: 12px; margin-top:-5px" onclick="myFunction()">Approve</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -175,7 +176,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                 <p class="col-12 filesize" style="margin-left:-2px; margin-top: 0px; font-size: 12px"><?php echo $row['filesize'];?> KB</p>
                                                             </div>
                                                             <div class="col-1">
-                                                                <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteSubmitted&id=<?=$row['id']?>" title="Delete" onclick="return confirm('Restore Department. Still want to restore?')">
+                                                                <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteSubmitted&id=<?=$row['id']?>" title="Delete" onclick="return confirm('Restore Files. Still want to restore?')">
                                                                     <i style="margin-top: 15px; margin-bottom: 10px; margin-left: -25px; font-size: 50px; text-align: center; color:orange;" class="fas fa-redo-alt"></i>
                                                                 </a> 
                                                             </div>
@@ -214,10 +215,30 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                 <form action="../../ajaxadmin/ajaxadmin.php?insertNewRequestFile" method="POST" enctype="multipart/form-data">
                                     <div class="modal-body" id="requestfiles">
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                                    
+                                </form>
+                                
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                    <!-- modal for new Adviser  -->
+
+                    <!-- modal for new Adviser  -->
+
+                    <div class="modal fade" id="modal-reject" style="display: none;" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                
+                                <form action="../../ajaxadmin/ajaxadmin.php?insertNewRejectFile" method="POST" enctype="multipart/form-data">
+                                    <div class="modal-body" id="rejectfiles">
                                     </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                    
                                 </form>
                                 
                             </div>
@@ -253,27 +274,71 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
         <script src="../../assets/js/sb-admin-2.min.js"></script>
 
         <script type="text/javascript">
+
+            var j = 0;
+            var x = 0;
+            var current = 0;
+            var deletedisplay = 0;
+            var counter = 0;
+
+            myFunction = function() {
+                counter = 0;
+                j=0;
+                x=0;
+                current=0;
+                deletedisplay=0;
+            }
+
             updateList = function() {
+                
+                var position = 0;
+                
+
+                    if(counter > 0){
+                        for (var a = 0; a < deletedisplay; ++a) {
+                            document.getElementById('filedisplay'+position).style.display = "none";
+                            position++;
+                        }
+                    }
+                    counter++;
+                    
+               
+
                 var input = document.getElementById('fileupload');
                 var output = document.getElementById('fileList');
+
+
+                deletedisplay += input.files.length;
                 
-
-              
-                for (var i = 0; i < input.files.length; ++i) {
+                var y = 0;
+                for (var i = j; i < input.files.length+x; ++i) {
                        
-                        output.innerHTML += '<div class="row" id="filedisplay" style="margin-bottom:5px; background-color:#28a7454d; border-radius: 5px; height:100%; width: 100%; margin-left:0px"><i style="padding-top: 12px; padding-bottom: 10px; padding-left:15px; padding-right:15px; font-size: 35px" class="col-1 fas fa-file-alt"></i><div class="col-10" style="height: 75px;"><p class="col-12" id="filename'+i+'" style="margin-left:-2px; margin-top: 12px; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></p><p class="col-12" id="filesize'+i+'" style="margin-left:-2px; margin-top: -20px; font-size: 12px"></p></div><div class="col-1"><i style="margin-top: 20px; margin-bottom: 20px; margin-left: -25px; font-size: 20px; text-align: center;" class="fas fa-check"></i></div></div>';
-
+                        
+                        output.innerHTML += '<div class="row" id="filedisplay'+i+'" style="margin-bottom:5px; background-color:#28a7454d; border-radius: 5px; height:100%; width: 100%; margin-left:0px"><i style="padding-top: 12px; padding-bottom: 10px; padding-left:15px; padding-right:15px; font-size: 35px" class="col-1 fas fa-file-alt"></i><div class="col-10" style="height: 75px;"><p class="col-12" id="filename'+i+'" style="margin-left:-2px; margin-top: 12px; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></p><p class="col-12" id="filesize'+i+'" style="margin-left:-2px; margin-top: -20px; font-size: 12px"></p></div><div class="col-1"><i style="margin-top: 20px; margin-bottom: 20px; margin-left: -25px; font-size: 20px; text-align: center;" class="fas fa-check"></i></div></div>';
+                        
                         var outputname = document.getElementById('filename'+i);
                         var outputsize = document.getElementById('filesize'+i);
-                        var filename = input.files[i].name;
-                        var filesize = parseInt(input.files[i].size/1024);
-                        outputname.innerHTML = '<strong>'+filename+'</strong>';
-                        outputsize.innerHTML = '<strong>'+filesize+' KB</strong>';
+                        var filename = input.files[y].name;
+                        var filesize = parseInt(input.files[y].size/1048576);
+                        if(input.files[0].size > 25000000) {
+                            alert("Please upload file less than 25MB. Thanks!!");
+                            $(this).val('');
+                        }else{
+                            outputname.innerHTML = '<strong>'+filename+'</strong>';
+                            outputsize.innerHTML = '<strong>'+filesize+' MB</strong>';
+                            j = i;
+                            y++;
+                        }
                     }
-                
+                j++;
+                x = j;
                 
             }
+            
         </script>
+
+        
+        
 
          
 
@@ -286,6 +351,21 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                 "buttons": ["print"],
                 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
+            });
+        </script>
+
+        <script>
+            $(document).on('click', '.rejectfiles', function(){  
+                var id = $(this).attr("id");
+                $.ajax({  
+                    url:"../../ajaxadmin/ajaxadmin.php?sendreject",  
+                    method:"post",  
+                    data:{"id":id},  
+                    success:function(data){  
+                            $('#rejectfiles').html(data);  
+                            $('#modal-reject').modal("show");  
+                    }  
+                });  
             });
         </script>
 
@@ -304,10 +384,12 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
             });
         </script>
 
+        
+
 
         <?php
           
-                    $update = "UPDATE e_requestfile SET readnotif = 1";
+                    $update = "UPDATE e_requestfile SET readnotif = 1, notif = 1";
                     mysqli_query($connection, $update);
               
         ?>
@@ -317,6 +399,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

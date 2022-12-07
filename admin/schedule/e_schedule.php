@@ -10,6 +10,17 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
         $emp_id = $_GET['emp_id'];
         $week = $_GET['week'];
         $name = $_GET['name'];
+        $option = "";
+        $opt_status = "";
+
+        $query = "SELECT * FROM `schedules` WHERE employee_id = '".$emp_id."' AND week = '".$week."'";
+            $result = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $option = $row['options'];
+                    $opt_status = $row['opt_status'];
+                    }
+                }
     }
     
 
@@ -75,19 +86,37 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                     <div class="form-group row col-md-4">
                                     <label style="font-size: x-large; margin-bottom: -20px;"><strong><?=$name?></strong></label>
                                     <h3></h3>
-                                    
+                                    </div>
+                                    <input style="margin-right: 5px;" type="radio" id="faculty" name="category" value="FACULTY" required <?=$option == "FACULTY" ? "checked": ""?>>
+                                    <label style="margin-top: 12px; margin-right: 20px; font-size:18px;" for="faculty">FACULTY</label>
+                                    <input style="margin-right: 5px;" type="radio" id="nonacademic" name="category" value="NON-ACADEMIC" <?=$option == "NON-ACADEMIC" ? "checked": ""?>>
+                                    <label style="margin-top: 12px; margin-right: 20px; font-size:18px;" for="nonacademic">NON-ACADEMIC</label>
+                                    <input style="margin-right: 5px;" type="radio" id="utility" name="category" value="UTILITY" <?=$option == "UTILITY" ? "checked": ""?>>
+                                    <label style="margin-top: 12px; margin-right: 20px; font-size:18px;" for="utility">UTILITY</label>
+
+                                    <div id="dropdownlist" style="<?=$option == "FACULTY" ? "display:block;" : "display:none;"?> margin-top:5px;">
+                                        <select class="form-control" id="status" name="opt_status" style="width:31%">
+                                            <option value="" disabled selected hidden>Status</option>
+                                            <option value="Faculty" <?=$opt_status == "Faculty" ? "selected": ""?>>Faculty</option>
+                                            <option value="Permanent" <?=$opt_status == "Permanent" ? "selected": ""?>>Permanent</option>
+                                            <option value="Temporary" <?=$opt_status == "Temporary" ? "selected": ""?>>Temporary</option>
+                                            <option value="Contractual" <?=$opt_status == "Contractual" ? "selected": ""?>>Contractual</option>
+                                            <option value="Contractual Service" <?=$opt_status == "Contractual Service" ? "selected": ""?>>Contractual Service</option>
+                                            <option value="Non-Academic" <?=$opt_status == "Non-Academic" ? "selected": ""?>>Non-Academic</option>
+                                            <option value="Utility" <?=$opt_status == "Utility" ? "selected": ""?>>Utility</option>
+                                        </select>
                                     </div>
 
                                     <div class="tab-pane" id="pickup"><br>
                                     <div class="row">
                                         <div class="form-group col-sm-12">
                                             <div class="row justify-content-between" style="margin-bottom: 20px; margin-top: -15px; margin-left: 5px; margin-right: 5px;" >
-                                                <label>Pickup Schedule</label>
+                                                <label>Manage Schedule</label>
                                                 <input  style="align-right" disabled type="week" name="week" value="<?=$week?>">
                                             </div>
                                             <table class="table table-bordered table-striped" style="margin-bottom:20px;">
                                                 <thead>
-                                                    <th style="width: 10%">Status</th>
+                                                    <th style="width: 13%">Status</th>
                                                     <th style="width: 25%">Day</th>
                                                     <th style="width: 10%">Billable Hrs</th>
                                                     <th style="width: 30%">Start Time</th>
@@ -107,12 +136,12 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                         <input type="hidden" name="sched_id[]" value="<?=$row['sched_id']?>">
                                                     <td style="text-align:center;">
                                                                         <select class="form-control" id="sched_status" name="sched_status[]">
-                                                                            <option value="REG" <?=$row['status'] == "REG" ? "selected": ""?>>REG</option>
-                                                                            <option value="REST" <?=$row['status'] == "REST" ? "selected": ""?>>REST</option>
+                                                                            <option value="REG" <?=$row['status'] == "REG" ? "selected": ""?>>AT WORK</option>
+                                                                            <option value="REST" <?=$row['status'] == "REST" ? "selected": ""?>>OFF WORK</option>
                                                                         </select>
                                                         </td>
                                                         <td style="width: 25%"><?=$row['day']?></td>
-                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" value="<?=$row['bill']?>" min="1" name="bill[]"></td>
+                                                        <td style="text-align:center;"><input style="width: 60%; text-align: center;" required type="number" value="<?=$row['bill']?>" min="1" step="0.5" name="bill[]"></td>
                                                         <td style="width: 30%"><input type="time" value="<?=$row['start']?>" required id="mon_start" name="start[]"  min="00:00" max="23:59" class="form-control  startpicker"></td>
                                                         <td style="width: 30%"><input type="time" value="<?=$row['end']?>" required id="mon_end" name="end[]" class="form-control  endpicker"></td>
                                                     </tr>
@@ -170,6 +199,20 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
         <!-- Custom scripts for all pages-->
         <script src="../../assets/js/sb-admin-2.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $("input[type='radio']").click(function() {
+                    if ($(this).val() == "FACULTY") {
+                        $("#dropdownlist").show();
+                        $('#status').attr('required', true);
+                    } else {
+                        $("#dropdownlist").hide();
+                        $('#status').attr('required', false);
+                    }
+                });
+            });
+        </script>
 
         <script type='text/javascript'>
 
@@ -251,7 +294,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>
 

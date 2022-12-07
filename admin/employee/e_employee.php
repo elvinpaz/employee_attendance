@@ -295,9 +295,12 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                                     <label>Type of Employment</label>
                                                                                     <select class="form-control" id="type_emp" name="type_emp" >
                                                                                         <option></option>
-                                                                                        <option value="Full-time" <?=$typeemp == "Full-time" ? "selected": ""?>>Full-time</option>
-                                                                                        <option value="Part-time" <?=$typeemp == "Part-time" ? "selected": ""?>>Part-time</option>
+                                                                                        <option value="Full-time"   <?=$typeemp == "Full-time" ? "selected": ""?>>Full-time</option>
+                                                                                        <option value="Part-time"   <?=$typeemp == "Part-time" ? "selected": ""?>>Part-time</option>
                                                                                         <option value="Contractual" <?=$typeemp == "Contractual" ? "selected": ""?>>Contractual</option>
+                                                                                        <option value="JO/COS"      <?=$typeemp == "JO/COS" ? "selected": ""?>>JO/COS</option>
+                                                                                        <option value="Permanent"   <?=$typeemp == "Permanent" ? "selected": ""?>>Permanent</option>
+                                                                                        <option value="Casual"      <?=$typeemp == "Casual" ? "selected": ""?>>Casual</option>
                                                                                     </select>
                                                                                 </div>
                                                                                             
@@ -642,6 +645,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

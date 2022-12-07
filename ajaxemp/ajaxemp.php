@@ -318,6 +318,43 @@ if (isset($_GET['updateadminsubmitnotif'])) {
 }
 
 
+// submit edit User
+if (isset($_GET['submitEditPass'])) {
+
+    $id=$_POST['id'];
+    $curpass=$_POST['curpass'];
+    $newpass=$_POST['newpass'];
+    $conpass=$_POST['conpass'];
+
+    
+    
+
+    $query = "SELECT * FROM user WHERE employee_id = '".$id."' AND password = '".$curpass."' ";
+    $result  = mysqli_query($connection, $query);
+    if (mysqli_num_rows($result) > 0) {
+
+        if($newpass == $conpass){
+            while ($row = mysqli_fetch_assoc($result)) {
+                $update = "UPDATE user SET password = '".$conpass."' WHERE employee_id = '".$id."' ";
+                mysqli_query($connection, $update);
+                header("location: ../employee/cpass/e_users.php?usermsg");
+            }
+        } else {
+
+            header("location: ../employee/cpass/e_users.php?usermsg=Password not match!");
+
+        }
+
+        
+    } else {
+        header("location: ../employee/cpass/e_users.php?usermsg=Invalid Password!");
+    }
+
+
+    
+}
+
+
 
 
 

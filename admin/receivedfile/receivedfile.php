@@ -88,9 +88,14 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                             <?php
                                                 $x = 1;
-                                                $query = "SELECT employee.id as id, CONCAT_WS(' ', employee.name, employee.last_name)AS fullname, employee.image, department.id AS department, COUNT(e_uploadfile.employee_id) AS totalfiles 
-                                                    FROM `employee` LEFT JOIN `e_uploadfile` ON employee.id = e_uploadfile.employee_id LEFT JOIN `department` ON employee.department_id = department_id 
-                                                    WHERE e_uploadfile.status = 0 AND e_uploadfile.employee_id != 25 GROUP BY e_uploadfile.employee_id";
+                                                $query = "SELECT employee.id as id, CONCAT_WS(' ', employee.name, employee.last_name)AS fullname, employee.image, department.id AS department, countfiles.totalfiles as counttotalfile, filestotal.filetotalreceived as totalfile
+                                                FROM `employee` 
+                                                LEFT JOIN `e_uploadfile` ON employee.id = e_uploadfile.employee_id 
+                                                LEFT JOIN `department` ON employee.department_id = department_id 
+                                                LEFT JOIN (SELECT employee_id, COUNT(*) as totalfiles FROM `e_uploadfile` WHERE status = 0 AND readnotif = 0 GROUP BY employee_id) AS countfiles ON  countfiles.employee_id = employee.id
+                                                LEFT JOIN (SELECT employee_id, COUNT(*) as filetotalreceived FROM `e_uploadfile` GROUP BY employee_id) AS filestotal ON filestotal.employee_id = employee.id
+                                                WHERE e_uploadfile.status = 0 AND e_uploadfile.employee_id != 25 
+                                                GROUP BY e_uploadfile.employee_id";
                                                 $result = mysqli_query($connection, $query);
                                                 if (mysqli_num_rows($result) > 0) {
                                                     while ($row = mysqli_fetch_assoc($result)) {
@@ -101,7 +106,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                     <td class=" text-center"><img src="../../upload/<?=$row['image']?>" style="width: 55px; height:55px" class="img-rounded"></td>
                                                     <td class=" text-center" style="padding-top: 30px;"><?=$row['fullname']?></td>
                                                     <td class=" text-center" style="padding-top: 30px;"><?=$row['department']?></td>
-                                                    <td class=" text-center" style="padding-top: 30px;"><?=$row['totalfiles']." "?><span class="badge badge-success" style="<?=$empposts == 0 ? 'display: none;' : ''?>"> NEW</span></td>
+                                                    <td class=" text-center" style="padding-top: 30px;"><?=$row['totalfile']." "?><span class="badge badge-success" style="<?=$row['counttotalfile'] == 0 || $row['counttotalfile'] == NULL ? 'display: none;' : ''?>"> NEW</span></td>
                                                     <td class=" text-center" style="padding-top: 30px;"><a href="javascript:void(0)"><button id="<?=$row['id']?>"class="btn btn-info viewfiles" >view submitted files</button></a></td>
                                                 </tr>
                                             </tbody>
@@ -188,6 +193,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

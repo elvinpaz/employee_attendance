@@ -161,7 +161,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
             $result  = mysqli_query($connection, $query);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE fileupload SET readnotif = 1 WHERE employee_id = '".$_SESSION['emp_id']."'";
+                    $update = "UPDATE fileupload SET readnotif = 1, notif = 1 WHERE employee_id = '".$_SESSION['emp_id']."'";
                     mysqli_query($connection, $update);
                 }
             }

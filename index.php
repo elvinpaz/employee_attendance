@@ -24,7 +24,7 @@
             <div class="main__left" style="background:#FFFFFF">
                 <div class="main__left--wrapper" style="padding: 3rem 5rem 1rem 5rem">
                     <div class="" style="margin-top: 50px">
-                        <img class="main__left--titlebar--img" src="assets/dist/assets/cvsu_bacoor.png" alt="logo" style="width: 320px;margin-left: -60px" />
+                        <img class="main__left--titlebar--img" src="assets/dist/assets/cvsu_bacoor.png" alt="logo" style="width: 520px;margin-left: -60px" />
                         <h2 class="main__left--titlebar--subHeading">
                             Login Here!
                         </h2>
@@ -75,27 +75,33 @@
                     </form>
                 </div>
             </div>
-            <div class="main__right" style="background: linear-gradient(45deg, #008000, #006400, #00FF00);">
+            <div class="main__right" style="background: #008000;">
                 <div>
-                    <h1 class="main__right--heading animate__animated animate__fadeInDown" style="padding-top: 1rem;font-size: 45px; font-family: league spartan">
+                    <h1 class="main__right--heading animate__animated animate__fadeInDown" style="padding-top: 1rem;font-size: 45px; ">
                         University Vision
                     </h1>
-                    <p class="main__right--subHeading animate__animated animate__fadeInUp" style="margin-top: 1rem;font-size: 20px; font-family: league spartan">
+                    <p class="main__right--subHeading animate__animated animate__fadeInUp" style="margin-top: 1rem;font-size: 20px; ">
                         The Premier University in historic Cavite recognized for excellence in the development of globally and morally upright individuals.
                     </p>
                     <br><br>
-                    <h1 class="main__right--heading animate__animated animate__fadeInDown" style="padding-top: 1rem;font-size: 45px;font-family: league spartan">
+                    <h1 class="main__right--heading animate__animated animate__fadeInDown" style="padding-top: 1rem;font-size: 45px;">
                         University Mission
                     </h1>
-                    <p class="main__right--subHeading animate__animated animate__fadeInUp" style="margin-top: 1rem;font-size: 20px; font-family: league spartan">
+                    <p class="main__right--subHeading animate__animated animate__fadeInUp" style="margin-top: 1rem;font-size: 20px; ">
                         Cavite State University shall provide excellent, equitable, and relevant educational opportunities in the arts, sciences and technology through quality instruction and responsive research and development activities.
 
                         It shall produce professional, skilled and morally upright individuals for global competitiveness.
                     </p>
+
+                    
                 </div>
 
+                <p>
+                    Facebook: <a style="color: #fff" href="https://www.facebook.com/CvSUBacoorCityCampus/">Cavite State University - Bacoor</a><br>
+                    Website: <a style="color: #fff" href="https://cvsu.edu.ph/bacoor/">https://cvsu.edu.ph/bacoor/</a>
+                </p>
                 <p class="main__right--copyright">
-                    &copy; Copyright 2022 CVSU BACOOR Campus. All Rights Reserved.
+                    &copy; Copyright 2022 CVSU BACOOR Campus. All Rights Reserved. Designed by - <a style='color: #fff' href='https://github.com/elvinpaz'>EPAZ</a>
                 </p>
             </div>
         </main>

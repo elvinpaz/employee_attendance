@@ -91,7 +91,7 @@
                         $result  = mysqli_query($connection, $query);
                         if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_assoc($result)) {
-                                $update = "UPDATE e_uploadfile SET readnotif = 1 WHERE e_uploadfile.employee_id = '".$id."'";
+                                $update = "UPDATE e_uploadfile SET readnotif = 1, notif = 1 WHERE e_uploadfile.employee_id = '".$id."'";
                                 mysqli_query($connection, $update);
                             }
                         }
@@ -106,16 +106,31 @@
     <?php
             if (isset($_GET['sendrequest'])) {
                 $id = $_POST['id'];
+                $filetype = "";
 
-                $query = "SELECT e_requestfile.*, CONCAT_WS(' ', employee.name, employee.last_name)AS fullname FROM `e_requestfile`
-                LEFT JOIN `employee` ON employee.id = e_requestfile.employee_id WHERE e_requestfile.id = '".$id."'";
+                $query = "SELECT * FROM e_requestfile WHERE e_requestfile.id = '".$id."'";
                         $result = mysqli_query($connection, $query);
                         if (mysqli_num_rows($result) > 0) {
-                            while ($row = mysqli_fetch_assoc($result)) {
-                                $fullname=$row['fullname'];
-                                $empid=$row['employee_id'];
-                            }
-                        }
+                                $query = "SELECT e_requestfile.*, CONCAT_WS(' ', employee.name, employee.last_name)AS fullname FROM `e_requestfile`
+                                LEFT JOIN `employee` ON employee.id = e_requestfile.employee_id WHERE e_requestfile.id = '".$id."'";
+                                        $result = mysqli_query($connection, $query);
+                                        if (mysqli_num_rows($result) > 0) {
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                $fullname=$row['fullname'];
+                                                $empid=$row['employee_id'];
+                                                if($row['filetype'] == "JPEG/PNG"){
+                                                    $filetype = "image/*";
+                                                } elseif($row['filetype'] == "PDF"){
+                                                    $filetype = ".pdf";
+                                                } elseif($row['filetype'] == "DOC/DOCX"){
+                                                    $filetype = ".doc,.docx";
+                                                } elseif($row['filetype'] == "XLS/XLSX"){
+                                                    $filetype = ".xlsx,.xls";
+                                                } elseif($row['filetype'] == "PPT/PPTX"){
+                                                    $filetype = ".ppt,.pptx";
+                                                } 
+                                            }
+                                        
 
         ?>
 
@@ -129,11 +144,12 @@
                                     style="margin-bottom: -2px; margin-left:10px; margin-top: 10px; width: 75px; height:75px; padding-top: 15px; padding-bottom: 15px; padding-left:15px; padding-right:15px;" 
                                     for="fileupload"><i style="color:#154c79; font-size: 45px" class="fas fa-folder-open"></i>
                                 </label>
-                                <div class="col-8" style="height: 75px;">
+                                <div class="col-9" style="height: 75px;">
                                     <p class="col-12" style="margin-left:-10px; margin-top: 25px;">Choose file to post</p>
-                                    <p class="col-12" style="margin-left:-10px; margin-top: -18px; color:orange; font-size: 12px">you can only upload one file at a time. </p>
+                                    <p class="col-12" style="margin-left:-10px; margin-top: -18px; color:orange; font-size: 12px">you can upload multiple files at a time. </p>
+                                    <p class="col-12" style="margin-left:-10px; margin-top: -18px; color:#28a745; font-size: 12px">Tips: Hold Ctrl and click files to select multiple file.</p>
                                 </div>
-                                <input required type="file" name="fileupload[]" multiple id="fileupload" style="margin-top: -15px; margin-left: -90px; opacity:0%; width: 100%; height:1px;" onchange="javascript:updateList()" oninvalid="this.setCustomValidity('Please choose a file')" oninput="this.setCustomValidity('')">
+                                <input required type="file" multiple name="fileupload[]"  id="fileupload" accept="<?=$filetype?>" style="margin-top: -15px; margin-left: -90px; opacity:0%; width: 100%; height:1px;" onchange="javascript:updateList()" oninvalid="this.setCustomValidity('Please choose a file')" oninput="this.setCustomValidity('')">
                             </div>
                             <p>Attached file:</p>
                             <div style="border-style: dashed; border-radius: 10px; min-height: 75px; max-height: 250px; margin-top: -15px; padding-left: 5px; padding-top: 5px; padding-right: 5px; padding-bottom: 5px; overflow-y: scroll;">
@@ -145,9 +161,48 @@
                     </div>
                 </div>
 
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+                
+
 
                     
         <?php
+                    }
+                }
+        ?>
+                <script>
+                    $(function () {
+                        $("#modal-request .close").click()
+                    });
+                </script>
+
+    <?php
+
+            }
+    ?>
+
+
+<!-- send requested files -->
+    <?php
+        if (isset($_GET['sendreject'])) {
+            $id = $_POST['id'];     
+
+    ?>
+
+        <div class="box-body">
+            <div class="form-group">
+                <label>Reason:</label>
+                <textarea id="reason" name="reason" rows="8" cols="50" style = "width: 100%; height:250px; padding:10px; font-size: 25px;" placeholder="Type something here..."></textarea>
+            </div>
+        </div>   
+        <input type="hidden" name="reqid" value="<?=$id?>">  
+
+    <?php
+
             }
     ?>
 
@@ -196,6 +251,49 @@
         if (isset($_GET["insertNewSchedule"])) {
             $emp_id=$_POST['emp_id'];
             $week=$_POST['week'];
+            $category = $_POST['category'];
+            $opt_status = "";
+            if(isset($_POST['opt_status'])){
+                $opt_status = $_POST['opt_status'];
+            }
+                
+            
+
+            echo $category;
+            echo $opt_status;
+            echo $_POST['schedoption'];
+
+            if($_POST['schedoption'] == "previous"){
+
+                $query = "SELECT * FROM `schedules` WHERE employee_id = 50 GROUP BY week ORDER BY sched_id DESC LIMIT 1";
+                $result = mysqli_query($connection, $query);
+                if (mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $weekfinal = $row['week'];
+                    }
+                }
+
+                $query = "SELECT * FROM schedules WHERE employee_id = '".$emp_id."' AND week = '".$weekfinal."'";
+                $result  = mysqli_query($connection, $query);
+                if (mysqli_num_rows($result) > 0) {
+                    echo "test";
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "gumana";
+                        $insertqry = "INSERT INTO `schedules`(`employee_id`, `date`, `day`, `start`, `end`, `week`, `bill`, `status`, `options`, `opt_status`) VALUES ('".$emp_id."','".$row['date']."','".$row['day']."','".$row['start']."','".$row['end']."','".$week."','".$row['bill']."','".$row['status']."','".$category."','".$opt_status."')";
+                        mysqli_query($connection, $insertqry);
+ 
+                        echo $insertqry."\n";
+                    }
+
+                }
+
+                
+
+                header("location: ../admin/schedule/schedule.php");
+
+
+            }else{
+
             $bill_mon=$_POST['bill_mon'];
             $bill_tue=$_POST['bill_tue'];
             $bill_wed=$_POST['bill_wed'];
@@ -293,7 +391,7 @@
 
                     for($x = 0; $x < count($array[0]); $x++){
 
-                        $insertqry = "INSERT INTO `schedules`(`employee_id`, `date`, `day`, `start`, `end`, `week`, `bill`, `status`) VALUES ('".$emp_id."','".$array[0][$x]."','".$array[1][$x]."','".$array[2][$x]."','".$array[3][$x]."','".$array[4][$x]."','".$array[5][$x]."','".$array[6][$x]."')";
+                        $insertqry = "INSERT INTO `schedules`(`employee_id`, `date`, `day`, `start`, `end`, `week`, `bill`, `status`, `options`, `opt_status`) VALUES ('".$emp_id."','".$array[0][$x]."','".$array[1][$x]."','".$array[2][$x]."','".$array[3][$x]."','".$array[4][$x]."','".$array[5][$x]."','".$array[6][$x]."','".$category."','".$opt_status."')";
                         mysqli_query($connection, $insertqry);
 
                     }
@@ -301,6 +399,11 @@
                 }
 
                 header("location: ../admin/schedule/schedule.php");
+
+            }
+
+            
+            
             
         }
 
@@ -333,7 +436,7 @@
             $name=$_POST['name'];
             $code=$_POST['code'];
 
-            $query = "INSERT INTO academics (`academic_name`, `academic_code`,`is_deleted`) VALUES ('".$name."', '".$code."',0)";
+            $query = "INSERT INTO academics (`academic_name`, `academic_code`,`is_deleted`) VALUES ('".$name."', '".$code."',1)";
             mysqli_query($connection, $query);
 
             header("location: ../admin/academicrank/academicrank.php");
@@ -409,7 +512,7 @@
                     }
                     else{
                         if ($fileInfo['extension'] == "jpg" OR $fileInfo['extension'] == "png") {
-                            $newFilename = $fileInfo['filename'] . "_" . time() . "." . $fileInfo['extension'];
+                            $newFilename = $fileInfo['filename']."_".$filetimestamp . "." . $fileInfo['extension'];
                             move_uploaded_file($_FILES["imgupload"]["tmp_name"], "../upload/" . $newFilename);
                             $location = $newFilename;
                           
@@ -587,6 +690,21 @@
 
         }
 
+        // insert sent requested files
+        if (isset($_GET["insertNewRejectFile"])) {
+            
+            $id = $_POST['reqid'];
+            $note = $_POST['reason'];
+
+            $update = "UPDATE e_requestfile SET sent_status = 2, reason = '".$note."' WHERE id = '".$id."' ";
+            mysqli_query($connection, $update);
+
+            header("location: ../admin/requestfile/requestfile.php");
+
+
+
+        }
+
     ?>
 
 
@@ -617,6 +735,14 @@
         // submit edit Schedule
         if (isset($_GET['submitEditSchedule'])) {
 
+            $category = $_POST['category'];
+            if(isset($_POST['opt_status'])){
+                $opt_status = $_POST['opt_status'];
+            }else{
+                $opt_status = "";
+            }
+            
+
             $array=array();
             array_push($array,$_POST['sched_id']);
             array_push($array,$_POST['start']);
@@ -634,7 +760,7 @@
                 $result  = mysqli_query($connection, $query);
                 if (mysqli_num_rows($result) > 0) {
                     while ($row = mysqli_fetch_assoc($result)) {
-                        $update = "UPDATE `schedules` SET `start`='".$array[1][$x]."',`end`='".$array[2][$x]."',`bill`='".$array[3][$x]."',`status`='".$array[4][$x]."'
+                        $update = "UPDATE `schedules` SET `start`='".$array[1][$x]."',`end`='".$array[2][$x]."',`bill`='".$array[3][$x]."',`status`='".$array[4][$x]."', `options`='".$category."', `opt_status`='".$opt_status."'
                                     WHERE sched_id = '".$array[0][$x]."' ";
                         mysqli_query($connection, $update);
                     }
@@ -774,7 +900,7 @@
             }
             else{
                 if ($fileInfo['extension'] == "jpg" OR $fileInfo['extension'] == "png") {
-                    $newFilename = $fileInfo['filename'] . "_" . time() . "." . $fileInfo['extension'];
+                    $newFilename = $fileInfo['filename'] ."_".$filetimestamp . "." . $fileInfo['extension'];
                     move_uploaded_file($_FILES["imgupload"]["tmp_name"], "../upload/" . $newFilename);
                     $location = $newFilename;
                 }
@@ -930,7 +1056,7 @@
             //     }
             // }
 
-            $query = "DELETE FROM schedules WHERE emp_id = '".$emp_id."' AND week = '".$week."'";
+            $query = "DELETE FROM schedules WHERE employee_id = '".$emp_id."' AND week = '".$week."'";
             mysqli_query($connection, $query);
 
             header("location: ../admin/schedule/schedule.php");
@@ -995,15 +1121,17 @@
             header("location: ../admin/academicrank/academicrank.php");
         }
         //delete employee
-        if (isset($_GET['deleteemployee'])) {
+        if (isset($_GET['deleteEmployee'])) {
             $id=$_GET['id'];
 
             $query = "SELECT * FROM employee WHERE id = '".$id."' ";
             $result  = mysqli_query($connection, $query);
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
-                    $update = "UPDATE employee SET is_active = 1 WHERE id = '".$id."' ";
+                    $update = "UPDATE employee SET is_active = 0 WHERE id = '".$id."' ";
                     mysqli_query($connection, $update);
+                    $updates = "UPDATE user SET has_account = 0 WHERE employee_id = '".$id."' ";
+                    mysqli_query($connection, $updates);
                 }
             }
 
@@ -1184,6 +1312,8 @@
                 while ($row = mysqli_fetch_assoc($result)) {
                     $update = "UPDATE employee SET is_active = 1 WHERE id = '".$id."' ";
                     mysqli_query($connection, $update);
+                    $updates = "UPDATE user SET has_account = 1 WHERE employee_id = '".$id."' ";
+                    mysqli_query($connection, $updates);
                 }
             }
 

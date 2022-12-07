@@ -165,7 +165,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                 <p class="col-12 filesize" style="margin-left:-2px; margin-top: 0px; font-size: 12px"><?php echo $row['filesize'];?> KB</p>
                                                             </div>
                                                             <div class="col-1">
-                                                                <a href="../../ajaxadmin/ajaxadmin.php?restoreDeletePosted&date=<?=$row['date']?>" title="Delete" onclick="return confirm('Restore Department. Still want to restore?')">
+                                                                <a href="../../ajaxadmin/ajaxadmin.php?restoreDeletePosted&date=<?=$row['date']?>" title="Delete" onclick="return confirm('Restore Files. Still want to restore?')">
                                                                     <i style="margin-top: 15px; margin-bottom: 10px; margin-left: -25px; font-size: 50px; text-align: center; color:orange;" class="fas fa-redo-alt"></i>
                                                                 </a> 
                                                             </div>
@@ -224,12 +224,19 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                 var outputname = document.getElementById('filename');
                 var outputsize = document.getElementById('filesize');
                 var filename = input.files[0].name;
-                var filesize = parseInt(input.files[0].size/1024);
+                var filesize = parseInt(input.files[0].size/1048576);
                 console.log(filesize);
-                outputname.innerHTML = '<strong>'+filename+'</strong>';
-                outputsize.innerHTML = '<strong>'+filesize+' KB</strong>';
-                
-                document.getElementById('filedisplay').style.display = '';
+
+                if(input.files[0].size > 25000000) {
+                    alert("Please upload file less than 25MB. Thanks!!");
+                    $(this).val('');
+                }else{
+
+                    outputname.innerHTML = '<strong>'+filename+'</strong>';
+                    outputsize.innerHTML = '<strong>'+filesize+' MB</strong>';
+                    
+                    document.getElementById('filedisplay').style.display = '';
+                }
             }
         </script>
 
@@ -244,11 +251,13 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
             });
         </script>
 
+        
+
     </body>
 
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

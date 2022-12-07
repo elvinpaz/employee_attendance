@@ -26,7 +26,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
         $end = "";
         $hrs = 0;
         $mins = 0;
-        $schedstatus = "";
+        $schedstatus = "REST";
         $attendancestatus = "";
         $schedattend_status = "";
         $location = "";
@@ -338,12 +338,12 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Employee"){
                                                 <table  cellspacing="0"  width="100%">
                                                     <tbody ><tr>
                                                         <td style="float:right; margin-bottom: 5px;"><input style="width: 180px; height: 28px; font-size: 13px;"type="text" id="min" name="min"></td>
-                                                        <td style="float:right; padding-top: 2px; margin-right: 10px; margin-bottom: 10px; font-size: 15px;">Minimum date:</td>
+                                                        <td style="float:right; padding-top: 2px; margin-right: 10px; margin-bottom: 10px; font-size: 15px;">From:</td>
                                                         
                                                     </tr>
                                                     <tr>
                                                         <td style="float:right; margin-bottom: 20px;"><input style="width: 180px; height: 28px; font-size: 13px;"type="text" id="max" name="max"></td>
-                                                        <td style="float:right; padding-top: 2px; margin-right: 10px; margin-bottom: 10px; font-size: 15px;">Maximum date:</td>
+                                                        <td style="float:right; padding-top: 2px; margin-right: 10px; margin-bottom: 10px; font-size: 15px;">To:</td>
                                                     </tr>
                                                     </tbody>
                                                 </table>

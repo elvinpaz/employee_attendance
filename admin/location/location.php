@@ -100,7 +100,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                     <td class="align-middle text-center">
 
                                                         <?php if ($row['status'] == 0){?>
-                                                            <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteLoc&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Department. Still want to restore?')">
+                                                            <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteLoc&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Location. Still want to restore?')">
                                                                 <i class="fa fa-undo"> </i>
                                                             </a>
                                                         
@@ -112,7 +112,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                     <i class="fas fa-edit"></i>
                                                                 </span>
                                                             </a> |
-                                                            <a href="../../ajaxadmin/ajaxadmin.php?deleteLoc&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+                                                            <a href="../../ajaxadmin/ajaxadmin.php?deleteLoc&id=<?=$row['id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Location. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
 
                                                         <?php }?>    
 
@@ -164,6 +164,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

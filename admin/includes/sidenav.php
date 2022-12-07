@@ -79,22 +79,23 @@
     <li class="nav-item <?=($f=='postedfile.php'?'active':'')?>">
         <a class="nav-link pb-0" href="../postedfile/postedfile.php">
         <i class="fas fa-file-upload"></i>
-            <span>Posted Files</span>
-        </a>
-    </li>
-    <li class="nav-item <?=($f=='receivedfile.php'?'active':'')?>">
-        <a class="nav-link pb-0" href="../receivedfile/receivedfile.php">
-        <i class="fas fa-file-download"></i>
-            <span>Received Files</span>
-        </a>
-    </li>
-    <li class="nav-item <?=($f=='requestfile.php'?'active':'')?>">
-        <a class="nav-link pb-0" href="../requestfile/requestfile.php">
-        <i class="fas fa-file-import"></i>
-            <span>File Request</span>
+            <span>Downloadable Forms</span>
         </a>
     </li>
     
+            <li class="nav-item <?=($f=='receivedfile.php'?'active':'')?>">
+                <a class="nav-link pb-0" href="../receivedfile/receivedfile.php">
+                <i class="fas fa-file-download"></i>
+                    <span>Received Files</span>
+                </a>
+            </li>
+            <li class="nav-item <?=($f=='requestfile.php'?'active':'')?>">
+                <a class="nav-link pb-0" href="../requestfile/requestfile.php">
+                <i class="fas fa-file-import"></i>
+                    <span>File Request</span>
+                </a>
+            </li>
+        
     <hr class="sidebar-divider mt-3">
 
     <div class="sidebar-heading">

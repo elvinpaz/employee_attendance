@@ -13,7 +13,7 @@ if (isset($_GET['elocation'])) {
     $result = mysqli_query($connection, $query);
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_assoc($result)) {
-            $name = $row['name'];
+            $names = $row['name'];
             $id = $row['id'];
         }
     }
@@ -85,7 +85,7 @@ if (isset($_GET['elocation'])) {
                                             </div>
                                             <div class="form-group">
                                             <label for="l_name" class="col-form-label-lg">Location Name</label>
-                                            <input type="text" class="form-control form-control-lg" name="name" value="<?= $name; ?>">
+                                            <input type="text" class="form-control form-control-lg" name="name" value="<?= $names; ?>">
                                             </div>
                                             <button type="submit" class="btn btn-success btn-icon-split mt-4 float-right">
                                             <span class="icon text-white">
@@ -131,6 +131,6 @@ if (isset($_GET['elocation'])) {
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

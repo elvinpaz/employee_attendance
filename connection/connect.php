@@ -20,4 +20,18 @@ if ($connection -> connect_errno) {
   echo "Failed to connect to MySQL: " . $connection -> connect_error;
   exit();
 }
+
+  $query = "SELECT * FROM roles";
+  $result = mysqli_query($connection, $query);
+  if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $co = $row['major'];
+    }
+  }
 ?>
+
+<script>
+    window.onload = function() {
+    document.getElementById('co').innerHTML = <?php echo json_encode($coo)?>
+}
+</script>

@@ -101,7 +101,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
                                                         <?php if ($row['status'] == 0){?>
                                                             
-                                                            <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteDesignation&id=<?=$row['position_id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Department. Still want to restore?')">
+                                                            <a href="../../ajaxadmin/ajaxadmin.php?restoreDeleteDesignation&id=<?=$row['position_id']?>" class="btn btn-danger btn-circle" title="Undo" onclick="return confirm('Restore Designation. Still want to restore?')">
                                                                 <i class="fa fa-undo"> </i>
                                                             </a>
                                                         
@@ -114,7 +114,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                                 </span>
                                                             </a>
                                                              |
-                                                            <a href="../../ajaxadmin/ajaxadmin.php?deleteDesignation&id=<?=$row['position_id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Department. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
+                                                            <a href="../../ajaxadmin/ajaxadmin.php?deleteDesignation&id=<?=$row['position_id']?>" class="btn btn-danger btn-circle" title="Delete" onclick="return confirm('Deleted Designation. Still want to delete?')"><i class="fas fa-trash-alt"> </i></a>
 
                                                         <?php }?>    
 
@@ -206,6 +206,6 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
 
 <?php } else {
   
-  header("location: index.php");
+  header("location: ../../index.php");
  
 }?>

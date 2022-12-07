@@ -245,13 +245,14 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                             <th scope="col">Employees</th>
                                             <th scope="col">Shift Start</th>
                                             <th scope="col">Shift End</th>
+                                            <th scope="col">Category</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
                                         <?php
                                             $x = 1;
-                                            $query = "SELECT schedules.*, employee.name, employee.last_name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id WHERE date = '".$daytoday."' AND status = 'REG'";
+                                            $query = "SELECT schedules.*, employee.position_id, employee.name, employee.last_name FROM schedules LEFT JOIN employee ON schedules.employee_id = employee.id WHERE date = '".$daytoday."' AND status = 'REG'";
                                             $result = mysqli_query($connection, $query);
                                             if (mysqli_num_rows($result) > 0) {
                                                 while ($row = mysqli_fetch_assoc($result)) {
@@ -262,6 +263,7 @@ if(isset($_SESSION['access']) && $_SESSION['access'] == "Admin"){
                                                 <td><?=$row['name']." ".$row['last_name']?></td>
                                                 <td><?=date("h:i A",strtotime($row['name']))?></td>
                                                 <td><?=date("h:i A",strtotime($row['end']))?></td>
+                                                <td><?=$row['position_id']?></td>
                                             </tr>
 
 
